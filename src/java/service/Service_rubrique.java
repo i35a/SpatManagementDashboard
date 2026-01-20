@@ -67,19 +67,15 @@ public class Service_rubrique {
 /* ===================== UPDATE ===================== */
     public static boolean update(Rubrique_saisie r) {
         String sql = "UPDATE rubrique_saisie SET " +
-                "designation=?, valeur_saisie=?, idactivite=?, idcateg_rubrique=?, periode_annuel=? " +
-                "WHERE id=?";
+                " valeur_saisie=? WHERE designation=? AND periode_annuel=? ";
 
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql)) {
 
-            ps.setString(1, r.getDesignation());
-            ps.setDouble(2, r.getValeur_saisie());
-            ps.setInt(3, r.getIdactivite());
-            ps.setInt(4, r.getIdcateg_rubrique());
-            ps.setInt(5, r.getPeriode_annuel());
-            ps.setInt(6, r.getId());
-
+            ps.setDouble(1, r.getValeur_saisie());
+            ps.setString(2, r.getDesignation());
+            ps.setInt(3, r.getPeriode_annuel());
+            
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {

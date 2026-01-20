@@ -23,8 +23,8 @@ import service.Service_rubrique;
  *
  * @author PC
  */
-@WebServlet("/rubriques")
-public class controller_rubrique extends HttpServlet {
+@WebServlet("/rubrique_rh")
+public class controller_rubrique_rh extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
