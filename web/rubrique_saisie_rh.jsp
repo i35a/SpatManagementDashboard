@@ -18,9 +18,9 @@
     </head>
     <body>
         <h1>VOLET RH SAISIE</h1>
-        <% 
-           int annee = java.time.Year.now().getValue();
-           
+        <%
+            int annee = java.time.Year.now().getValue();
+
             String json = request.getAttribute("rh_data").toString();
             Gson gson = new Gson();
             V_rubrique_saisie[] rubriques = gson.fromJson(json, V_rubrique_saisie[].class);
@@ -28,20 +28,20 @@
         %>
         <form action="monServlet" method="post">
             <table border="1">
-              <tr>
-                <th>Description</th>
-                <th><% out.println(annee-3);%></th>
-                <th><% out.println(annee-2);%></th>
-                <th><% out.println(annee-1);%></th>
-              </tr>
-        <%     for (V_rubrique_saisie item : rubriques) {%>
-                  <tr>
-                <td><input type="text" name="nom" value="<%out.print(item.getDesignation());%>"></td>
-                <td><input type="number" name="age"></td>
-                <td><input type="text" name="ville"></td>
-                <td><input type="text" name="ville"></td>
-              </tr>
-        <%     } %>
+                <tr>
+                    <th>Description</th>
+                    <th><% out.println(annee - 3);%></th>
+                    <th><% out.println(annee - 2);%></th>
+                    <th><% out.println(annee - 1);%></th>
+                </tr>
+                <%     for (V_rubrique_saisie item : rubriques) {%>
+                <tr>
+                    <td><input type="text" name="nom" value="<%out.print(item.getDesignation());%>"></td>
+                    <td><input type="number" name="age"></td>
+                    <td><input type="text" name="ville"></td>
+                    <td><input type="text" name="ville"></td>
+                </tr>
+                <%     }%>
             </table>
 
             <button type="submit">Mettre à jour</button>

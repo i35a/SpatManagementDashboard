@@ -16,6 +16,30 @@
         <servlet-name>controller_updateVoletRH</servlet-name>
         <url-pattern>/controller_updateVoletRH</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <servlet-class>controller.UserLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <url-pattern>/userlogin</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UtilisateurServlet</servlet-name>
+        <servlet-class>controller.UtilisateurServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UtilisateurServlet</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ModifierUtilisateur</servlet-name>
+        <servlet-class>controller.ModifierUtilisateur</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ModifierUtilisateur</servlet-name>
+        <url-pattern>/ModifierUtilisateur</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
