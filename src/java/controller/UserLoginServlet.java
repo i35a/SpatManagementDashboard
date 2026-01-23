@@ -59,46 +59,55 @@ public class UserLoginServlet extends HttpServlet {
         //setConnectionDB sc = new setConnectionDB();
         Utilisateur foundUser = new Utilisateur();
 
-        Connection connection = null;
-        connection = DBConnection.getConnection();//sc.establish(loginSaisie, pwdSaisie,DirectionSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
+        Connection connection = DBConnection.getConnection();//sc.establish(loginSaisie, pwdSaisie,DirectionSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
         boolean userConnected = false;
-        if (session.getAttribute("login") != null) {
-            System.out.println("--session not null");
-            loginSaisie = (String) session.getAttribute("login");
-            pwdSaisie = (String) session.getAttribute("password");
-            DirectionSaisie = (String) session.getAttribute("direction");
-//            session.removeAttribute("login");
-//            session.removeAttribute("password");
-//            session.removeAttribute("direction");
+//        try {
+//            if (session.getAttribute("login") != null && session.getAttribute("login") == "root") {
+//                session.removeAttribute("login");
+//                session.removeAttribute("password");
+//                session.removeAttribute("direction");
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Session remove error: " + e.getMessage());
+//        }
+//        if (session.getAttribute("login") != null && session.getAttribute("login")!="root") {
+//            System.out.println("--session not null");
+//            loginSaisie = String.valueOf(Integer.valueOf((String) (session.getAttribute("login"))));
+//            pwdSaisie = String.valueOf(session.getAttribute("password"));
+//            DirectionSaisie = String.valueOf(session.getAttribute("direction"));
+//            System.out.println("login session = "+session.getAttribute("login"));
+//        } else {
+//            loginSaisie = request.getParameter("login").toString();
+//            pwdSaisie = request.getParameter("password").toString();
+//            DirectionSaisie = request.getParameter("direction").toString();
+//
+//            
+//        }
+        loginSaisie = request.getParameter("login").toString();
+        pwdSaisie = request.getParameter("password").toString();
+        DirectionSaisie = request.getParameter("direction").toString();
+
+        if (loginSaisie != null && pwdSaisie != null && !loginSaisie.trim().isEmpty() && !pwdSaisie.trim().isEmpty()) {
+            System.out.println("__login saisie" + Integer.valueOf(loginSaisie));
+
+//            foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
+//            System.out.println("__Fetch user " + foundUser.getFullname() + ", " + foundUser.toString() + "_");
+//            if (Utils.verifyHashBcrypt(pwdSaisie, foundUser.getPwd())) {
+//                userConnected = true;
+//                System.out.println("Hash matched!!!");
+//
+//            } else {
+//                System.out.println("Hash doesnt match");
+//            }
         } else {
-            loginSaisie = request.getParameter("login").toString();
-            pwdSaisie = request.getParameter("password").toString();
-            DirectionSaisie = request.getParameter("direction").toString();
-
-            
+            System.out.println("empty login saisie et pwd saisie");
         }
 
-        if (loginSaisie != null && pwdSaisie != null) {
-            System.out.println("__login saisie"+ Integer.valueOf(loginSaisie));
-            foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
-            System.out.println("__Fetch user "+ foundUser.getFullname()+", "+foundUser.toString()+"_");
-            if (Utils.verifyHashBcrypt(pwdSaisie, foundUser.getPwd())) {
-                userConnected = true;
-                System.out.println("Hash matched!!!");
-                session.setAttribute("login", loginSaisie);
-                session.setAttribute("password", pwdSaisie);
-                session.setAttribute("direction", DirectionSaisie);
-            }else{
-                System.out.println("Hash doesnt match");
-            }
-        }
-
-//&& foundUser.getId()==null
         System.out.println("Login found: " + loginSaisie + ",\npwd saisie: " + pwdSaisie);
         System.out.println("connection == " + connection);
-        if(userConnected){
+        if (userConnected) {
             System.out.println("***User found: " + foundUser.getFullname());
-        }else{
+        } else {
             System.out.println("none found");
         }
         if (connection == null) {
@@ -119,10 +128,10 @@ public class UserLoginServlet extends HttpServlet {
             session.setAttribute("loggedIn", foundUser.getId());
             session.setAttribute("userType", "admin");
             session.setAttribute("userTypeId", tru.getId());
+
             //System.out.println("user type found: "+ session.getAttribute("userType"));
             //ArrayList<HashMap<String, String>> res = ServiceStock.getEtatStock(connection);
             //request.setAttribute("ListEtatStockType", ServiceStock.getEtatStock(connection));
-
             connection.close();
             //request.getRequestDispatcher("index.jsp").forward(request, response);
             request.getRequestDispatcher("dashboard-user.jsp").forward(request, response);
@@ -200,6 +209,7 @@ public class UserLoginServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (Exception ex) {
+            System.out.println("\n***Exception error: " + ex.getMessage());
             Logger.getLogger(UserLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -116,7 +116,7 @@
                                         <h4 class="modal-title"><i class="fa fa-user"></i> Ajouter un utilisateur</h4><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="AjouterUtilisateur" method="post" style="margin-left:5%;width: 100%;">
+                                        <form action="AjouterUtilisateur" method="post" >
 
                                             <div class="container">
                                                 <div class="row-fluid">
@@ -284,24 +284,18 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div>
+                            <h2 class="text-primary m-0 fw-bold">Liste des utilisateurs</h2>
+                        </div>
                         <div class="card-header py-3" style="margin-top: 0%;margin-bottom: 0%;">
                             <form action="users" method="post" id="myform">
-                                <p class="text-primary m-0 fw-bold">Recherche</p>
+
                                 <div class="table-responsive">
                                     <table class="table">
-                                        <thead>
-                                            <tr></tr>
-                                        </thead>
+
                                         <tbody>		
-                                            <tr>
-                                                <td>Nom</td>
-                                                <td>Login ou Matricule</td>
-                                                <td>Role</td>
-                                                <!--                                                        <td>Fabricant</td>
-                                                                                                        <td>Etat</td>
-                                                                                                        <td>Date Article</td>-->
-                                                <td></td>
-                                            </tr>
+
                                             <tr>
                                                 <%
 //                                                    Article artrecherche = new Article();
@@ -314,7 +308,11 @@
 //
 //                                                    }
                                                 %>
-
+                                                <td>
+                                                    <input value="<% //if (artrecherche.getDesignation() != null) {
+                                                        //out.print(artrecherche.getDesignation());
+                                                        //} %>" placeholder="Recherche nom,login.." onchange="formSubmit()" class="form-control" type="text" style="border-radius: 5px 5px 5px 5px;border-style: solid;width: 100%;height: 100%;" name="userNameSearch"> 
+                                                </td>
 
 
                                                 <td>
@@ -346,23 +344,8 @@
                                 </div>
                             </form>
                         </div>
-
-                        <div class="card-header py-3" style="margin-top: 0%;margin-bottom: 0%;">
-                            <nav class="navbar navbar-light navbar-expand-lg navigation-clean">
-                                <form action="ControllerListArt" method="post" id="myform" style="width:100%;">
-                                    <p class="text-primary m-0 fw-bold" style="width: 100%" >Liste des utilisateurs</p>
-                                    <div class="container">    
-                                        <div id="navcol-1" class="collapse navbar-collapse">
-                                            <ul class="navbar-nav ms-auto">
-                                                <li class="nav-item"><button  data-bs-target="#modal-newart" data-bs-toggle="modal" class="btn btn-primary" type="button" style="background: rgb(250,250,250);border-style: solid; border-color: #c3c3c3;margin-left: 8%; width: 100%;height: 100%;color:#000000;"><img src="assets/img/icons8-ajouter-24.png" />Ajouter</button></li>
-                                                <!--                                   <li class="nav-item"><button  data-bs-target="#modal-importxls" data-bs-toggle="modal" class="btn btn-primary" type="button" style="background: rgb(250,250,250);border-style: solid; border-color: #c3c3c3;margin-left: 8%; width: 100%;height: 100%;color:#000000;"><img src="assets/img/icons8-ms-excel-24.png" />Importer</button></li>
-                                                                                   <li class="nav-item"><button  class="btn btn-primary" name="download" type="submit" style="background: rgb(250,250,250);border-style: solid; border-color: #c3c3c3;margin-left: 8%; width: 100%;height: 100%;color:#000000;"><img src="assets/img/icons8-ms-excel-24.png" />Template</button></li>-->
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </form>
-                            </nav>
-                        </div>                                                           
+                        <div><button  data-bs-target="#modal-newart" data-bs-toggle="modal" class="btn btn-primary" type="button" style="background: rgb(250,250,250);border-style: solid; border-color: #c3c3c3;height: 100%;color:#000000;"><i class="fa fa-add"></i> Ajouter</button></div>
+                                                                               
                         <div class="card-body">
 
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -389,7 +372,11 @@
 
                                             Connection con = utils.DBConnection.getConnection();//sc.connect2(request);
                                         %>
-                                        <% for (Utilisateur article : (List<Utilisateur>) request.getAttribute("listeUsers")) {%>
+                                        <% for (Utilisateur article : (List<Utilisateur>
+
+                                            ) request.getAttribute (
+                                                     
+                                                "listeUsers")) {%>
                                         <% TypeRoleUtilisateur tpa = new TypeRoleUtilisateur();
                                             tpa = ServiceRoleUtilisateur.getTypeById(article.getIdRole(), con);
                                         %>
@@ -414,7 +401,7 @@
                             </div>
                         </div>
                     </div> 
-                </div>  <% con.close();%>                                 
+                </div>  <% con.close ();%>                                 
                 <footer class="bg-white sticky-footer">
                     <div class="container my-auto">
                         <div class="text-center my-auto copyright"><span>Copyright® SPAT 2023</span></div>

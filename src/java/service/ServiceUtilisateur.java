@@ -14,12 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-//import model.Deleted_article;
-//import model.Article;
-//import model.Entreart;
-//import model.Typearticle;
-//import model.Updated_Article;
+import java.util.List; 
 import model.Utilisateur;
 import utils.Utils;
 import service.ServiceRoleUtilisateur;
@@ -77,7 +72,15 @@ public class ServiceUtilisateur {
         ArrayList<Utilisateur> result = new ArrayList<Utilisateur>();
         String sql = "SELECT * FROM v_utilisateur WHERE 1=1 AND (user_locked IS NULL OR user_locked=FALSE) ";
         if (searchUser.getFullname() != null) {
-            sql = sql + " AND lower(fullname) like '%" + searchUser.getFullname() + "%'";
+            sql = sql + " AND lower(fullname) like '%" + searchUser.getFullname() + "%' ";
+            
+//            try{
+//            int userLogin = Integer.parseInt(searchUser.getFullname());
+//            if(userLogin>0)
+//            sql +=" AND lower(cast(login AS TEXT)) ilike '%" + userLogin + "%'";
+//            }catch(Exception e){
+//                
+//            }
         }
         if (searchUser.getIdRole() != null) { 
             sql = sql + " AND idrole=" + searchUser.getIdRole() + "";
@@ -85,11 +88,12 @@ public class ServiceUtilisateur {
         } else {
             System.out.println("null id role");
         }
-        if (searchUser.getLogin() != null) {
-            sql = sql + " AND lower(cast(login AS TEXT)) like '%" + searchUser.getLogin() + "%'";
-        } else {
-            System.out.println("null login" + searchUser.getLogin());
-        }
+//        if (searchUser.getFullname() != null) {
+//            sql = sql + " AND lower(cast(login AS TEXT)) ilike '%" + searchUser.getFullname() + "%'";
+//            System.out.println("***Searching login: "+ searchUser.getFullname()+"***\n");
+//        } else {
+//            System.out.println("null login" + searchUser.getFullname());
+//        }
 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
