@@ -28,12 +28,12 @@
         <script src="assets/js/chart2.9.js"></script>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Volet RH</title>
     </head>
     <body>
         <h1>VOLET RH SAISIE</h1>
         <% 
-           Annee taona = Service_annee.findAnnee("annee3");//java.time.Year.now().getValue();
+           Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
            int annee = taona.getValeur();
            
             String json = request.getAttribute("rh_data").toString();
@@ -49,9 +49,9 @@
                       <table border="1">
                        <tr>
                          <th>Description</th>
-                         <th><% out.println(annee-3);%></th>
                          <th><% out.println(annee-2);%></th>
                          <th><% out.println(annee-1);%></th>
+                         <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_saisie item : rubriques) {
                             if(item.getCategorie_rubrique().equals("categorieRH")){
@@ -70,14 +70,14 @@
             </div>
             
             <div class="card bg-light mb-3" style="max-width: 45rem;">
-                <h5 class="card-header">Effectif par categorie</h5>
+                <h5 class="card-header">Effectif par genre</h5>
                 <div class="card-body">
                       <table border="1">
                        <tr>
                          <th>Description</th>
-                         <th><% out.println(annee-3);%></th>
                          <th><% out.println(annee-2);%></th>
                          <th><% out.println(annee-1);%></th>
+                         <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_saisie item : rubriques) {
                             if(item.getCategorie_rubrique().equals("genreRH")){
@@ -96,14 +96,14 @@
             </div>
             
             <div class="card bg-light mb-3" style="max-width: 45rem;">
-                <h5 class="card-header">Effectif par categorie</h5>
+                <h5 class="card-header">Salaire</h5>
                 <div class="card-body">
                       <table border="1">
                        <tr>
                          <th>Description</th>
-                         <th><% out.println(annee-3);%></th>
                          <th><% out.println(annee-2);%></th>
                          <th><% out.println(annee-1);%></th>
+                         <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_saisie item : rubriques) {
                             if(item.getCategorie_rubrique().equals("salaireRH")){

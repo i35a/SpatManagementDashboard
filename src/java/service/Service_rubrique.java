@@ -9,15 +9,17 @@ import model.Rubrique_saisie;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.V_rubrique_fin;
+import model.V_rubrique_op;
 import model.V_rubrique_saisie;
 /**
  *
  * @author PC
  */
 public class Service_rubrique {
-    public static List<V_rubrique_saisie> findAll() {
+    public static List<V_rubrique_saisie> getRubriqueRH() {
         List<V_rubrique_saisie> list = new ArrayList<>();
-        String sql = "SELECT * FROM v_rubrique_saisie";
+        String sql = "SELECT * FROM v_rubrique_rh";
                 
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql);
@@ -41,7 +43,60 @@ public class Service_rubrique {
         }
         return list;
     }
+    public static List<V_rubrique_fin> getRubriqueFIN() {
+        List<V_rubrique_fin> list = new ArrayList<>();
+        String sql = "SELECT * FROM v_rubrique_fin";
+                
+        try (Connection cnx = DBConnectionOld.getConnection();
+             PreparedStatement ps = cnx.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
+            while (rs.next()) {
+                V_rubrique_fin r = new V_rubrique_fin();
+                r.setDesignation(rs.getString("designation"));
+                r.setLibelle_activite(rs.getString("libelle_activite"));
+                r.setRole_utilisateur(rs.getString("role_utilisateur"));
+                r.setCategorie_rubrique(rs.getString("categorie_rubrique"));
+                r.setAnnee1(rs.getDouble("annee1"));
+                r.setAnnee2(rs.getDouble("annee2"));
+                r.setAnnee3(rs.getDouble("annee3"));
+                r.setAnnee4(rs.getDouble("annee4"));
+                r.setAnnee5(rs.getDouble("annee5"));
+                list.add(r);
+            }
+            cnx.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public static List<V_rubrique_op> getRubriqueOP() {
+        List<V_rubrique_op> list = new ArrayList<>();
+        String sql = "SELECT * FROM v_rubrique_op";
+                
+        try (Connection cnx = DBConnectionOld.getConnection();
+             PreparedStatement ps = cnx.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                V_rubrique_op r = new V_rubrique_op();
+                r.setDesignation(rs.getString("designation"));
+                r.setLibelle_activite(rs.getString("libelle_activite"));
+                r.setRole_utilisateur(rs.getString("role_utilisateur"));
+                r.setCategorie_rubrique(rs.getString("categorie_rubrique"));
+                r.setAnnee1(rs.getDouble("annee1"));
+                r.setAnnee2(rs.getDouble("annee2"));
+                r.setAnnee3(rs.getDouble("annee3"));
+                r.setAnnee4(rs.getDouble("annee4"));
+                r.setAnnee5(rs.getDouble("annee5"));
+                list.add(r);
+            }
+            cnx.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
      /* ===================== INSERT ===================== */
     public static boolean insert(Rubrique_saisie r) {
         String sql = "INSERT INTO rubrique_saisie " +

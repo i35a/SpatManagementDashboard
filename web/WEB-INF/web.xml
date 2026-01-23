@@ -8,6 +8,14 @@
         <servlet-name>controller_updateVoletRH</servlet-name>
         <servlet-class>controller.controller_updateVoletRH</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>controller_updateVoletFIN</servlet-name>
+        <servlet-class>controller.controller_updateVoletFIN</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>controller_updateVoletOP</servlet-name>
+        <servlet-class>controller.controller_updateVoletOP</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>controller_rubrique</servlet-name>
         <url-pattern>/controller_rubrique</url-pattern>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>controller_updateVoletRH</servlet-name>
         <url-pattern>/controller_updateVoletRH</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>controller_updateVoletFIN</servlet-name>
+        <url-pattern>/controller_updateVoletFIN</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>controller_updateVoletOP</servlet-name>
+        <url-pattern>/controller_updateVoletOP</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

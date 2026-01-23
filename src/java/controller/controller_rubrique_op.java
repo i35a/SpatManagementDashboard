@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Rubrique_saisie;
+import model.V_rubrique_op;
 import model.V_rubrique_saisie;
 import service.Service_rubrique;
 
@@ -23,8 +24,8 @@ import service.Service_rubrique;
  *
  * @author PC
  */
-@WebServlet("/rubrique_rh")
-public class controller_rubrique_rh extends HttpServlet {
+@WebServlet("/rubrique_op")
+public class controller_rubrique_op extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,8 +38,8 @@ public class controller_rubrique_rh extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 1. Récupération de la liste depuis le service
-        List<V_rubrique_saisie> rubriques = Service_rubrique.getRubriqueRH(); // .getAllRubriques();
+         // 1. Récupération de la liste depuis le service
+        List<V_rubrique_op> rubriques = Service_rubrique.getRubriqueOP(); // .getAllRubriques();
 
         // 2. Création de l'objet Gson (compatible 2.2.2)
         Gson gson = new GsonBuilder().create();
@@ -53,8 +54,8 @@ public class controller_rubrique_rh extends HttpServlet {
         // 5. Envoi du JSON au client
         PrintWriter out = response.getWriter();
         
-        request.setAttribute("rh_data",json);
-        request.getRequestDispatcher("/rubrique_saisie_rh.jsp").forward(request, response);
+        request.setAttribute("op_data",json);
+        request.getRequestDispatcher("/rubrique_saisie_op.jsp").forward(request, response);
         //out.print(json);
         //out.flush();
     }
