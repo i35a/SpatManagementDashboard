@@ -56,7 +56,6 @@ public class UserLoginServlet extends HttpServlet {
 //        if (session == null) {
 //            request.getRequestDispatcher("adminauth.jsp?msg=nosess").forward(request, response);
 //        }
-        //setConnectionDB sc = new setConnectionDB();
         Utilisateur foundUser = new Utilisateur();
 
         Connection connection = DBConnection.getConnection();//sc.establish(loginSaisie, pwdSaisie,DirectionSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
@@ -90,15 +89,15 @@ public class UserLoginServlet extends HttpServlet {
         if (loginSaisie != null && pwdSaisie != null && !loginSaisie.trim().isEmpty() && !pwdSaisie.trim().isEmpty()) {
             System.out.println("__login saisie" + Integer.valueOf(loginSaisie));
 
-//            foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
-//            System.out.println("__Fetch user " + foundUser.getFullname() + ", " + foundUser.toString() + "_");
-//            if (Utils.verifyHashBcrypt(pwdSaisie, foundUser.getPwd())) {
-//                userConnected = true;
-//                System.out.println("Hash matched!!!");
-//
-//            } else {
-//                System.out.println("Hash doesnt match");
-//            }
+            foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
+            System.out.println("__Fetch user " + foundUser.getFullname() + ", " + foundUser.toString() + "_");
+            if (Utils.checkPasswordBcrypt(pwdSaisie, foundUser.getPwd())) {
+                userConnected = true;
+                System.out.println("Hash matched!!!");
+
+            } else {
+                System.out.println("Hash doesnt match");
+            }
         } else {
             System.out.println("empty login saisie et pwd saisie");
         }

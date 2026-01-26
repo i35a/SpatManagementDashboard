@@ -50,12 +50,12 @@ public class ServiceUtilisateur {
                 }
                 if (rs.getString("pwd") != null) {
                     foundUser.setPwd(rs.getString("pwd"));
-                    System.out.println(foundUser.getPwd());
+                    System.out.println("hash found: "+foundUser.getPwd());
                 } else {
                     System.out.println("null pwd");
                 }
                 if (rs.getString("login") != null) {
-                    foundUser.setLogin(Integer.parseInt(rs.getString("login")));
+                    foundUser.setLogin(Integer.valueOf(rs.getString("login")));
                     System.out.println(foundUser.getLogin());
                 } else {
                     System.out.println("null login");
