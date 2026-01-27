@@ -34,6 +34,141 @@
         <title>Volet OPERATION</title>
     </head>
     <body>
+<<<<<<< HEAD
+        <h1>VOLET OPERATION SAISIE</h1>
+        <% 
+           Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
+           int annee = taona.getValeur();
+           
+            String json = request.getAttribute("op_data").toString();
+            Gson gson = new Gson();
+            V_rubrique_op[] rubriques = gson.fromJson(json, V_rubrique_op[].class);
+            //Rubrique_saisie rub = new Rubrique_saisie();
+        %>
+        <form action="controller_updateVoletOP" method="post">
+            
+            <div class="card bg-light mb-3" style="max-width: 65rem;">
+                <h5 class="card-header">Trafic maritime Global</h5>
+                <div class="card-body">
+                      <table border="1">
+                       <tr>
+                         <th>Description</th>
+                         <th><% out.println(annee-4);%></th>
+                         <th><% out.println(annee-3);%></th>
+                         <th><% out.println(annee-2);%></th>
+                         <th><% out.println(annee-1);%></th>
+                         <th><% out.println(annee-0);%></th>
+                       </tr>
+                 <%     for (V_rubrique_op item : rubriques) {
+                            if(item.getCategorie_rubrique().equals("TraficGBL") || item.getCategorie_rubrique().equals("TraficGBL_prev")){
+                 %>
+                           <tr>
+                         <td><input type="text" name="designation_trafic" value="<%out.print(item.getDesignation());%>"></td>
+                         <td><input type="number" name="annee1_trafic" value="<%out.print(item.getAnnee1());%>"></td>
+                         <td><input type="text" name="annee2_trafic" value="<%out.print(item.getAnnee2());%>"></td>
+                         <td><input type="text" name="annee3_trafic" value="<%out.print(item.getAnnee3());%>"></td>
+                         <td><input type="text" name="annee4_trafic" value="<%out.print(item.getAnnee4());%>"></td>
+                         <td><input type="text" name="annee5_trafic" value="<%out.print(item.getAnnee5());%>"></td>
+                       
+                           </tr>
+                 <%          }
+                        } %>
+                     </table>
+                    
+                </div>
+            </div>
+            
+            <div class="card bg-light mb-3" style="max-width: 65rem;">
+                <h5 class="card-header">Touchée de navire</h5>
+                <div class="card-body">
+                      <table border="1">
+                       <tr>
+                         <th>Description</th>
+                         <th><% out.println(annee-4);%></th>
+                         <th><% out.println(annee-3);%></th>
+                         <th><% out.println(annee-2);%></th>
+                         <th><% out.println(annee-1);%></th>
+                         <th><% out.println(annee-0);%></th>
+                       </tr>
+                 <%     for (V_rubrique_op item : rubriques) {
+                            if(item.getCategorie_rubrique().equals("Touchee") || item.getCategorie_rubrique().equals("Touchee_prev")){
+                 %>
+                           <tr>
+                         <td><input type="text" name="designation_touch" value="<%out.print(item.getDesignation());%>"></td>
+                         <td><input type="number" name="annee1_touch" value="<%out.print(item.getAnnee1());%>"></td>
+                         <td><input type="text" name="annee2_touch" value="<%out.print(item.getAnnee2());%>"></td>
+                         <td><input type="text" name="annee3_touch" value="<%out.print(item.getAnnee3());%>"></td>
+                         <td><input type="text" name="annee4_touch" value="<%out.print(item.getAnnee4());%>"></td>
+                         <td><input type="text" name="annee5_touch" value="<%out.print(item.getAnnee5());%>"></td>
+                       
+                           </tr>
+                 <%         } 
+                        }%>
+                     </table>
+                    
+                </div>
+            </div>
+            
+            <div class="card bg-light mb-3" style="max-width: 65rem;">
+                <h5 class="card-header">Trafic en EVP</h5>
+                <div class="card-body">
+                      <table border="1">
+                       <tr>
+                         <th>Description</th>
+                         <th><% out.println(annee-4);%></th>
+                         <th><% out.println(annee-3);%></th>
+                         <th><% out.println(annee-2);%></th>
+                         <th><% out.println(annee-1);%></th>
+                         <th><% out.println(annee-0);%></th>
+                       </tr>
+                 <%     for (V_rubrique_op item : rubriques) {
+                            if(item.getCategorie_rubrique().equals("TraficEVP") || item.getCategorie_rubrique().equals("TraficEVP_prev")){
+                 %>
+                           <tr>
+                         <td><input type="text" name="designation_evp" value="<%out.print(item.getDesignation());%>"></td>
+                         <td><input type="number" name="annee1_evp" value="<%out.print(item.getAnnee1());%>"></td>
+                         <td><input type="text" name="annee2_evp" value="<%out.print(item.getAnnee2());%>"></td>
+                         <td><input type="text" name="annee3_evp" value="<%out.print(item.getAnnee3());%>"></td>
+                         <td><input type="text" name="annee4_evp" value="<%out.print(item.getAnnee4());%>"></td>
+                         <td><input type="text" name="annee5_evp" value="<%out.print(item.getAnnee5());%>"></td>
+                       </tr>
+                 <%         } 
+                        }%>
+                     </table>
+                </div>
+            </div> 
+                     
+            <div class="card bg-light mb-3" style="max-width: 65rem;">
+                <h5 class="card-header">Performance MICTSL</h5>
+                <div class="card-body">
+                      <table border="1">
+                       <tr>
+                         <th>Description</th>
+                         <th><% out.println(annee-4);%></th>
+                         <th><% out.println(annee-3);%></th>
+                         <th><% out.println(annee-2);%></th>
+                         <th><% out.println(annee-1);%></th>
+                         <th><% out.println(annee-0);%></th>
+                       </tr>
+                 <%     for (V_rubrique_op item : rubriques) {
+                            if(item.getCategorie_rubrique().equals("RdmtMICTSL") || item.getCategorie_rubrique().equals("RdmtMICTSL_prev")){
+                 %>
+                           <tr>
+                         <td><input type="text" name="designation_mictsl" value="<%out.print(item.getDesignation());%>"></td>
+                         <td><input type="number" name="annee1_mictsl" value="<%out.print(item.getAnnee1());%>"></td>
+                         <td><input type="text" name="annee2_mictsl" value="<%out.print(item.getAnnee2());%>"></td>
+                         <td><input type="text" name="annee3_mictsl" value="<%out.print(item.getAnnee3());%>"></td>
+                         <td><input type="text" name="annee4_mictsl" value="<%out.print(item.getAnnee4());%>"></td>
+                         <td><input type="text" name="annee5_mictsl" value="<%out.print(item.getAnnee5());%>"></td>
+                       </tr>
+                 <%         } 
+                        }%>
+                     </table>
+                </div>
+            </div>          
+            <button class="btn btn-primary" type="submit">Mettre à jour</button>
+        </form>
+=======
         <div id="wrapper">
             <jsp:include page="menu-user.jsp" />
 
@@ -179,5 +314,6 @@
                 </div> 
             </div> 
         </div>
+>>>>>>> origin/dev
     </body>
 </html>
