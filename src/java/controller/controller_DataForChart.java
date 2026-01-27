@@ -62,7 +62,7 @@ public class controller_DataForChart extends HttpServlet {
         request.setAttribute("data_chart_op",json_data_op);
         
         //6. page chart où vont atterir les données
-        //request.getRequestDispatcher("/rubrique_saisie_fin.jsp").forward(request, response);
+        //request.getRequestDispatcher("/userlogin").forward(request, response);
         
     }
 
