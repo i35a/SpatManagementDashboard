@@ -58,7 +58,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_op item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("TraficGBL")){
+                            if(item.getCategorie_rubrique().equals("TraficGBL") || item.getCategorie_rubrique().equals("TraficGBL_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_trafic" value="<%out.print(item.getDesignation());%>"></td>
@@ -89,7 +89,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_op item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("Touchée")){
+                            if(item.getCategorie_rubrique().equals("Touchee") || item.getCategorie_rubrique().equals("Touchee_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_touch" value="<%out.print(item.getDesignation());%>"></td>
@@ -120,7 +120,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_op item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("TraficEVP")){
+                            if(item.getCategorie_rubrique().equals("TraficEVP") || item.getCategorie_rubrique().equals("TraficEVP_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_evp" value="<%out.print(item.getDesignation());%>"></td>
@@ -149,7 +149,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_op item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("RdmtMICTSL")){
+                            if(item.getCategorie_rubrique().equals("RdmtMICTSL") || item.getCategorie_rubrique().equals("RdmtMICTSL_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_mictsl" value="<%out.print(item.getDesignation());%>"></td>

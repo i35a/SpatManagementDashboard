@@ -16,6 +16,10 @@
         <servlet-name>controller_updateVoletOP</servlet-name>
         <servlet-class>controller.controller_updateVoletOP</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>controller_getDataForChart</servlet-name>
+        <servlet-class>controller.controller_DataForChart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>controller_rubrique</servlet-name>
         <url-pattern>/controller_rubrique</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>controller_updateVoletOP</servlet-name>
         <url-pattern>/controller_updateVoletOP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>controller_getDataForChart</servlet-name>
+        <url-pattern>/controller_getDataForChart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

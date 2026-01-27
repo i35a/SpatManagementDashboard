@@ -106,7 +106,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_saisie item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("salaireRH")){
+                            if(item.getCategorie_rubrique().equals("salaireRH")|| item.getCategorie_rubrique().equals("salaireRH_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_salrh" value="<%out.print(item.getDesignation());%>"></td>

@@ -57,7 +57,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_fin item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("CAFIN")){
+                            if(item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_cafin" value="<%out.print(item.getDesignation());%>"></td>
@@ -88,7 +88,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_fin item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("EBIDTAFIN")){
+                            if(item.getCategorie_rubrique().equals("EBIDTAFIN") || item.getCategorie_rubrique().equals("EBIDTAFIN_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_ebidta" value="<%out.print(item.getDesignation());%>"></td>
@@ -119,7 +119,7 @@
                          <th><% out.println(annee-0);%></th>
                        </tr>
                  <%     for (V_rubrique_fin item : rubriques) {
-                            if(item.getCategorie_rubrique().equals("ExoFIN")){
+                            if(item.getCategorie_rubrique().equals("ExoFIN") || item.getCategorie_rubrique().equals("ExoFIN_prev")){
                  %>
                            <tr>
                          <td><input type="text" name="designation_exofin" value="<%out.print(item.getDesignation());%>"></td>
