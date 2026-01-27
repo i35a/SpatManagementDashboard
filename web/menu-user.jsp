@@ -15,6 +15,15 @@
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="userlogin">
                     <i class="fas fa-user"></i><span> Tableau de bord</span>
                 </a></li>
+            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_rh">
+                    <i class="fas fa-user"></i><span> Rubrique RH</span>
+                </a></li>
+            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_op">
+                    <i class="fas fa-user"></i><span> Rubrique OP</span>
+                </a></li>
+            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_fin">
+                    <i class="fas fa-user"></i><span> Rubrique Fin</span>
+                </a></li>
             <li class="nav-item menu">
                 <!--                <a class="nav-link" id="listEtat" href="AfficherEtatdeStock" style="margin-top: 20%;">
                                     <i class="fas fa-warehouse"></i><span> Etat de stock</span>

@@ -91,8 +91,18 @@
 
                     <div class="container-fluid">
                         <h2>Tableau de bord</h2>
-                        <p>Bienvenue utilisateur</p>
-                        <a href="editiondonnees">Edition de données</a>
+                        <p>Bienvenue à vous</p>
+                        <div><a href="editiondonnees" class="btn btn-light ">Edition de données</a></div>
+                        <div style="display:flex;gap:45px;justify-content:space-between;">
+                            <div  ><canvas id="myChart" width="250" height="250"></canvas>
+                            </div>
+                            <div  ><canvas id="monthChart" width="250" height="250"></canvas> </div>
+                            <div  ><canvas id="pieChart" width="250" height="250"></canvas> </div>
+                        </div>
+                        <div style="display:flex;gap:25px;margin-top:45px;justify-content:space-between;">
+                            <div  ><canvas id="horizontalBarChart" width="250" height="250"></canvas>
+                            </div> 
+                        </div>
                     </div>
                 </div>  <% //con.close();%>                                 
                 <footer class="bg-white sticky-footer">
@@ -103,6 +113,174 @@
                 <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
             </div>
         </div> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
+        <script>
+            try {
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['RH', 'Finances', 'Environnement', 'Capitainerie', 'Environnement', 'Facturation'],
+                        datasets: [{
+                                label: '# of Votes',
+                                data: [12, 19, 3, 5, 2, 3],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.log("chart error exception:" + e);
+            }
+        </script>
+
+        <script>
+            try {
+                const labels = [
+                    'Janvier',
+                    'Fevrier',
+                    'Mars',
+                    'Avril',
+                    'Mai',
+                    'Juin',
+                ];
+
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                            label: 'My First dataset',
+                            backgroundColor: 'rgb(255, 99, 132)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            data: [0, 10, 5, 2, 20, 30, 45],
+                        }]
+                };
+
+                const config = {
+                    type: 'line',
+                    data: data,
+                    options: {}
+                };
+                const myChart = new Chart(
+                        document.getElementById('monthChart'),
+                        config
+                        );
+            } catch (e) {
+                console.log('Error chart date:' + e);
+            }
+        </script>
+
+        <script>
+            try {
+                const data = {
+                    labels: [
+                        'Red',
+                        'Blue',
+                        'Yellow'
+                    ],
+                    datasets: [{
+                            label: 'Pie dataset',
+                            data: [300, 50, 100],
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                };
+
+                const config = {
+                    type: 'pie',
+                    data: data,
+                };
+
+                const myChart = new Chart(
+                        document.getElementById('pieChart'),
+                        config
+                        );
+            } catch (e) {
+                console.log("pie chart error: " + e);
+            }
+        </script>
+        <script>
+            try {
+                const labels = [
+                    'Janvier',
+                    'Fevrier',
+                    'Mars',
+                    'Avril',
+                    'Mai',
+                    'Juin',
+                    'Juillet'
+                ];
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                            axis: 'y',
+                            label: 'Mois',
+                            data: [65, 59, 80, 81, 56, 55, 40],
+                            fill: false,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(255, 205, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(201, 203, 207, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(255, 159, 64)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(54, 162, 235)',
+                                'rgb(153, 102, 255)',
+                                'rgb(201, 203, 207)'
+                            ],
+                            borderWidth: 1
+                        }]
+                };
+
+                const config = {
+                    type: 'bar',
+                    data,
+                    options: {
+                        indexAxis: 'y',
+                    }
+                };
+                
+                //create chart here
+                const myChart = new Chart(
+                        document.getElementById('horizontalBarChart'),
+                        config
+                );
+            } catch (e) {
+                console.log('horizontal bar chart error:' + e)
+            }
+        </script>
         <script src="assets/js/menu-switch.js"></script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/js/theme.js"></script>
