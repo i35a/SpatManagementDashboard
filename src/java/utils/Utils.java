@@ -38,13 +38,12 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import model.Utilisateur;
 
-
 /**
  *
  * @author dev spat
  */
 public class Utils {
-    
+
     /**
      *
      * @param password
@@ -77,7 +76,7 @@ public class Utils {
         }
         return false;
     }
-    
+
     /**
      *
      * @param password
@@ -85,7 +84,7 @@ public class Utils {
      * @return boolean true if password is correct
      */
     public static boolean verifyHashBcrypt(String password, String hash) {
-        return Utils.hashPasswordBcrypt(password).equals(hash)?true:false; 
+        return Utils.hashPasswordBcrypt(password).equals(hash) ? true : false;
     }
 
     /**
@@ -115,16 +114,16 @@ public class Utils {
     public static boolean checkPasswordBcrypt(String password, String storedHash) {
         try {
             storedHash = storedHash != null ? storedHash : "";
-            System.out.println("comparing: "+password+" to stored hash "+storedHash);
+            System.out.println("comparing: " + password + " to stored hash " + storedHash);
             //return 
-            boolean result=BCrypt.checkpw(password, storedHash); 
-            if(result){
+            boolean result = BCrypt.checkpw(password, storedHash);
+            if (result) {
                 System.out.println("password ok");
-            }else{
+            } else {
                 System.out.println("password not ok");
             }
             return result;
-            
+
         } catch (Exception e) {
             System.out.print("Wrong user password:" + e.getMessage());
         }
@@ -255,8 +254,8 @@ public class Utils {
         EmailTools.sendEmail(session, toEmail, emailObject,
                 userEmailBody);
     }
-    
-    public static void sendEmailWithAttachment(ByteArrayOutputStream outStream, String fileName, String periode, String matricule,String userEmail,String mimeType) {
+
+    public static void sendEmailWithAttachment(ByteArrayOutputStream outStream, String fileName, String periode, String matricule, String userEmail, String mimeType) {
         final String fromEmail = "ingitspat@gmail.com"; //requires valid gmail id
         final String password = "fehf ndlg fzsg ldfv"; // correct password for gmail id
         final String toEmail = userEmail; // can be any email id 
@@ -307,11 +306,10 @@ public class Utils {
 //"			</tr> " +
 //"		</table><br>" +
 //"		<p>Veuillez trouver en pièce jointe le formulaire d'évaluation  rempli.</p>";
-        
+
 //        int matricule_agent = emp.getMatricule();
 //        String period = periode;
 //        EmailTools.sendEmailWithAttachmentFromStream(session, userEmail,Object , Corps,  outStream,  fileName, mimeType); 
-        
     }
 
     public static String getRandomBytes(int lengthBytes) {
@@ -370,7 +368,7 @@ public class Utils {
 
         return outputFormat.format(formatedDate);
     }
-    
+
     public static LocalDate getCurrentDate() {
         LocalDate localDate = LocalDate.now();
 
@@ -382,4 +380,3 @@ public class Utils {
         return LocalTime.of(8, 0);
     }
 }
-

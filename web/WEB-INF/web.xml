@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <welcome-file-list>
+        <welcome-file>Auth</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>controller_rubrique</servlet-name>
         <servlet-class>controller.controller_rubrique_rh</servlet-class>
@@ -28,6 +31,38 @@
         <servlet-name>controller_updateVoletRH</servlet-name>
         <url-pattern>/controller_updateVoletRH</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <servlet-class>controller.UserLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <url-pattern>/userlogin</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UtilisateurServlet</servlet-name>
+        <servlet-class>controller.UtilisateurServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UtilisateurServlet</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ModifierUtilisateur</servlet-name>
+        <servlet-class>controller.ModifierUtilisateur</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ModifierUtilisateur</servlet-name>
+        <url-pattern>/ModifierUtilisateur</url-pattern>
+    </servlet-mapping>
+    <!--    <servlet-mapping>
+        <servlet-name>controller.AuthServlet</servlet-name>
+        <url-pattern/>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>controller.AuthServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>controller_updateVoletFIN</servlet-name>
         <url-pattern>/controller_updateVoletFIN</url-pattern>
