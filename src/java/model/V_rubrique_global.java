@@ -18,7 +18,9 @@ public class V_rubrique_global {
     private String role_utilisateur;
     private String categorie_rubrique;
     private String categorie_rubrique_lib;
-
+    private String groupe_rub;
+    private String groupe_rub_lib;
+    
     public int getId() {
         return id;
     }
@@ -81,6 +83,22 @@ public class V_rubrique_global {
 
     public void setCategorie_rubrique_lib(String categorie_rubrique_lib) {
         this.categorie_rubrique_lib = categorie_rubrique_lib;
+    }
+
+    public String getGroupe_rub() {
+        return groupe_rub;
+    }
+
+    public void setGroupe_rub(String groupe_rub) {
+        this.groupe_rub = groupe_rub;
+    }
+
+    public String getGroupe_rub_lib() {
+        return groupe_rub_lib;
+    }
+
+    public void setGroupe_rub_lib(String groupe_rub_lib) {
+        this.groupe_rub_lib = groupe_rub_lib;
     }
     
     

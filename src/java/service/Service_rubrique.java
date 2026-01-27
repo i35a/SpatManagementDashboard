@@ -117,6 +117,8 @@ public class Service_rubrique {
                 r.setCategorie_rubrique_lib(rs.getString("categorie_rubrique_lib"));
                 r.setPeriode_annuel(rs.getInt("periode_annuel"));
                 r.setValeur_saisie(rs.getDouble("valeur_saisie"));
+                r.setGroupe_rub(rs.getString("groupe_rub"));
+                r.setGroupe_rub_lib(rs.getString("groupe_rub_lib"));
                 
                 list.add(r);
             }
@@ -143,6 +145,8 @@ public class Service_rubrique {
                 r.setCategorie_rubrique_lib(rs.getString("categorie_rubrique_lib"));
                 r.setPeriode_annuel(rs.getInt("periode_annuel"));
                 r.setValeur_saisie(rs.getDouble("valeur_saisie"));
+                r.setGroupe_rub(rs.getString("groupe_rub"));
+                r.setGroupe_rub_lib(rs.getString("groupe_rub_lib"));
                 
                 list.add(r);
             }
@@ -169,6 +173,8 @@ public class Service_rubrique {
                 r.setCategorie_rubrique_lib(rs.getString("categorie_rubrique_lib"));
                 r.setPeriode_annuel(rs.getInt("periode_annuel"));
                 r.setValeur_saisie(rs.getDouble("valeur_saisie"));
+                r.setGroupe_rub(rs.getString("groupe_rub"));
+                r.setGroupe_rub_lib(rs.getString("groupe_rub_lib"));
                 
                 list.add(r);
             }
