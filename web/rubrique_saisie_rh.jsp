@@ -42,7 +42,14 @@
                     <div class="container-fluid">
                         <h1>VOLET RH SAISIE</h1>
                         <div style="display:flex;gap:45px;justify-content:space-between;">
-                            <div  ><canvas id="myChart" width="400" height="400"></canvas>
+                            <div style="display:flex;flex-direction:column;" ><canvas id="myChart" width="400" height="400"></canvas>
+                                <p>Données par genre</p>
+                            </div>
+                            <div  style="display:flex;flex-direction:column;"><canvas id="categoryChart" width="400" height="400"></canvas>
+                                <p>Données par catégorie</p>
+                            </div>
+                            <div  style="display:flex;flex-direction:column;"><canvas id="salaireChart" width="400" height="400"></canvas>
+                                <p>Données par salaire</p>
                             </div>
 
                         </div>
@@ -264,6 +271,174 @@
 
             } catch (e) {
                 console.log("chart error exception: " + e);
+            }
+        </script>
+        <script>
+            try {
+                // X-axis labels (years)
+                const labels = [
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                // Datasets container
+                const datasets = [];
+
+            <%
+                int colorIndex = 0;
+                String[] bgColors = {
+                    "rgba(54, 162, 235, 0.6)",
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(255, 206, 86, 0.6)",
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                    "rgba(255, 159, 64, 0.6)"
+                };
+
+                String[] borderColors = {
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)"
+                };
+
+                for (V_rubrique_saisie item : rubriques) {
+                    if ("categorieRH".equals(item.getCategorie_rubrique())) {
+            %>
+                datasets.push({
+                    label: "<%= item.getDesignation()%>",
+                    data: [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>
+                    ],
+                    backgroundColor: "<%= bgColors[colorIndex % bgColors.length]%>",
+                    borderColor: "<%= borderColors[colorIndex % borderColors.length]%>",
+                    borderWidth: 1
+                });
+            <%
+                        colorIndex++;
+                    }
+                }
+            %>
+
+                // Build the chart
+                const ctx = document.getElementById('categoryChart').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script> 
+        <script>
+            try {
+                // X-axis labels (years)
+                const labels = [
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                // Datasets container
+                const datasets = [];
+
+            <%
+                int colorIndexSalary = 0;
+                String[] bgColorsSalary = {
+                    "rgba(75, 192, 192, 0.6)",
+                    "rgba(255, 159, 64, 0.6)",
+                    "rgba(153, 102, 255, 0.6)",
+                    "rgba(255, 99, 132, 0.6)",
+                    "rgba(54, 162, 235, 0.6)"
+                };
+
+                String[] borderColorsSalary = {
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(255, 159, 64, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)"
+                };
+
+                for (V_rubrique_saisie item : rubriques) {
+                    if ("salaireRH".equals(item.getCategorie_rubrique())) {
+            %>
+                datasets.push({
+                    label: "<%= item.getDesignation()%>",
+                    data: [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>
+                    ],
+                    backgroundColor: "<%= bgColorsSalary[colorIndexSalary % bgColorsSalary.length]%>",
+                    borderColor: "<%= borderColorsSalary[colorIndexSalary % borderColorsSalary.length]%>",
+                    borderWidth: 1
+                });
+            <%
+                        colorIndexSalary++;
+                    }
+                }
+            %>
+
+                // Build chart
+                const ctx = document.getElementById('salaireChart').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString() + " Ariary"; // currency formatting
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.dataset.label + ": " +
+                                                context.parsed.y.toLocaleString() + " Ariary";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("salaire chart error: " + e);
             }
         </script>
 
