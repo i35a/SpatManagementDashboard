@@ -44,9 +44,9 @@
                         <div style="display:flex;gap:45px;justify-content:space-between;">
                             <div  ><canvas id="myChart" width="400" height="400"></canvas>
                             </div>
-                            
+
                         </div>
-                        
+
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
                             int annee = taona.getValeur();
@@ -144,45 +144,128 @@
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
         <script>
+//            try {
+//                const ctx = document.getElementById('myChart').getContext('2d');
+//                const myChart = new Chart(ctx, {
+//                    type: 'bar',
+//                    data: {
+//                        labels: ['RH', 'Finances', 'Environnement', 'Capitainerie', 'Environnement', 'Facturation'],
+//                        datasets: [{
+//                                label: '# of Votes',
+//                                data: [12, 19, 3, 5, 2, 3],
+//                                backgroundColor: [
+//                                    'rgba(255, 99, 132, 0.2)',
+//                                    'rgba(54, 162, 235, 0.2)',
+//                                    'rgba(255, 206, 86, 0.2)',
+//                                    'rgba(75, 192, 192, 0.2)',
+//                                    'rgba(153, 102, 255, 0.2)',
+//                                    'rgba(255, 159, 64, 0.2)'
+//                                ],
+//                                borderColor: [
+//                                    'rgba(255, 99, 132, 1)',
+//                                    'rgba(54, 162, 235, 1)',
+//                                    'rgba(255, 206, 86, 1)',
+//                                    'rgba(75, 192, 192, 1)',
+//                                    'rgba(153, 102, 255, 1)',
+//                                    'rgba(255, 159, 64, 1)'
+//                                ],
+//                                borderWidth: 1
+//                            }]
+//                    },
+//                    options: {
+//                        scales: {
+//                            y: {
+//                                beginAtZero: true
+//                            }
+//                        }
+//                    }
+//                });
+//            } catch (e) {
+//                console.log("chart error exception:" + e);
+//            }
+        </script>
+        <script>
             try {
+
+                //fetching datas 
+                const labels = [
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let masculinData = [];
+                let femininData = [];
+
+            <%
+                for (V_rubrique_saisie item : rubriques) {
+                    if ("genreRH".equals(item.getCategorie_rubrique())) {
+
+                        if ("Effectif Masculin".equals(item.getDesignation())) {
+            %>
+                masculinData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>
+                ];
+            <%
+                }
+
+                if ("Effectif Feminin".equals(item.getDesignation())) {
+            %>
+                femininData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>
+                ];
+            <%
+                        }
+                    }
+                }
+            %>
+                //building the chart
                 const ctx = document.getElementById('myChart').getContext('2d');
+
                 const myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['RH', 'Finances', 'Environnement', 'Capitainerie', 'Environnement', 'Facturation'],
-                        datasets: [{
-                                label: '# of Votes',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
+                        labels: ['2023', '2024', '2025'],
+                        datasets: [
+                            {
+                                label: 'Effectif Masculin',
+                                data: masculinData,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
                                 borderWidth: 1
-                            }]
+                            },
+                            {
+                                label: 'Effectif Féminin',
+                                data: femininData,
+                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
                     },
                     options: {
+                        responsive: true,
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString(); // 45 000 formatting
+                                    }
+                                }
                             }
                         }
                     }
                 });
+
             } catch (e) {
-                console.log("chart error exception:" + e);
+                console.log("chart error exception: " + e);
             }
         </script>
+
     </body>
 </html>
