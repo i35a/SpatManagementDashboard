@@ -52,7 +52,10 @@ public class UserLoginServlet extends HttpServlet {
         String pwdSaisie = "";
         String DirectionSaisie = "";
         HttpSession session = request.getSession();
-         
+//        if(session.getAttribute("adminLogged")!=null){
+//           response.sendRedirect("adminlogin");
+//           return;
+//        }
 //        if (session == null) {
 //            request.getRequestDispatcher("adminauth.jsp?msg=nosess").forward(request, response);
 //        }
@@ -78,18 +81,16 @@ public class UserLoginServlet extends HttpServlet {
 //        } else {
 //            loginSaisie = request.getParameter("login").toString();
 //            pwdSaisie = request.getParameter("password").toString();
-//            DirectionSaisie = request.getParameter("direction").toString();
-//
-//            
+//            DirectionSaisie = request.getParameter("direction").toString();            
 //        }
-        if(session.getAttribute("loggedIn")!=null && session.getAttribute("login")!="root"){ 
+        if (session.getAttribute("loggedIn") != null && session.getAttribute("login") != "root") {
             loginSaisie = session.getAttribute("login").toString();
-            userConnected=true;
+            userConnected = true;
             foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
 //            pwdSaisie = session.getAttribute("password").toString();
 //            DirectionSaisie = session.getAttribute("direction").toString();
 //            System.out.println("login session = "+session.getAttribute("login"));
-        }else if(request.getParameter("login")!=null){
+        } else if (request.getParameter("login") != null) {
             loginSaisie = request.getParameter("login").toString();
             pwdSaisie = request.getParameter("password").toString();
             DirectionSaisie = request.getParameter("direction").toString();
@@ -100,14 +101,13 @@ public class UserLoginServlet extends HttpServlet {
             foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
             //init user found 
             if (Utils.checkPasswordBcrypt(pwdSaisie, foundUser.getPwd())) {
-                    userConnected = true;
-                    System.out.println("Hash matched!!!"); 
+                userConnected = true;
+                System.out.println("Hash matched!!!");
             }
         } else {
             System.out.println("empty login saisie et pwd saisie");
         }
-        
-        
+
         System.out.println("Login found: " + loginSaisie + ",\npwd saisie: " + pwdSaisie);
         System.out.println("connection == " + connection);
         if (userConnected) {

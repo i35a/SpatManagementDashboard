@@ -41,6 +41,12 @@
 
                     <div class="container-fluid">
                         <h1>VOLET RH SAISIE</h1>
+                        <div style="display:flex;gap:45px;justify-content:space-between;">
+                            <div  ><canvas id="myChart" width="400" height="400"></canvas>
+                            </div>
+                            
+                        </div>
+                        
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
                             int annee = taona.getValeur();
@@ -72,7 +78,7 @@
                                             <td><input type="text" name="annee3_categrh" value="<%out.print(item.getAnnee3());%>"></td>
                                         </tr>
                                         <%          }
-                                } %>
+                                            } %>
                                     </table>
 
                                 </div>
@@ -98,7 +104,7 @@
                                             <td><input type="text" name="annee3_genrerh" value="<%out.print(item.getAnnee3());%>"></td>
                                         </tr>
                                         <%         }
-                                }%>
+                                            }%>
                                     </table>
 
                                 </div>
@@ -124,7 +130,7 @@
                                             <td><input type="text" name="annee3_salrh" value="<%out.print(item.getAnnee3());%>"></td>
                                         </tr>
                                         <%         }
-                                }%>
+                                            }%>
                                     </table>
 
 
@@ -136,5 +142,47 @@
                 </div> 
             </div> 
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
+        <script>
+            try {
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['RH', 'Finances', 'Environnement', 'Capitainerie', 'Environnement', 'Facturation'],
+                        datasets: [{
+                                label: '# of Votes',
+                                data: [12, 19, 3, 5, 2, 3],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)',
+                                    'rgba(153, 102, 255, 0.2)',
+                                    'rgba(255, 159, 64, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.log("chart error exception:" + e);
+            }
+        </script>
     </body>
 </html>
