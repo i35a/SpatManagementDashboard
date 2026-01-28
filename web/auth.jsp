@@ -20,7 +20,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <title>TBD RD Login</title>
+        <title>SpatDashboard</title>
         <link href="assets/img/logo-spat-p.ico" rel="icon" type="image/x-icon" />
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -73,7 +73,7 @@
 
     <body id="page-top" style="font-size: 0.8em;">
         <div id="wrapper">
-            <span>Login</span>
+            <span>TABLEAU DE BORD</span>
         </div>  
         <div id="msg" style="text-align: center;margin-top: 2%;font-size: 0.8em;position:relative;z-index: 10;margin-top: 5%;width: 60%;">
             <%
