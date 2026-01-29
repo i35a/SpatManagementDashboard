@@ -25,7 +25,7 @@ import service.Service_rubrique;
  * @author PC
  */
 @WebServlet("/data_json")
-public class controller_DataJSON extends HttpServlet {
+public class ChartDataServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
