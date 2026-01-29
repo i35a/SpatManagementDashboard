@@ -152,6 +152,8 @@ public class UserLoginServlet extends HttpServlet {
             connection.close();
 
             request.getRequestDispatcher("dashboard-user.jsp").forward(request, response);
+        }else{
+            request.getRequestDispatcher("auth.jsp").forward(request,response);
         }
     }
 
