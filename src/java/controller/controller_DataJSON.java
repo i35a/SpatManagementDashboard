@@ -24,7 +24,7 @@ import service.Service_rubrique;
  *
  * @author PC
  */
-@WebServlet("/data_json")
+@WebServlet("/homepage")
 public class controller_DataJSON extends HttpServlet {
 
     /**
