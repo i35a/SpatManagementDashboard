@@ -7,8 +7,11 @@ package service;
 
 import model.Rubrique_saisie;
 import java.sql.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import model.Role;
 import model.Utilisateur;
 import model.V_rubrique_fin;
@@ -20,6 +23,7 @@ import model.V_rubrique_saisie;
  * @author PC
  */
 public class Service_rubrique {
+    
     public static List<V_rubrique_saisie> getRubriqueRH() {
         List<V_rubrique_saisie> list = new ArrayList<>();
         String sql = "SELECT * FROM v_rubrique_rh";
@@ -102,7 +106,7 @@ public class Service_rubrique {
     }
     public static List<V_rubrique_global> getRubriqueGlobal_RH() {
         List<V_rubrique_global> list = new ArrayList<>();
-        String sql = "SELECT * FROM v_rubrique_global where activitie_lib = 'ACT_RH'";
+        String sql = "SELECT * FROM v_rubrique_global where activite_lib = 'ACT_RH'";
              
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql);
@@ -128,7 +132,7 @@ public class Service_rubrique {
     }
     public static List<V_rubrique_global> getRubriqueGlobal_FIN() {
         List<V_rubrique_global> list = new ArrayList<>();
-        String sql = "SELECT * FROM v_rubrique_global where activitie_lib = 'ACT_FIN'";
+        String sql = "SELECT * FROM v_rubrique_global where activite_lib = 'ACT_FIN'";
                 
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql);
@@ -154,7 +158,7 @@ public class Service_rubrique {
     }
     public static List<V_rubrique_global> getRubriqueGlobal_OP() {
         List<V_rubrique_global> list = new ArrayList<>();
-        String sql = "SELECT * FROM v_rubrique_global where activitie_lib = 'ACT_OP'";
+        String sql = "SELECT * FROM v_rubrique_global where activite_lib = 'ACT_OP'";
                 
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql);
@@ -169,6 +173,38 @@ public class Service_rubrique {
                 r.setCategorie_rubrique_lib(rs.getString("categorie_rubrique_lib"));
                 r.setPeriode_annuel(rs.getInt("periode_annuel"));
                 r.setValeur_saisie(rs.getDouble("valeur_saisie"));
+<<<<<<< Updated upstream
+=======
+                r.setGroupe_rub(rs.getString("groupe_rub"));
+                r.setGroupe_rub_lib(rs.getString("groupe_rub_lib"));
+                
+                list.add(r);
+            }
+            cnx.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public static List<V_PercentBudget_actuel> getPercentBudget_actuel() {
+        List<V_PercentBudget_actuel> list = new ArrayList<>();
+        String sql = "SELECT * FROM v_rubrique_percent_budget ";
+                
+        try (Connection cnx = DBConnectionOld.getConnection();
+             PreparedStatement ps = cnx.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                V_PercentBudget_actuel r = new V_PercentBudget_actuel();
+                r.setGroupe_rub(rs.getString("groupe_rub"));
+                r.setGroupe_rub_lib(rs.getString("groupe_rub_lib"));
+                r.setRealisation(rs.getDouble("realisation"));
+                r.setBudget(rs.getDouble("budget"));
+                r.setPourcentage_budget(rs.getDouble("pourcentage_budget"));
+                r.setActivite_lib(rs.getString("activite_lib"));
+                r.setRole_utilisateur(rs.getString("role_utilisateur"));
+                r.setPourcentage_anterieur(rs.getDouble("pourcentage_anterieur"));
+>>>>>>> Stashed changes
                 
                 list.add(r);
             }

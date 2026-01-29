@@ -4,6 +4,10 @@
     Author     : PC
 --%>
 
+<%@page import="java.text.DecimalFormatSymbols"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.util.Locale"%>
+<%@page import="java.util.Locale"%>
 <%@page import="model.V_rubrique_fin"%>
 <%@page import="model.Annee"%>
 <%@page import="service.Service_annee"%>
@@ -29,9 +33,10 @@
         <script src="assets/js/chart2.9.js"></script>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Volet Finance</title>
+        <title>Finances</title>
     </head>
     <body>
+<<<<<<< Updated upstream
         <h1>VOLET FIN SAISIE</h1>
         <% 
            Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
@@ -138,5 +143,129 @@
             </div>         
             <button class="btn btn-primary" type="submit">Mettre à jour</button>
         </form>
+=======
+        <div id="wrapper">
+            <jsp:include page="menu-user.jsp" />
+
+            <div class="d-flex flex-column" id="content-wrapper">
+                <div id="content">
+                    <jsp:include page="header.jsp"/>
+
+                    <div class="container-fluid">
+                        <h3 style="text-align: center;margin-bottom: 2%;">Tableau de bord - Finances</h3>
+                        
+                        <%
+                            Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
+                            int annee = taona.getValeur();
+
+                            String json = request.getAttribute("fin_data").toString();
+                            Gson gson = new Gson();
+                            V_rubrique_fin[] rubriques = gson.fromJson(json, V_rubrique_fin[].class);
+                            
+                            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRANCE);
+                            DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
+    
+                        %>
+                        <form action="controller_updateVoletFIN" method="post">
+
+                            <div class="card bg-light mb-3" style="max-width: 65rem;">
+                                <h5 class="card-header">Chiffre d' affaires</h5>
+                                <div class="card-body">
+                                    <table border="1">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th><% out.println(annee - 4);%></th>
+                                            <th><% out.println(annee - 3);%></th>
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
+                                        </tr>
+                                        <%     for (V_rubrique_fin item : rubriques) {
+                                                if (item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")) {
+                                        %>
+                                        <tr>
+                                            <td><input type="text" name="designation_cafin" value="<%out.print(item.getDesignation());%>"></td>
+                                            <td><input type="text" name="annee1_cafin" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_cafin" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_cafin" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
+                                            <td><input type="text" name="annee4_cafin" value="<%out.print(df.format(item.getAnnee4()));%>"></td>
+                                            <td><input type="text" name="annee5_cafin" value="<%out.print(df.format(item.getAnnee5()));%>"></td>
+
+                                        </tr>
+                                        <%          }
+                     } %>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <div class="card bg-light mb-3" style="max-width: 65rem;">
+                                <h5 class="card-header">Marge opérationnelle - EBIDTA</h5>
+                                <div class="card-body">
+                                    <table border="1">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th><% out.println(annee - 4);%></th>
+                                            <th><% out.println(annee - 3);%></th>
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
+                                        </tr>
+                                        <%     for (V_rubrique_fin item : rubriques) {
+                                                if (item.getCategorie_rubrique().equals("EBIDTAFIN") || item.getCategorie_rubrique().equals("EBIDTAFIN_prev")) {
+                                        %>
+                                        <tr>
+                                            <td><input type="text" name="designation_ebidta" value="<%out.print(item.getDesignation());%>"></td>
+                                            <td><input type="text" name="annee1_ebidta" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_ebidta" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_ebidta" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
+                                            <td><input type="text" name="annee4_ebidta" value="<%out.print(df.format(item.getAnnee4()));%>"></td>
+                                            <td><input type="text" name="annee5_ebidta" value="<%out.print(df.format(item.getAnnee5()));%>"></td>
+
+                                        </tr>
+                                        <%         }
+                     }%>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <div class="card bg-light mb-3" style="max-width: 65rem;">
+                                <h5 class="card-header">Resultat de l'exercice</h5>
+                                <div class="card-body">
+                                    <table border="1">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th><% out.println(annee - 4);%></th>
+                                            <th><% out.println(annee - 3);%></th>
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
+                                        </tr>
+                                        <%     for (V_rubrique_fin item : rubriques) {
+                                                if (item.getCategorie_rubrique().equals("ExoFIN") || item.getCategorie_rubrique().equals("ExoFIN_prev")) {
+                                        %>
+                                        <tr>
+                                            <td><input type="text" name="designation_exofin" value="<%out.print(item.getDesignation());%>"></td>
+                                            <td><input type="text" name="annee1_exofin" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_exofin" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_exofin" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
+                                            <td><input type="text" name="annee4_exofin" value="<%out.print(df.format(item.getAnnee4()));%>"></td>
+                                            <td><input type="text" name="annee5_exofin" value="<%out.print(df.format(item.getAnnee5()));%>"></td>
+                                        </tr>
+                                        <%         }
+                     }%>
+                                    </table>
+
+
+                                </div>
+                            </div>         
+                            <button class="btn btn-primary" type="submit">Mettre à jour</button>
+                        </form>
+                    </div> 
+                </div> 
+            </div> 
+        </div>
+>>>>>>> Stashed changes
     </body>
 </html>
