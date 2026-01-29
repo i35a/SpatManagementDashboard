@@ -15,6 +15,7 @@ public class V_PercentBudget_actuel {
     private Double realisation;
     private Double budget;
     private Double pourcentage_budget;
+    private Double pourcentage_anterieur;
     private String activite_lib;
     private String role_utilisateur;
             
@@ -72,6 +73,14 @@ public class V_PercentBudget_actuel {
 
     public void setRole_utilisateur(String role_utilisateur) {
         this.role_utilisateur = role_utilisateur;
+    }
+
+    public Double getPourcentage_anterieur() {
+        return pourcentage_anterieur;
+    }
+
+    public void setPourcentage_anterieur(Double pourcentage_anterieur) {
+        this.pourcentage_anterieur = pourcentage_anterieur;
     }
     
     

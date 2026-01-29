@@ -65,7 +65,10 @@ public class controller_updateVoletRH extends HttpServlet {
                 System.out.println(designation_categrh[i] +"|"+annee1_categrh[i]+"|"+annee2_categrh[i]+"|"+annee3_categrh[i]);
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_categrh[i]);
-                rs.setValeur_saisie(Double.parseDouble(annee1_categrh[i]));
+                String  temp = annee1_categrh[i].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona1.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -74,7 +77,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int j = 0; j < designation_categrh.length; j++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_categrh[j]);
-                rs.setValeur_saisie(Double.parseDouble(annee2_categrh[j]));
+                String  temp = annee2_categrh[j].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona2.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -83,7 +89,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int k = 0; k < designation_categrh.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_categrh[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee3_categrh[k]));
+                String  temp = annee3_categrh[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona3.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -97,7 +106,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int i = 0; i < designation_genrerh.length; i++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_genrerh[i]);
-                rs.setValeur_saisie(Double.parseDouble(annee1_genrerh[i]));
+                String  temp = annee1_genrerh[i].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona1.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -106,7 +118,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int j = 0; j < designation_genrerh.length; j++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_genrerh[j]);
-                rs.setValeur_saisie(Double.parseDouble(annee2_genrerh[j]));
+                String  temp = annee2_genrerh[j].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona2.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -115,7 +130,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int k = 0; k < designation_genrerh.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_genrerh[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee3_genrerh[k]));
+                String  temp = annee3_genrerh[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona3.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -130,7 +148,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int i = 0; i < designation_salrh.length; i++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_salrh[i]);
-                rs.setValeur_saisie(Double.parseDouble(annee1_salrh[i]));
+                String  temp = annee1_salrh[i].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona1.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -139,7 +160,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int j = 0; j < designation_salrh.length; j++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_salrh[j]);
-                rs.setValeur_saisie(Double.parseDouble(annee2_salrh[j]));
+                String  temp = annee2_salrh[j].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona2.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -148,7 +172,10 @@ public class controller_updateVoletRH extends HttpServlet {
             for (int k = 0; k < designation_salrh.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_salrh[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee3_salrh[k]));
+                String  temp = annee3_salrh[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona3.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);

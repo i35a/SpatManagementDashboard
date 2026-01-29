@@ -4,6 +4,10 @@
     Author     : PC
 --%>
 
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.DecimalFormatSymbols"%>
+<%@page import="java.util.Locale"%>
 <%@page import="model.Annee"%>
 <%@page import="service.Service_annee"%>
 <%@page import="model.V_rubrique_saisie"%>
@@ -29,7 +33,7 @@
         <script src="assets/js/chart2.9.js"></script>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Volet RH</title>
+        <title>RH</title>
     </head>
     <body>
         <div id="wrapper">
@@ -40,7 +44,7 @@
                     <jsp:include page="header.jsp"/>
 
                     <div class="container-fluid">
-                        <h1>VOLET RH SAISIE</h1>
+                        <h3 style="text-align: center;margin-bottom: 2%;">Tableau de bord - Ressources Humaines</h3>
                         <div style="display:flex;gap:45px;justify-content:space-between;">
                             <div style="display:flex;flex-direction:column;" ><canvas id="myChart" width="400" height="400"></canvas>
                                 <p>Données par genre</p>
@@ -56,12 +60,16 @@
 
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
-                            int annee = taona.getValeur();
-
+                           // int annee = taona.getValeur();
+                            int annee = LocalDate.now().getYear();
+                                    
                             String json = request.getAttribute("rh_data").toString();
                             Gson gson = new Gson();
                             V_rubrique_saisie[] rubriques = gson.fromJson(json, V_rubrique_saisie[].class);
-                            //Rubrique_saisie rub = new Rubrique_saisie();
+                            
+                            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRANCE);
+                            DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
+
                         %>
                         <form action="controller_updateVoletRH" method="post">
 
@@ -76,13 +84,14 @@
                                             <th><% out.println(annee - 0);%></th>
                                         </tr>
                                         <%     for (V_rubrique_saisie item : rubriques) {
-                                                if (item.getCategorie_rubrique().equals("categorieRH")) {
+                                                if (item.getCategorie_rubrique().equals("categorieRH") ) {
+                                                    
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_categrh" value="<%out.print(item.getDesignation());%>"></td>
-                                            <td><input type="number" name="annee1_categrh" value="<%out.print(item.getAnnee1());%>"></td>
-                                            <td><input type="text" name="annee2_categrh" value="<%out.print(item.getAnnee2());%>"></td>
-                                            <td><input type="text" name="annee3_categrh" value="<%out.print(item.getAnnee3());%>"></td>
+                                            <td><input type="text" name="annee1_categrh" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_categrh" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_categrh" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
                                         </tr>
                                         <%          }
                                             } %>
@@ -106,9 +115,9 @@
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_genrerh" value="<%out.print(item.getDesignation());%>"></td>
-                                            <td><input type="number" name="annee1_genrerh" value="<%out.print(item.getAnnee1());%>"></td>
-                                            <td><input type="text" name="annee2_genrerh" value="<%out.print(item.getAnnee2());%>"></td>
-                                            <td><input type="text" name="annee3_genrerh" value="<%out.print(item.getAnnee3());%>"></td>
+                                            <td><input type="text" name="annee1_genrerh" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_genrerh" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_genrerh" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
                                         </tr>
                                         <%         }
                                             }%>
@@ -128,13 +137,13 @@
                                             <th><% out.println(annee - 0);%></th>
                                         </tr>
                                         <%     for (V_rubrique_saisie item : rubriques) {
-                                                if (item.getCategorie_rubrique().equals("salaireRH")) {
+                                                if (item.getCategorie_rubrique().equals("salaireRH")|| item.getCategorie_rubrique().equals("salaireRH_prev")) {
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_salrh" value="<%out.print(item.getDesignation());%>"></td>
-                                            <td><input type="number" name="annee1_salrh" value="<%out.print(item.getAnnee1());%>"></td>
-                                            <td><input type="text" name="annee2_salrh" value="<%out.print(item.getAnnee2());%>"></td>
-                                            <td><input type="text" name="annee3_salrh" value="<%out.print(item.getAnnee3());%>"></td>
+                                            <td><input type="text" name="annee1_salrh" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_salrh" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_salrh" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
                                         </tr>
                                         <%         }
                                             }%>

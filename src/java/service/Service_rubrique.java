@@ -202,6 +202,7 @@ public class Service_rubrique {
                 r.setPourcentage_budget(rs.getDouble("pourcentage_budget"));
                 r.setActivite_lib(rs.getString("activite_lib"));
                 r.setRole_utilisateur(rs.getString("role_utilisateur"));
+                r.setPourcentage_anterieur(rs.getDouble("pourcentage_anterieur"));
                 
                 list.add(r);
             }
