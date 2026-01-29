@@ -47,6 +47,23 @@
                     <div class="container-fluid">
                         <h3 style="text-align: center;margin-bottom: 2%;">Tableau de bord - Opérations</h3>
                         
+                        <div style="display:flex;gap:45px;justify-content:space-between;">
+                            <div  ><canvas id="traficChart" width="300" height="400"></canvas>
+                                <p>Trafic Maritime.</p>
+                            </div> 
+                            <div  ><canvas id="toucheesChart" width="300" height="400"></canvas>
+                                <p>Touchées de navires</p>
+                            </div>
+
+                            <div  ><canvas id="traficEvpChart" width="300" height="400"></canvas>
+                                <p>Trafic EVP.</p>
+                            </div>
+                          
+                            <div  ><canvas id="perfMictslChart" width="300" height="400"></canvas>
+                                <p>Perf. MICTSL</p>
+                            </div>
+
+                        </div>
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
                             int annee = taona.getValeur();
@@ -86,7 +103,7 @@
 
                                         </tr>
                                         <%          }
-                            } %>
+                                            } %>
                                     </table>
 
                                 </div>
@@ -117,7 +134,7 @@
 
                                         </tr>
                                         <%         }
-                            }%>
+                                            }%>
                                     </table>
 
                                 </div>
@@ -147,7 +164,7 @@
                                             <td><input type="text" name="annee5_evp" value="<%out.print(df.format(item.getAnnee5()));%>"></td>
                                         </tr>
                                         <%         }
-                            }%>
+                                            }%>
                                     </table>
                                 </div>
                             </div> 
@@ -176,7 +193,7 @@
                                             <td><input type="text" name="annee5_mictsl" value="<%out.print(df.format(item.getAnnee5()));%>"></td>
                                         </tr>
                                         <%         }
-                            }%>
+                                            }%>
                                     </table>
                                 </div>
                             </div>          
@@ -187,5 +204,361 @@
 
             </div> 
         </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
+        <script>
+//            try {
+//                const ctx = document.getElementById('myChart').getContext('2d');
+//                const myChart = new Chart(ctx, {
+//                    type: 'bar',
+//                    data: {
+//                        labels: ['RH', 'Finances', 'Environnement', 'Capitainerie', 'Environnement', 'Facturation'],
+//                        datasets: [{
+//                                label: '# of Votes',
+//                                data: [12, 19, 3, 5, 2, 3],
+//                                backgroundColor: [
+//                                    'rgba(255, 99, 132, 0.2)',
+//                                    'rgba(54, 162, 235, 0.2)',
+//                                    'rgba(255, 206, 86, 0.2)',
+//                                    'rgba(75, 192, 192, 0.2)',
+//                                    'rgba(153, 102, 255, 0.2)',
+//                                    'rgba(255, 159, 64, 0.2)'
+//                                ],
+//                                borderColor: [
+//                                    'rgba(255, 99, 132, 1)',
+//                                    'rgba(54, 162, 235, 1)',
+//                                    'rgba(255, 206, 86, 1)',
+//                                    'rgba(75, 192, 192, 1)',
+//                                    'rgba(153, 102, 255, 1)',
+//                                    'rgba(255, 159, 64, 1)'
+//                                ],
+//                                borderWidth: 1
+//                            }]
+//                    },
+//                    options: {
+//                        scales: {
+//                            y: {
+//                                beginAtZero: true
+//                            }
+//                        }
+//                    }
+//                });
+//            } catch (e) {
+//                console.log("chart error exception:" + e);
+//            }
+        </script>
+        <script>
+            try {
+
+                // Labels = 5 dernières années
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let traficData = [];
+                let traficLabel = "Trafic maritime global";
+
+            <%
+        for (V_rubrique_op item : rubriques) {
+            if ("TraficGBL".equals(item.getCategorie_rubrique())) {
+            %>
+                traficLabel = "<%= item.getDesignation()%>";
+                traficData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                break; // enlève si plusieurs lignes trafic
+            }
+        }
+            %>
+
+                const ctx = document.getElementById('traficChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: traficLabel,
+                                data: traficData,
+                                fill: false,
+                                tension: 0.3,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 2,
+                                pointRadius: 5
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
+        <script>
+            try {
+
+                // Labels = 5 dernières années
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let toucheesData = [];
+                let toucheesLabel = "Touchées de navires";
+
+            <%
+                for (V_rubrique_op item : rubriques) {
+                    if ("Touchée".equals(item.getCategorie_rubrique())) {
+            %>
+                toucheesLabel = "<%= item.getDesignation()%>";
+                toucheesData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                        break; // enlève si plusieurs lignes "Touchée"
+                    }
+                }
+            %>
+
+                const ctx = document.getElementById('toucheesChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: toucheesLabel,
+                                data: toucheesData,
+                                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                                borderColor: 'rgba(0, 123, 255, 1)',
+                                borderWidth: 1
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.raw.toLocaleString() + " escales";
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1,
+                                    callback: function (value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
+
+        <script>
+            try {
+
+                // Labels = 5 dernières années
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let evpData = [];
+                let evpLabel = "Trafic en EVP";
+
+            <%
+                for (V_rubrique_op item : rubriques) {
+                    if ("TraficEVP".equals(item.getCategorie_rubrique())) {
+            %>
+                evpLabel = "<%= item.getDesignation()%>";
+                evpData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                        break; // enlève si plusieurs lignes EVP
+                    }
+                }
+            %>
+
+                const ctx = document.getElementById('traficEvpChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: evpLabel,
+                                data: evpData,
+                                fill: false,
+                                tension: 0.3,
+                                backgroundColor: 'rgba(40, 167, 69, 0.5)',
+                                borderColor: 'rgba(40, 167, 69, 1)',
+                                borderWidth: 2,
+                                pointRadius: 5
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.raw.toLocaleString() + " EVP";
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
+
+        <script>
+            try {
+
+                // Labels = 5 dernières années
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let mictslData = [];
+                let mictslLabel = "Performance MICTSL";
+
+            <%
+                for (V_rubrique_op item : rubriques) {
+                    if ("RdmtMICTSL".equals(item.getCategorie_rubrique())) {
+            %>
+                mictslLabel = "<%= item.getDesignation()%>";
+                mictslData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                        break; // enlève si plusieurs indicateurs MICTSL
+                    }
+                }
+            %>
+
+                const ctx = document.getElementById('perfMictslChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: mictslLabel,
+                                data: mictslData,
+                                fill: false,
+                                tension: 0.3,
+                                backgroundColor: 'rgba(255, 193, 7, 0.5)',
+                                borderColor: 'rgba(255, 193, 7, 1)',
+                                borderWidth: 2,
+                                pointRadius: 5
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
+
     </body>
 </html>

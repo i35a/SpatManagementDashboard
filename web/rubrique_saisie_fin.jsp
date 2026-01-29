@@ -47,6 +47,18 @@
                     <div class="container-fluid">
                         <h3 style="text-align: center;margin-bottom: 2%;">Tableau de bord - Finances</h3>
                         
+                        
+                        <div style="display:flex;gap:45px;justify-content:space-between;">
+                            <div><canvas id="caChart" width="400" height="400"></canvas>
+                                <p>C.A</p>
+                            </div>
+                            <div><canvas id="margeChart" width="400" height="400"></canvas>
+                                <p>Marge Op.</p>
+                            </div>
+                            <div><canvas id="resultChart" width="400" height="400"></canvas>
+                                <p>Resultat.</p>
+                            </div>
+                        </div>
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
                             int annee = taona.getValeur();
@@ -86,7 +98,7 @@
 
                                         </tr>
                                         <%          }
-                     } %>
+                                            } %>
                                     </table>
 
                                 </div>
@@ -117,7 +129,7 @@
 
                                         </tr>
                                         <%         }
-                     }%>
+                                            }%>
                                     </table>
 
                                 </div>
@@ -147,7 +159,7 @@
                                             <td><input type="text" name="annee5_exofin" value="<%out.print(df.format(item.getAnnee5()));%>"></td>
                                         </tr>
                                         <%         }
-                     }%>
+                                            }%>
                                     </table>
 
 
@@ -159,6 +171,276 @@
                 </div> 
             </div> 
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
+        <script>
+//            try {
+//                const ctx = document.getElementById('myChart').getContext('2d');
+//                const myChart = new Chart(ctx, {
+//                    type: 'bar',
+//                    data: {
+//                        labels: ['RH', 'Finances', 'Environnement', 'Capitainerie', 'Environnement', 'Facturation'],
+//                        datasets: [{
+//                                label: '# of Votes',
+//                                data: [12, 19, 3, 5, 2, 3],
+//                                backgroundColor: [
+//                                    'rgba(255, 99, 132, 0.2)',
+//                                    'rgba(54, 162, 235, 0.2)',
+//                                    'rgba(255, 206, 86, 0.2)',
+//                                    'rgba(75, 192, 192, 0.2)',
+//                                    'rgba(153, 102, 255, 0.2)',
+//                                    'rgba(255, 159, 64, 0.2)'
+//                                ],
+//                                borderColor: [
+//                                    'rgba(255, 99, 132, 1)',
+//                                    'rgba(54, 162, 235, 1)',
+//                                    'rgba(255, 206, 86, 1)',
+//                                    'rgba(75, 192, 192, 1)',
+//                                    'rgba(153, 102, 255, 1)',
+//                                    'rgba(255, 159, 64, 1)'
+//                                ],
+//                                borderWidth: 1
+//                            }]
+//                    },
+//                    options: {
+//                        scales: {
+//                            y: {
+//                                beginAtZero: true
+//                            }
+//                        }
+//                    }
+//                });
+//            } catch (e) {
+//                console.log("chart error exception:" + e);
+//            }
+        </script>
+        <script>
+            try {
+
+                // Labels = last 5 years
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let caData = [];
+                let caLabel = "Chiffre d'Affaire";
+
+            <%
+                for (V_rubrique_fin item : rubriques) {
+                    if ("CAFIN".equals(item.getCategorie_rubrique())) {
+            %>
+                caLabel = "<%= item.getDesignation()%>";
+                caData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                        break; // remove if you want multiple CAFIN datasets
+                    }
+                }
+            %>
+
+                const ctx = document.getElementById('caChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: caLabel,
+                                data: caData,
+                                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.raw.toLocaleString() + " Ariary";
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
+        <script>
+            try {
+
+                // Labels = 5 dernières années
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let ebidtaData = [];
+                let ebidtaLabel = "Marge opérationnelle (EBITDA)";
+
+            <%
+                for (V_rubrique_fin item : rubriques) {
+                    if ("EBIDTAFIN".equals(item.getCategorie_rubrique())) {
+            %>
+                ebidtaLabel = "<%= item.getDesignation()%>";
+                ebidtaData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                        break; // enlève si tu veux plusieurs lignes EBIDTA
+                    }
+                }
+            %>
+
+                const ctx = document.getElementById('margeChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'line', // plus lisible pour une marge
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: ebidtaLabel,
+                                data: ebidtaData,
+                                fill: false,
+                                tension: 0.3,
+                                backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                                borderColor: 'rgba(153, 102, 255, 1)',
+                                borderWidth: 2,
+                                pointRadius: 5
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.raw.toLocaleString() + " %";
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value + " %";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
+        <script>
+            try {
+
+                // Labels = 5 dernières années
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let resultatData = [];
+                let resultatLabel = "Résultat de l'exercice";
+
+            <%
+        for (V_rubrique_fin item : rubriques) {
+            if ("ExoFIN".equals(item.getCategorie_rubrique())) {
+            %>
+                resultatLabel = "<%= item.getDesignation()%>";
+                resultatData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                break; // enlève si plusieurs résultats à afficher
+            }
+        }
+            %>
+
+                const ctx = document.getElementById('resultChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'bar', // bar = plus parlant pour un résultat
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                                label: resultatLabel,
+                                data: resultatData,
+                                backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                                borderColor: 'rgba(255, 159, 64, 1)',
+                                borderWidth: 1
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.raw.toLocaleString() + " Ariary";
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false, // autorise les valeurs négatives
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
 
     </body>
 </html>

@@ -41,19 +41,26 @@ public class AdminLoginServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String loginSaisie;
-            String pwdSaisie;
-            String DirectionSaisie;
+            String loginSaisie = "";
+            String pwdSaisie = "";
+            String DirectionSaisie = "";
             HttpSession session = request.getSession();
-
+            Boolean loggedIn = false;
 //        if (session == null) {
 //            request.getRequestDispatcher("adminauth.jsp?msg=nosess").forward(request, response);
 //        }
-            if (session.getAttribute("login") != null) {
-                loginSaisie = (String) session.getAttribute("login");
-                pwdSaisie = (String) session.getAttribute("password");
-                //DirectionSaisie = (String) session.getAttribute("direction");
 
+            //setConnectionDB sc = new setConnectionDB();
+            Utilisateur foundUser = new Utilisateur();
+
+            if (session.getAttribute("adminLogged") != null) {
+                //loginSaisie = (String) session.getAttribute("adminLogged");
+                //pwdSaisie = (String) session.getAttribute("password");
+                //DirectionSaisie = (String) session.getAttribute("direction");
+                loggedIn = true;
+                foundUser.setLogin(0);
+                foundUser.setId(0);
+                foundUser.setIdRole(1);
             } else {
                 loginSaisie = request.getParameter("login").toString();
                 pwdSaisie = request.getParameter("password").toString();
@@ -64,17 +71,16 @@ public class AdminLoginServlet extends HttpServlet {
                 //session.setAttribute("direction", DirectionSaisie);
             }
 
-            //setConnectionDB sc = new setConnectionDB();
-            Utilisateur foundUser = new Utilisateur();
-
             Connection connection = DBConnection.getConnection();//sc.connectAdmin(loginSaisie, pwdSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
-            if (loginSaisie.equals("root") && pwdSaisie.equals("root")) {
+
+            if (session.getAttribute("adminLogged") == null && loginSaisie.equals("root") && pwdSaisie.equals("root")) {
                 System.out.println("checked login");
                 foundUser.setLogin(0);
                 foundUser.setId(0);
                 foundUser.setIdRole(1);
-                
-            }else{
+                session.setAttribute("adminLogged", true);
+                loggedIn = true;
+            } else {
                 System.out.println("NO LOGIN FOUND");
             }
 //&& foundUser.getId()==null
@@ -85,13 +91,13 @@ public class AdminLoginServlet extends HttpServlet {
                 session = request.getSession();
                 String msgerror = "Echec de connexion! Vérifiez vos informations de connection!";
                 request.getRequestDispatcher("adminauth.jsp?msg=" + msgerror).forward(request, response);
-            } else {
+            } else if (connection != null && loggedIn) {
                 //System.out.println(connection+""+loginSaisie+""+pwdSaisie+""+DirectionSaisie);
                 //request.setAttribute("listeType", ServiceTypeArticle.getAllType(connection));
                 //request.setAttribute("listeMois", getListMonth());
                 //request.setAttribute("listeAnnee", getListYear());
                 TypeRoleUtilisateur tru = ServiceRoleUtilisateur.getTypeById(foundUser.getIdRole(), connection);
-                session.setAttribute("loggedIn", foundUser.getId());
+                //session.setAttribute("loggedIn", foundUser.getId());
                 session.setAttribute("userType", "admin");
                 //session.setAttribute("userTypeId", tru.getId());
                 //System.out.println("user type found: "+ session.getAttribute("userType"));

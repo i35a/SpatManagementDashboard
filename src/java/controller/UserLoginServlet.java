@@ -5,6 +5,8 @@
  */
 package controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dao.GenericDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,9 +27,11 @@ import javax.servlet.http.HttpSession;
 import model.Utilisateur;
 //import service.ServiceTypeArticle;
 import model.TypeRoleUtilisateur;
+import model.V_rubrique_fin;
 import service.ServiceRoleUtilisateur;
 import utils.DBConnection;
 import service.ServiceUtilisateur;
+import service.Service_rubrique;
 import utils.Utils;
 
 /**
@@ -52,7 +56,10 @@ public class UserLoginServlet extends HttpServlet {
         String pwdSaisie = "";
         String DirectionSaisie = "";
         HttpSession session = request.getSession();
-         
+//        if(session.getAttribute("adminLogged")!=null){
+//           response.sendRedirect("adminlogin");
+//           return;
+//        }
 //        if (session == null) {
 //            request.getRequestDispatcher("adminauth.jsp?msg=nosess").forward(request, response);
 //        }
@@ -78,18 +85,21 @@ public class UserLoginServlet extends HttpServlet {
 //        } else {
 //            loginSaisie = request.getParameter("login").toString();
 //            pwdSaisie = request.getParameter("password").toString();
-//            DirectionSaisie = request.getParameter("direction").toString();
-//
-//            
+//            DirectionSaisie = request.getParameter("direction").toString();            
 //        }
-        if(session.getAttribute("loggedIn")!=null && session.getAttribute("login")!="root"){ 
+        if (session.getAttribute("login") != null) {
+            System.out.println("session login found");
+        } else {
+            System.out.println("session login not found");
+        }
+        if (session.getAttribute("loggedIn") != null && session.getAttribute("login") != "root") {
             loginSaisie = session.getAttribute("login").toString();
-            userConnected=true;
+            userConnected = true;
             foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
 //            pwdSaisie = session.getAttribute("password").toString();
 //            DirectionSaisie = session.getAttribute("direction").toString();
 //            System.out.println("login session = "+session.getAttribute("login"));
-        }else if(request.getParameter("login")!=null){
+        } else if (request.getParameter("login") != null) {
             loginSaisie = request.getParameter("login").toString();
             pwdSaisie = request.getParameter("password").toString();
             DirectionSaisie = request.getParameter("direction").toString();
@@ -100,20 +110,19 @@ public class UserLoginServlet extends HttpServlet {
             foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
             //init user found 
             if (Utils.checkPasswordBcrypt(pwdSaisie, foundUser.getPwd())) {
-                    userConnected = true;
-                    System.out.println("Hash matched!!!"); 
+                userConnected = true;
+                System.out.println("Hash matched!!!");
             }
         } else {
             System.out.println("empty login saisie et pwd saisie");
         }
-        
-        
-        System.out.println("Login found: " + loginSaisie + ",\npwd saisie: " + pwdSaisie);
-        System.out.println("connection == " + connection);
+
+//        System.out.println("Login found: " + loginSaisie + ",\npwd saisie: " + pwdSaisie);
+//        System.out.println("connection == " + connection);
         if (userConnected) {
             System.out.println("***User found: " + foundUser.getFullname());
         } else {
-            System.out.println("none found");
+            System.out.println("*no user found");
         }
         if (connection == null) {
             //request.setAttribute("msg", "Echec de connexion! Verifier vos informations de connection!");
@@ -125,21 +134,26 @@ public class UserLoginServlet extends HttpServlet {
         } else if (connection != null && userConnected) {
             System.out.println("Connected:");
             System.out.println("***User found: " + foundUser.getFullname());
-            //System.out.println(connection+""+loginSaisie+""+pwdSaisie+""+DirectionSaisie);
-            //request.setAttribute("listeType", ServiceTypeArticle.getAllType(connection));
-            //request.setAttribute("listeMois", getListMonth());
-            //request.setAttribute("listeAnnee", getListYear());
+
             TypeRoleUtilisateur tru = ServiceRoleUtilisateur.getTypeById(foundUser.getIdRole(), connection);
             session.setAttribute("loggedIn", foundUser.getId());
             session.setAttribute("userType", "admin");
             session.setAttribute("userTypeId", tru.getId());
             session.setAttribute("login", foundUser.getLogin());
-            //System.out.println("user type found: "+ session.getAttribute("userType"));
-            //ArrayList<HashMap<String, String>> res = ServiceStock.getEtatStock(connection);
-            //request.setAttribute("ListEtatStockType", ServiceStock.getEtatStock(connection));
+
+            //get finance data 
+            List<V_rubrique_fin> rubriques = Service_rubrique.getRubriqueFIN(); // .getAllRubriques();
+ 
+            Gson gson = new GsonBuilder().create(); 
+            String json = gson.toJson(rubriques);
+            request.setAttribute("fin_data",json);
+            
+            
             connection.close();
-            //request.getRequestDispatcher("index.jsp").forward(request, response);
+
             request.getRequestDispatcher("dashboard-user.jsp").forward(request, response);
+        }else{
+            request.getRequestDispatcher("auth.jsp").forward(request,response);
         }
     }
 
