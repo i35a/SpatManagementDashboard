@@ -5,24 +5,24 @@
             <img src="assets/img/Logo.png" style="margin-top: 11%;">
             <div class="sidebar-brand-icon rotate-n-15"></div>
             <div class="sidebar-brand-text mx-3" style="margin-top: 20%;">
-                <span>TBD RD</span> 
+                <span>DASHBOARD</span> 
             </div>
         </a>
         <hr class="sidebar-divider my-0">
         <hr id="sep">
         <ul class="navbar-nav text-light" id="accordionSidebar">
             <li class="nav-item"></li>
-            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="userlogin">
+            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="homepage">
                     <i class="fas fa-user"></i><span> Tableau de bord</span>
                 </a></li>
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_rh">
-                    <i class="fas fa-user"></i><span> Rubrique RH</span>
+                    <i class="fas fa-user"></i><span> Ressources Humaines</span>
                 </a></li>
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_op">
-                    <i class="fas fa-user"></i><span> Rubrique OP</span>
+                    <i class="fas fa-user"></i><span> Opérations</span>
                 </a></li>
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_fin">
-                    <i class="fas fa-user"></i><span> Rubrique Fin</span>
+                    <i class="fas fa-user"></i><span> Finances</span>
                 </a></li>
             <li class="nav-item menu">
                 <!--                <a class="nav-link" id="listEtat" href="AfficherEtatdeStock" style="margin-top: 20%;">
