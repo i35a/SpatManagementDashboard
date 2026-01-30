@@ -1,18 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%--<%@page import="controller.setConnectionDB"%>--%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.sql.Connection"%>
-<%@page import="dao.GenericDao"%>
-<%--<%@page import="service.ServiceArticle"%>
-<%@page import="service.ServiceTypeArticle"%>
-<%@page import="model.Article"%>
-<%@page import="model.Typearticle"%>--%>
+<%@page import="dao.GenericDao"%> 
 <%@page import="java.util.List"%>
 <%@page import="service.ServiceRoleUtilisateur"%>
 <%@page import="model.TypeRoleUtilisateur"%>
 <%@page import="model.Utilisateur"%>
 <%@page import="service.ServiceUtilisateur"%>
+<%@page import="utils.DBConnection"%>
 <!DOCTYPE html>
 <html>
 
@@ -76,18 +72,11 @@
     <body id="page-top" style="font-size: 0.9em;">
         <div id="wrapper">
 
-            <jsp:include page="menu-admin.jsp" />
+            <jsp:include page="menu-user.jsp" />
 
             <div class="d-flex flex-column" id="content-wrapper">
                 <div id="content">
-                    <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-                        <div class="container-fluid">
-                            <form action="Auth" method="post" style="width: 100%;">
-                                <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                                <button class="btn btn-danger float-right" id="logout" name="logout" type="submit" style="font-size:0.7em !important;margin-left: 90%"><i class="fas fa-power-off"></i> Deconnexion</button>
-                            </form>     
-                        </div>
-                    </nav>
+                    <jsp:include page="header.jsp"/>
 
                     <div class="container-fluid"> 
                         <div class="modal fade" role="dialog" tabindex="-1" id="modal-importxls" >
@@ -319,24 +308,26 @@
 
                                                     <select onchange="formSubmit()" class="form-select" style="border-style: solid;border-radius: 5px 5px 5px 5px;width: 100%;height: 100%;" name="userRoleSearch">
                                                         <option value="">Tout</option>
-                                                        <%for (TypeRoleUtilisateur tp : (List<TypeRoleUtilisateur>) request.getAttribute("listeTypeRole")) { %>
-                                                        <option value="<% out.print(tp.getId()); %>" 
-                                                                <%
-                                                                    if (request.getAttribute("userSearchRole") != null
-                                                                            && request.getAttribute("userSearchRole") != null
-                                                                            && request.getAttribute("userSearchRole") == tp.getId()) {
-                                                                        out.print("selected=selected");
-                                                                    } %>>
-                                                            <!--                                                                <%/*if (artrecherche.getIdtypeart() != null && artrecherche.getIdtypeart().equals(tp.getIdtypeart())) {
-                                                                                                                                                                out.print("selected=\"\"");
-                                                                                                                                                            }*/%>>-->
-                                                            <% out.print(tp.getDescription()); %>
-                                                        </option>
-                                                        <%}%>
+                                                        <%
+                                                            List<TypeRoleUtilisateur> liste
+                                                                    = (List<TypeRoleUtilisateur>) request.getAttribute("listeTypeRole");
+                                                            Object userSearchRole = request.getAttribute("userSearchRole");
+
+                                                            for (TypeRoleUtilisateur tp : liste) {
+
+                                                                out.print("<option value=\"" + tp.getId() + "\"");
+
+                                                                if (userSearchRole != null && userSearchRole.equals(tp.getId())) {
+                                                                    out.print(" selected=\"selected\"");
+                                                                }
+
+                                                                out.print(">");
+                                                                out.print(tp.getDescription());
+                                                                out.print("</option>");
+                                                            }
+                                                        %>
                                                     </select>
-                                                </td>
-
-
+                                                </td> 
                                                 <td> </td>                       
                                             </tr>
                                         </tbody>
@@ -345,7 +336,7 @@
                             </form>
                         </div>
                         <div><button  data-bs-target="#modal-newart" data-bs-toggle="modal" class="btn btn-primary" type="button" style="background: rgb(250,250,250);border-style: solid; border-color: #c3c3c3;height: 100%;color:#000000;"><i class="fa fa-add"></i> Ajouter</button></div>
-                                                                               
+
                         <div class="card-body">
 
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -365,18 +356,11 @@
                                     <tbody>            
                                         <!-- liste -->
                                         <%
-                                            String login = (String) session.getAttribute("login");
-                                            String pwdSaisie = (String) session.getAttribute("password");
-                                            String DirectionSaisie = (String) session.getAttribute("direction");
-//                                            setConnectionDB sc = new setConnectionDB();
+                                            try {
+                                                Connection con = DBConnection.getConnection();
 
-                                            Connection con = utils.DBConnection.getConnection();//sc.connect2(request);
                                         %>
-                                        <% for (Utilisateur article : (List<Utilisateur>
-
-                                            ) request.getAttribute (
-                                                     
-                                                "listeUsers")) {%>
+                                        <% for (Utilisateur article : (List<Utilisateur>) request.getAttribute("listeUsers")) {%>
                                         <% TypeRoleUtilisateur tpa = new TypeRoleUtilisateur();
                                             tpa = ServiceRoleUtilisateur.getTypeById(article.getIdRole(), con);
                                         %>
@@ -393,7 +377,8 @@
                                             </td>
                                         </tr>
 
-                                        <% } %>                                  
+                                        <% }
+                                        %>                                  
                                     </tbody>
                                     <tfoot>
                                     </tfoot>
@@ -401,7 +386,13 @@
                             </div>
                         </div>
                     </div> 
-                </div>  <% con.close ();%>                                 
+                </div>  <%if (con != null) {
+                            con.close();
+                        }
+                    } catch (Exception e) {
+
+                    }
+                %>                                 
                 <footer class="bg-white sticky-footer">
                     <div class="container my-auto">
                         <div class="text-center my-auto copyright"><span>Copyright® SPAT 2023</span></div>

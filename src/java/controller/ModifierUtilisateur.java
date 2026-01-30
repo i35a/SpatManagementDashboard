@@ -27,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import model.Utilisateur;
 import service.ServiceUtilisateur;
 import utils.DBConnection;
+
 /**
  *
  * @author PC
@@ -44,57 +45,45 @@ public class ModifierUtilisateur extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
-
-        String loginSaisie = "";
-        String pwdSaisie = "";
-        String DirectionSaisie = "";
+ 
         HttpSession session = request.getSession(false);
-        if (session.getAttribute("login") != null) {
-            loginSaisie = (String) session.getAttribute("login");
-            pwdSaisie = (String) session.getAttribute("password");
-            DirectionSaisie = (String) session.getAttribute("direction"); 
-        }
-//        setConnectionDB sc = new setConnectionDB();
-        Connection connection = DBConnection.getConnection();//sc.connect2(request);
-        //request.setAttribute("listeTypearticle", ServiceTypeArticle.getAllType(connection));
-        // 
-        // liste
-        //Article arti = new Article();
-        int count = 0;
+        Boolean userConnected = false;
         
-        //utilisateur
-        Utilisateur userUpdate = new Utilisateur();
-        
-        //id user 
-        if (request.getParameter("idart") != null) { 
-            userUpdate.setId(Integer.valueOf(request.getParameter("idart"))); 
-        }
-        //matricule and pwd 
-        if (request.getParameter("userMatricule") != null && !request.getParameter("userMatricule").trim().isEmpty()) {
-            //update here
-        }
-        if (request.getParameter("userRoleType") != null && !request.getParameter("userRoleType").trim().isEmpty()) {
-            //change user role
-            userUpdate.setIdRole(Integer.valueOf(request.getParameter("userRoleType")));
-        }
-        if (request.getParameter("userPassword") != null && !request.getParameter("userPassword").trim().isEmpty()) {
-            System.out.println("updating pwd:"+request.getParameter("userPassword"));
-            //change user password
-            userUpdate.setPwd(request.getParameter("userPassword"));
-        } else{
-            System.out.println("\ncant updat pwd");
+        if (session != null && session.getAttribute("login") != null) {
+            userConnected = true; 
         }
 
-        int r = 0;
-        //ArrayList<Article> lst = new ArrayList<Article>();
-        //lst.add(arti);
-//        if (count >= 5) {
-//           r =  ServiceArticle.updateArticle(arti, connection);
-//        }
-//        ServiceUtilisateur.getAllItems(userUpdate, connection);
-        ServiceUtilisateur.updateArticle(userUpdate, connection);
-        //        request.getRequestDispatcher("ControllerListMat").forward(request, response);
-        connection.close();
+        Connection connection = DBConnection.getConnection();//sc.connect2(request);
+
+        if (userConnected && connection!=null) {
+            //utilisateur
+            Utilisateur userUpdate = new Utilisateur();
+
+            //id user 
+            if (request.getParameter("idart") != null) {
+                userUpdate.setId(Integer.valueOf(request.getParameter("idart")));
+            }
+            //matricule and pwd 
+            if (request.getParameter("userMatricule") != null && !request.getParameter("userMatricule").trim().isEmpty()) {
+                //update here
+            }
+            if (request.getParameter("userRoleType") != null && !request.getParameter("userRoleType").trim().isEmpty()) {
+                //change user role
+                userUpdate.setIdRole(Integer.valueOf(request.getParameter("userRoleType")));
+            }
+            if (request.getParameter("userPassword") != null && !request.getParameter("userPassword").trim().isEmpty()) {
+                System.out.println("updating pwd:" + request.getParameter("userPassword"));
+                //change user password
+                userUpdate.setPwd(request.getParameter("userPassword"));
+            } else {
+                System.out.println("\ncant updat pwd");
+            }
+  
+            ServiceUtilisateur.updateArticle(userUpdate, connection);
+
+            connection.close();
+
+        }
         response.sendRedirect("users");
     }
 

@@ -18,7 +18,7 @@
                 <% //check user type  
                     if (session.getAttribute("userType") != null) {
                         final String USER_TYPE = session.getAttribute("userType").toString().toLowerCase();
-                        if (USER_TYPE.equals("dg")) {
+                        if (USER_TYPE.equals("dg") || USER_TYPE.equals("admin")) {
 //menu dg             
                 %>
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_rh">
@@ -53,7 +53,18 @@
                         }
                     }
                 %> 
+            <li class="nav-item menu"> 
+                <%
+                    if (session.getAttribute("userType") != null && session.getAttribute("userType").equals("admin")) {
 
+                %> <a class="nav-link" id="chatBot" href="users">
+                    <i class="fas fa-user"></i><span> Gestion Utilisateurs</span>
+                </a>
+
+                <%                    }
+                %>  
+
+            </li>
             <li class="nav-item menu">
                 <!--                
                 <a class="nav-link" id="chatBot" href="ControllerChatBot">

@@ -51,34 +51,33 @@ public class UtilisateurServlet extends HttpServlet {
         String pwdSaisie = "";
         String DirectionSaisie = "";
         HttpSession session = request.getSession(false);
-
-        if (session != null && session.getAttribute("login") != null) {
-            loginSaisie = (String) session.getAttribute("login");
-            pwdSaisie = (String) session.getAttribute("password");
-            DirectionSaisie = (String) session.getAttribute("direction");
-
-        } else {
-            request.getRequestDispatcher("auth.jsp").forward(request, response);
+        Boolean userConnected = false;
+        if (session != null && session.getAttribute("login") != null && session.getAttribute("userType") != null && session.getAttribute("userType").toString().toLowerCase().equals("admin")) {
+//            loginSaisie = (String) session.getAttribute("login");
+//            pwdSaisie = (String) session.getAttribute("password");
+//            DirectionSaisie = (String) session.getAttribute("direction");
+            userConnected = true;
         }
-//        setConnectionDB sc = new setConnectionDB();
+
         Connection connection = DBConnection.getConnection();
         // 
         // liste
 //        Article arti = new Article();
         //search user 
         Utilisateur searchUser = new Utilisateur();
-        if (request.getParameter("loginSearch") != null && !request.getParameter("loginSearch").trim().isEmpty()) {
-            searchUser.setLogin(Integer.parseInt(request.getParameter("loginSearch")));
-        }
-        if (request.getParameter("userNameSearch") != null) {
-            searchUser.setFullname(request.getParameter("userNameSearch"));
-        }
-        if (request.getParameter("userRoleSearch") != null && !request.getParameter("userRoleSearch").trim().isEmpty()) {
-            searchUser.setIdRole(Integer.parseInt(request.getParameter("userRoleSearch")));
-            System.out.println("Role found:" + request.getParameter("userRoleSearch"));
-        } else {
-            System.out.println("**Cant find role type**");
-        }
+        if (userConnected) {
+            if (request.getParameter("loginSearch") != null && !request.getParameter("loginSearch").trim().isEmpty()) {
+                searchUser.setLogin(Integer.parseInt("0" + request.getParameter("loginSearch")));
+            }
+            if (request.getParameter("userNameSearch") != null) {
+                searchUser.setFullname(request.getParameter("userNameSearch"));
+            }
+            if (request.getParameter("userRoleSearch") != null && !request.getParameter("userRoleSearch").trim().isEmpty()) {
+                searchUser.setIdRole(Integer.parseInt("0" + request.getParameter("userRoleSearch")));
+                System.out.println("Role found:" + request.getParameter("userRoleSearch"));
+            } else {
+                System.out.println("**Cant find role type**");
+            }
 //        if (request.getParameter("designationrecherche") != null && !request.getParameter("designationrecherche").replace(" ", "").equals("")) {
 //            String tmp = request.getParameter("designationrecherche").toLowerCase();
 //            arti.setDesignation(tmp);
@@ -104,39 +103,46 @@ public class UtilisateurServlet extends HttpServlet {
 //        List<Typearticle> typearts = ServiceTypeArticle.getAllType(connection);
 
 //        request.setAttribute("artrecherche", arti);
-        request.setAttribute("userSearchRole", searchUser.getIdRole());
-//        request.setAttribute("listeArticle", ServiceArticle.getAllitems(arti, connection));
-//        request.setAttribute("listeTypearticle", ServiceTypeArticle.getAllType(connection));
-        request.setAttribute("listeTypeRole", ServiceRoleUtilisateur.getAllType(connection));
-        request.setAttribute("listeUsers", ServiceUtilisateur.getAllItems(searchUser, connection));
-        // redirect
-//        arti = null;
-        connection.close();
+            if (request.getAttribute("userSearchRole") != null) {
+                request.setAttribute("userSearchRole", searchUser.getIdRole());
+            } else {
+                request.setAttribute("userSearchRole", "0");
+            }
 
-        if (request.getParameter("export") != null) {
-            Timestamp time = new Timestamp(System.currentTimeMillis());
-            String name = "article_" + time;
-            name = name.replace(" ", "_");
-            name = name.replace(":", ".");
-            String extension = request.getParameter("extension");
-            String path = System.getProperty("catalina.base") + "\\work\\Catalina\\localhost\\stockInformatique\\";
-            String filePath = path + name + extension;
-            String[] columns = {"Idart", "Designation", "Reference", "Fabricant", "Type", "Etat", "Date"};
+            request.setAttribute("listeTypeRole", ServiceRoleUtilisateur.getAllType(connection));
+            request.setAttribute("listeUsers", ServiceUtilisateur.getAllItems(searchUser, connection));
+
+            connection.close();
+
+            if (request.getParameter("export") != null) {
+                Timestamp time = new Timestamp(System.currentTimeMillis());
+                String name = "article_" + time;
+                name = name.replace(" ", "_");
+                name = name.replace(":", ".");
+                String extension = request.getParameter("extension");
+                String path = System.getProperty("catalina.base") + "\\work\\Catalina\\localhost\\stockInformatique\\";
+                String filePath = path + name + extension;
+                String[] columns = {"Idart", "Designation", "Reference", "Fabricant", "Type", "Etat", "Date"};
 //            ServiceArticle.exportArticleToExcel(arts, filePath, "Article", columns);
 //            ExcelExport.download(filePath, response, name + extension);
 //            File file = new File(filePath);
 //            file.delete();
-        } else if (request.getParameter("download") != null) {
+            } else if (request.getParameter("download") != null) {
 
-            String url = this.getServletContext().getRealPath("/");
-            url = url + "assets/template/";
-            String path = url.toString();
-            String name = "TemplateImport";
-            String extension = ".xlsx";
-            String filePath = path + name + extension;
+                String url = this.getServletContext().getRealPath("/");
+                url = url + "assets/template/";
+                String path = url.toString();
+                String name = "TemplateImport";
+                String extension = ".xlsx";
+                String filePath = path + name + extension;
 //              ExcelExport.download(filePath, response, name + extension);
+            } else {
+                request.getRequestDispatcher("users.jsp").forward(request, response);
+
+            }
         } else {
-            request.getRequestDispatcher("users.jsp").forward(request, response);
+
+            request.getRequestDispatcher("homepage").forward(request, response);
 
         }
     }

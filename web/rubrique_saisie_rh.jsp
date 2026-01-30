@@ -74,7 +74,7 @@
                         <% //check user type  
                             if(session.getAttribute("userType")!=null ){
                             final String USER_TYPE =  session.getAttribute("userType").toString().toLowerCase(); 
-                                if(USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh")){
+                                if(USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh") || USER_TYPE.equals("admin")){
                              %>
                         <form action="controller_updateVoletRH" method="post">
 

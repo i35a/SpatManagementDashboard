@@ -64,7 +64,7 @@
                             <% //check user type  
                                 if (session.getAttribute("userType") != null) {
                                     final String USER_TYPE = session.getAttribute("userType").toString().toLowerCase();
-                                    if (USER_TYPE.equals("dg")) {
+                                    if (USER_TYPE.equals("dg") || USER_TYPE.equals("admin")) {
                             %>
                             <div class="card bg-light mb-3 col-lg col-md" style="width: flex 0 0 28%; margin-right: 1%;">
                                 <h5 class="card-header">FINANCES</h5>
