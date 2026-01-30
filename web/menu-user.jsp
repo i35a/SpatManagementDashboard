@@ -15,42 +15,62 @@
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="homepage">
                     <i class="fas fa-user"></i><span> Tableau de bord</span>
                 </a></li>
+                <% //check user type  
+                    if (session.getAttribute("userType") != null) {
+                        final String USER_TYPE = session.getAttribute("userType").toString().toLowerCase();
+                        if (USER_TYPE.equals("dg") || USER_TYPE.equals("admin")) {
+//menu dg             
+                %>
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_rh">
                     <i class="fas fa-user"></i><span> Ressources Humaines</span>
                 </a></li>
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_op">
                     <i class="fas fa-user"></i><span> Opérations</span>
+                </a></li> <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_fin">
+                    <i class="fas fa-user"></i><span> Finances</span>
                 </a></li>
+                <% } else if (USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh")) {
+//menu rh only
+                %>
+            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_rh">
+                    <i class="fas fa-user"></i><span> Ressources Humaines</span>
+                </a></li>
+                <%
+                } else if (USER_TYPE.equals("op")) {
+                    //menu op only
+                %>
+            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_op">
+                    <i class="fas fa-user"></i><span> Opérations</span>
+                </a></li>
+                <%
+                } else if (USER_TYPE.equals("fin")) {
+                    //menu fin only
+                %> 
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_fin">
                     <i class="fas fa-user"></i><span> Finances</span>
                 </a></li>
+                <%
+                        }
+                    }
+                %> 
+            <li class="nav-item menu"> 
+                <%
+                    if (session.getAttribute("userType") != null && session.getAttribute("userType").equals("admin")) {
+
+                %> <a class="nav-link" id="chatBot" href="users">
+                    <i class="fas fa-user"></i><span> Gestion Utilisateurs</span>
+                </a>
+
+                <%                    }
+                %>  
+
+            </li>
             <li class="nav-item menu">
-                <!--                <a class="nav-link" id="listEtat" href="AfficherEtatdeStock" style="margin-top: 20%;">
-                                    <i class="fas fa-warehouse"></i><span> Etat de stock</span>
-                                </a>
-                                <a class="nav-link" id="listArt" href="ControllerListArt">
-                                    <i class="fas fa-boxes"></i><span> Articles</span>
-                                </a>
-                
-                                <a class="nav-link" id="listStock" href="ControllerListStock">
-                                    <i class="fas fa-box-open"></i><span> Stock disponible</span>
-                                </a>
-                                <a class="nav-link" id="listHistS" href="ControllerHistoriqueSortie">
-                                    <i class="fas fa-sign-out-alt"></i><span> Historique de Sortie</span>
-                                </a>
-                
-                                <a class="nav-link" id="listHistE" href="ControllerHistoriqueEntree">
-                                    <i class="fas fa-sign-in-alt"></i><span> Historique d'Entrée</span>
-                                </a>
-                
-                                <a class="nav-link" id="listEtat" href="ControllerStockSeuil">
-                                    <i class="fas fa-exclamation-triangle"></i><span> Seuil d'alerte</span>
-                                </a>
+                <!--                
                 <a class="nav-link" id="chatBot" href="ControllerChatBot">
                                     <i class="fas fa-robot"></i><span> ChatBot</span>
                                 </a>
                 -->
-
 
             </li> 
         </ul>

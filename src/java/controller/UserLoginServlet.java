@@ -56,49 +56,18 @@ public class UserLoginServlet extends HttpServlet {
         String pwdSaisie = "";
         String DirectionSaisie = "";
         HttpSession session = request.getSession();
-//        if(session.getAttribute("adminLogged")!=null){
-//           response.sendRedirect("adminlogin");
-//           return;
-//        }
-//        if (session == null) {
-//            request.getRequestDispatcher("adminauth.jsp?msg=nosess").forward(request, response);
-//        }
+ 
         Utilisateur foundUser = new Utilisateur();
 
         Connection connection = DBConnection.getConnection();//sc.establish(loginSaisie, pwdSaisie,DirectionSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
         boolean userConnected = false;
-//        try {
-//            if (session.getAttribute("login") != null && session.getAttribute("login") == "root") {
-//                session.removeAttribute("login");
-//                session.removeAttribute("password");
-//                session.removeAttribute("direction");
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Session remove error: " + e.getMessage());
-//        }
-//        if (session.getAttribute("login") != null && session.getAttribute("login")!="root") {
-//            System.out.println("--session not null");
-//            loginSaisie = String.valueOf(Integer.valueOf((String) (session.getAttribute("login"))));
-//            pwdSaisie = String.valueOf(session.getAttribute("password"));
-//            DirectionSaisie = String.valueOf(session.getAttribute("direction"));
-//            System.out.println("login session = "+session.getAttribute("login"));
-//        } else {
-//            loginSaisie = request.getParameter("login").toString();
-//            pwdSaisie = request.getParameter("password").toString();
-//            DirectionSaisie = request.getParameter("direction").toString();            
-//        }
-        if (session.getAttribute("login") != null) {
-            System.out.println("session login found");
-        } else {
-            System.out.println("session login not found");
-        }
+ 
+      
         if (session.getAttribute("loggedIn") != null && session.getAttribute("login") != "root") {
             loginSaisie = session.getAttribute("login").toString();
             userConnected = true;
             foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
-//            pwdSaisie = session.getAttribute("password").toString();
-//            DirectionSaisie = session.getAttribute("direction").toString();
-//            System.out.println("login session = "+session.getAttribute("login"));
+ 
         } else if (request.getParameter("login") != null) {
             loginSaisie = request.getParameter("login").toString();
             pwdSaisie = request.getParameter("password").toString();
@@ -117,8 +86,7 @@ public class UserLoginServlet extends HttpServlet {
             System.out.println("empty login saisie et pwd saisie");
         }
 
-//        System.out.println("Login found: " + loginSaisie + ",\npwd saisie: " + pwdSaisie);
-//        System.out.println("connection == " + connection);
+ 
         if (userConnected) {
             System.out.println("***User found: " + foundUser.getFullname());
         } else {
