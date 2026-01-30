@@ -46,7 +46,7 @@
 
                     <div class="container-fluid">
                         <h3 style="text-align: center;margin-bottom: 2%;">Tableau de bord - Opérations</h3>
-                        
+
                         <div style="display:flex;gap:45px;justify-content:space-between;">
                             <div  ><canvas id="traficChart" width="300" height="400"></canvas>
                                 <p>Trafic Maritime.</p>
@@ -55,14 +55,17 @@
                                 <p>Touchées de navires</p>
                             </div>
 
-                            <div  ><canvas id="traficEvpChart" width="300" height="400"></canvas>
-                                <p>Trafic EVP.</p>
-                            </div>
-                          
-                            <div  ><canvas id="perfMictslChart" width="300" height="400"></canvas>
+                            <!--                            <div  ><canvas id="traficEvpChart" width="300" height="400"></canvas>
+                                                            <p>Trafic EVP.</p>
+                                                        </div>
+                                                      
+                                                        <div  ><canvas id="perfMictslChart" width="300" height="400"></canvas>
+                                                            <p>Perf. MICTSL</p>
+                                                        </div>-->
+
+                            <div  ><canvas id="traficPerfChart" width="400" height="400"></canvas>
                                 <p>Perf. MICTSL</p>
                             </div>
-
                         </div>
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
@@ -71,17 +74,17 @@
                             String json = request.getAttribute("op_data").toString();
                             Gson gson = new Gson();
                             V_rubrique_op[] rubriques = gson.fromJson(json, V_rubrique_op[].class);
-                            
+
                             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRANCE);
                             DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
-    
+
                         %>
-                        
+
                         <% //check user type  
-                            if(session.getAttribute("userType")!=null ){
-                            final String USER_TYPE =  session.getAttribute("userType").toString().toLowerCase(); 
-                                if(USER_TYPE.equals("op")|| USER_TYPE.equals("admin")){
-                             %>
+                            if (session.getAttribute("userType") != null) {
+                                final String USER_TYPE = session.getAttribute("userType").toString().toLowerCase();
+                                if (USER_TYPE.equals("op") || USER_TYPE.equals("admin")) {
+                        %>
                         <form action="controller_updateVoletOP" method="post">
 
                             <div class="card bg-light mb-3" style="max-width: 65rem;">
@@ -205,9 +208,9 @@
                             </div>          
                             <button class="btn btn-primary" type="submit">Mettre à jour</button>
                         </form>
-                                    <% 
-                                        } //end main check session
-}%>
+                        <%
+                                } //end main check session
+                            }%>
                     </div> 
                 </div> 
 
@@ -215,47 +218,7 @@
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
-        <script>
-//            try {
-//                const ctx = document.getElementById('myChart').getContext('2d');
-//                const myChart = new Chart(ctx, {
-//                    type: 'bar',
-//                    data: {
-//                        labels: ['RH', 'Finances', 'Environnement', 'Capitainerie', 'Environnement', 'Facturation'],
-//                        datasets: [{
-//                                label: '# of Votes',
-//                                data: [12, 19, 3, 5, 2, 3],
-//                                backgroundColor: [
-//                                    'rgba(255, 99, 132, 0.2)',
-//                                    'rgba(54, 162, 235, 0.2)',
-//                                    'rgba(255, 206, 86, 0.2)',
-//                                    'rgba(75, 192, 192, 0.2)',
-//                                    'rgba(153, 102, 255, 0.2)',
-//                                    'rgba(255, 159, 64, 0.2)'
-//                                ],
-//                                borderColor: [
-//                                    'rgba(255, 99, 132, 1)',
-//                                    'rgba(54, 162, 235, 1)',
-//                                    'rgba(255, 206, 86, 1)',
-//                                    'rgba(75, 192, 192, 1)',
-//                                    'rgba(153, 102, 255, 1)',
-//                                    'rgba(255, 159, 64, 1)'
-//                                ],
-//                                borderWidth: 1
-//                            }]
-//                    },
-//                    options: {
-//                        scales: {
-//                            y: {
-//                                beginAtZero: true
-//                            }
-//                        }
-//                    }
-//                });
-//            } catch (e) {
-//                console.log("chart error exception:" + e);
-//            }
-        </script>
+
         <script>
             try {
 
@@ -272,26 +235,26 @@
                 let traficLabel = "Trafic maritime global";
 
             <%
-        for (V_rubrique_op item : rubriques) {
-            if ("TraficGBL".equals(item.getCategorie_rubrique())) {
+    for (V_rubrique_op item : rubriques) {
+        if ("TraficGBL".equals(item.getCategorie_rubrique())) {
             %>
                 traficLabel = "<%= item.getDesignation()%>";
                 traficData = [
-            <%= item.getAnnee1()%>,
-            <%= item.getAnnee2()%>,
-            <%= item.getAnnee3()%>,
-            <%= item.getAnnee4()%>,
-            <%= item.getAnnee5()%>
+            <%= item.getAnnee1() / 1000%>,
+            <%= item.getAnnee2() / 1000%>,
+            <%= item.getAnnee3() / 1000%>,
+            <%= item.getAnnee4() / 1000%>,
+            <%= item.getAnnee5() / 1000%>
                 ];
             <%
-                break; // enlève si plusieurs lignes trafic
-            }
+            break;
         }
+    }
             %>
 
                 const ctx = document.getElementById('traficChart').getContext('2d');
 
-                const myChart = new Chart(ctx, {
+                new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: labels,
@@ -312,7 +275,8 @@
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return context.raw.toLocaleString();
+                                        return context.dataset.label + " : " +
+                                                context.raw.toLocaleString() + " K Unités";
                                     }
                                 }
                             }
@@ -322,7 +286,7 @@
                                 beginAtZero: true,
                                 ticks: {
                                     callback: function (value) {
-                                        return value.toLocaleString();
+                                        return value.toLocaleString() + " K Unités";
                                     }
                                 }
                             }
@@ -331,9 +295,10 @@
                 });
 
             } catch (e) {
-                console.log("chart error exception: " + e);
+                console.log("trafic chart error: " + e);
             }
         </script>
+
         <script>
             try {
 
@@ -558,6 +523,136 @@
                                     callback: function (value) {
                                         return value.toLocaleString();
                                     }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("chart error exception: " + e);
+            }
+        </script>
+        <script>
+            try {
+
+                // Labels = 5 dernières années
+                const labels = [
+                    "<%= annee - 4%>",
+                    "<%= annee - 3%>",
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                let evpData = [];
+                let evpLabel = "Trafic en EVP";
+
+                let mictslData = [];
+                let mictslLabel = "Performance MICTSL";
+
+            <%
+                for (V_rubrique_op item : rubriques) {
+                    if ("TraficEVP".equals(item.getCategorie_rubrique())) {
+            %>
+                evpLabel = "<%= item.getDesignation()%>";
+                evpData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                }
+                if ("RdmtMICTSL".equals(item.getCategorie_rubrique())) {
+            %>
+                mictslLabel = "<%= item.getDesignation()%>";
+                mictslData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
+                    }
+                }
+            %>
+
+                const ctx = document.getElementById('traficPerfChart').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: evpLabel,
+                                data: evpData,
+                                yAxisID: 'yEvp',
+                                tension: 0.3,
+                                borderColor: 'rgba(40, 167, 69, 1)',
+                                backgroundColor: 'rgba(40, 167, 69, 0.3)',
+                                borderWidth: 2,
+                                pointRadius: 5
+                            },
+                            {
+                                label: mictslLabel,
+                                data: mictslData,
+                                yAxisID: 'yMictsl',
+                                tension: 0.3,
+                                borderColor: 'rgba(255, 193, 7, 1)',
+                                backgroundColor: 'rgba(255, 193, 7, 0.3)',
+                                borderWidth: 2,
+                                pointRadius: 5
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const value = context.raw.toLocaleString();
+                                        return context.dataset.yAxisID === 'yEvp'
+                                                ? value + " EVP"
+                                                : value;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            yEvp: {
+                                type: 'linear',
+                                position: 'left',
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Trafic EVP'
+                                },
+                                ticks: {
+                                    callback: value => value.toLocaleString()
+                                }
+                            },
+                            yMictsl: {
+                                type: 'linear',
+                                position: 'right',
+                                beginAtZero: true,
+                                grid: {
+                                    drawOnChartArea: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Performance MICTSL'
+                                },
+                                ticks: {
+                                    callback: value => value.toLocaleString()
                                 }
                             }
                         }
