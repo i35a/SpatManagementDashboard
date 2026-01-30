@@ -103,7 +103,7 @@ public class Service_rubrique {
     }
     public static List<V_rubrique_global> getRubriqueGlobal_RH() {
         List<V_rubrique_global> list = new ArrayList<>();
-        String sql = "SELECT * FROM v_rubrique_global where activitie_lib = 'ACT_RH'";
+        String sql = "SELECT * FROM v_rubrique_global where activite_lib = 'ACT_RH'";
              
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql);
@@ -131,7 +131,7 @@ public class Service_rubrique {
     }
     public static List<V_rubrique_global> getRubriqueGlobal_FIN() {
         List<V_rubrique_global> list = new ArrayList<>();
-        String sql = "SELECT * FROM v_rubrique_global where activitie_lib = 'ACT_FIN'";
+        String sql = "SELECT * FROM v_rubrique_global where activite_lib = 'ACT_FIN'";
                 
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql);
@@ -159,7 +159,7 @@ public class Service_rubrique {
     }
     public static List<V_rubrique_global> getRubriqueGlobal_OP() {
         List<V_rubrique_global> list = new ArrayList<>();
-        String sql = "SELECT * FROM v_rubrique_global where activitie_lib = 'ACT_OP'";
+        String sql = "SELECT * FROM v_rubrique_global where activite_lib = 'ACT_OP'";
                 
         try (Connection cnx = DBConnectionOld.getConnection();
              PreparedStatement ps = cnx.prepareStatement(sql);

@@ -60,9 +60,9 @@
                             DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
 
                         %>
-                        <div class="card bg-light mb-3 col-lg col-md" style="width: flex 0 0 28%; margin-right: 1%;">
+                        <div class="card bg-light mb-3 col-lg col-md" style="width: flex 0 0 28%; margin-right: 1%;padding: 0 !important;">
                                 <h5 class="card-header">FINANCES</h5>
-                                <div class="card-body" style="padding: 0px;">
+                                <div class="card-body" style="padding: 10px;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
                                         <tr>
                                             <th></th>
@@ -86,9 +86,9 @@
 
                                 </div>
                             </div>
-                            <div class="card bg-light mb-3 col-lg  col-md " style="width: flex 0 0 28%;margin-right: 1%;">
+                            <div class="card bg-light mb-3 col-lg  col-md " style="width: flex 0 0 28%;margin-right: 1%;padding: 0 !important;">
                                 <h5 class="card-header">OPERATIONS</h5>
-                                <div class="card-body" style="padding: 0px;">
+                                <div class="card-body" style="padding: 10px;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
                                         <tr>
                                             <th></th>
@@ -112,9 +112,9 @@
 
                                 </div>
                             </div>  
-                            <div class="card bg-light mb-3  col-lg col-md " style="width: flex 0 0 28%;margin-right: 1%;">
+                            <div class="card bg-light mb-3  col-lg col-md " style="width: flex 0 0 28%;margin-right: 1%;padding: 0 !important;">
                                 <h5 class="card-header">RESSOURCES HUMAINES</h5>
-                                <div class="card-body" style="padding: 0px;">
+                                <div class="card-body" style="padding: 10px;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
                                         <tr>
                                             <th></th>

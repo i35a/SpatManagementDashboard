@@ -122,7 +122,7 @@
                                             <th><% out.println(annee - 0);%></th>
                                         </tr>
                                         <%     for (V_rubrique_op item : rubriques) {
-                                                if (item.getCategorie_rubrique().equals("Touchee") || item.getCategorie_rubrique().equals("TraficEVP_prev")) {
+                                                if (item.getCategorie_rubrique().equals("Touchee") || item.getCategorie_rubrique().equals("Touchee_prev")) {
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_touch" value="<%out.print(item.getDesignation());%>"></td>

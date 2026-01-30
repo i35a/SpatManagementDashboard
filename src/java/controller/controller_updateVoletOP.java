@@ -78,7 +78,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int i = 0; i < designation_trafic.length; i++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_trafic[i]);
-                rs.setValeur_saisie(Double.parseDouble(annee1_trafic[i]));
+                String  temp = annee1_trafic[i].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona1.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -87,7 +90,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int j = 0; j < designation_trafic.length; j++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_trafic[j]);
-                rs.setValeur_saisie(Double.parseDouble(annee2_trafic[j]));
+                String  temp = annee2_trafic[j].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona2.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -96,7 +102,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_trafic.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_trafic[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee3_trafic[k]));
+                String  temp = annee3_trafic[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona3.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -105,7 +114,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_trafic.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_trafic[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee4_trafic[k]));
+                String  temp = annee4_trafic[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona4.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -114,7 +126,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_trafic.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_trafic[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee5_trafic[k]));
+                String  temp = annee5_trafic[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona5.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -128,7 +143,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int i = 0; i < designation_touch.length; i++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_touch[i]);
-                rs.setValeur_saisie(Double.parseDouble(annee1_touch[i]));
+                String  temp = annee1_touch[i].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona1.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -137,7 +155,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int j = 0; j < designation_touch.length; j++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_touch[j]);
-                rs.setValeur_saisie(Double.parseDouble(annee2_touch[j]));
+                String  temp = annee2_touch[j].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona2.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -146,7 +167,10 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_touch.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_touch[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee3_touch[k]));
+                String  temp = annee3_touch[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona3.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -155,7 +179,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_touch.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_touch[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee4_touch[k]));
+                String  temp = annee4_touch[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona4.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -164,7 +190,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_touch.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_touch[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee5_touch[k]));
+                String  temp = annee5_touch[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona5.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -179,7 +207,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int i = 0; i < designation_evp.length; i++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_evp[i]);
-                rs.setValeur_saisie(Double.parseDouble(annee1_evp[i]));
+                String  temp = annee1_evp[i].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona1.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -188,7 +218,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int j = 0; j < designation_evp.length; j++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_evp[j]);
-                rs.setValeur_saisie(Double.parseDouble(annee2_evp[j]));
+                String  temp = annee2_evp[j].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona2.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -197,7 +229,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_evp.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_evp[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee3_evp[k]));
+                String  temp = annee3_evp[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona3.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -206,7 +240,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_evp.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_evp[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee4_evp[k]));
+                String  temp = annee4_evp[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona4.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -215,7 +251,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_evp.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_evp[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee5_evp[k]));
+                String  temp = annee5_evp[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona5.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -228,7 +266,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int i = 0; i < designation_mictsl.length; i++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_mictsl[i]);
-                rs.setValeur_saisie(Double.parseDouble(annee1_mictsl[i]));
+                String  temp = annee1_mictsl[i].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona1.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -237,7 +277,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int j = 0; j < designation_mictsl.length; j++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_mictsl[j]);
-                rs.setValeur_saisie(Double.parseDouble(annee2_mictsl[j]));
+                String  temp = annee2_mictsl[j].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona2.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -246,7 +288,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_mictsl.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_mictsl[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee3_mictsl[k]));
+                String  temp = annee3_mictsl[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona3.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -255,7 +299,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_mictsl.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_mictsl[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee4_mictsl[k]));
+                String  temp = annee4_mictsl[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona4.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
@@ -264,7 +310,9 @@ public class controller_updateVoletOP extends HttpServlet {
             for (int k = 0; k < designation_mictsl.length; k++) { 
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_mictsl[k]);
-                rs.setValeur_saisie(Double.parseDouble(annee5_mictsl[k]));
+                String  temp = annee5_mictsl[k].replace(" ", "") ;
+                temp = temp.replace(",", ".");
+                rs.setValeur_saisie(Double.parseDouble(temp));
                 rs.setPeriode_annuel(taona5.getValeur());
                 
                 update_ok = Service_rubrique.update(rs);
