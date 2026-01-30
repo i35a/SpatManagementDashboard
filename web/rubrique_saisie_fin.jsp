@@ -71,6 +71,12 @@
                             DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
     
                         %>
+                        
+                        <% //check user type  
+                            if(session.getAttribute("userType")!=null ){
+                            final String USER_TYPE =  session.getAttribute("userType").toString().toLowerCase(); 
+                                if(USER_TYPE.equals("fin")){
+                             %>
                         <form action="controller_updateVoletFIN" method="post">
 
                             <div class="card bg-light mb-3" style="max-width: 65rem;">
@@ -167,6 +173,9 @@
                             </div>         
                             <button class="btn btn-primary" type="submit">Mettre à jour</button>
                         </form>
+                                    <%  
+                                        } 
+} %>
                     </div> 
                 </div> 
             </div> 

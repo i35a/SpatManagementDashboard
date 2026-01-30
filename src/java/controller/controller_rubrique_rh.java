@@ -50,7 +50,14 @@ public class controller_rubrique_rh extends HttpServlet {
 
         Connection connection = DBConnection.getConnection();//sc.establish(loginSaisie, pwdSaisie,DirectionSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
         boolean userConnected = false;
-
+        
+        if(session.getAttribute("loggedIn") != null){
+            System.out.println("==========loggedIn session exists");
+        }
+        
+        if(session.getAttribute("login") != null){
+            System.out.println("==========login session exists");
+        }
         if (session.getAttribute("loggedIn") != null && session.getAttribute("login") != "root") {
 
             userConnected = true; 
@@ -76,7 +83,7 @@ public class controller_rubrique_rh extends HttpServlet {
             request.setAttribute("rh_data", json);
             request.getRequestDispatcher("/rubrique_saisie_rh.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("auth.jsp").forward(request, response);
+            //request.getRequestDispatcher("auth.jsp").forward(request, response);
         }
         //out.print(json);
         //out.flush();

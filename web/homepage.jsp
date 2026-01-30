@@ -60,6 +60,12 @@
                             DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
 
                         %>
+                        
+                        <% //check user type  
+                            if(session.getAttribute("userType")!=null ){
+                            final String USER_TYPE =  session.getAttribute("userType").toString().toLowerCase(); 
+                                if(USER_TYPE.equals("dg")){
+                             %>
                         <div class="card bg-light mb-3 col-lg col-md" style="width: flex 0 0 28%; margin-right: 1%;">
                                 <h5 class="card-header">FINANCES</h5>
                                 <div class="card-body" style="padding: 0px;">
@@ -138,6 +144,11 @@
 
                                 </div>
                             </div>  
+                                    
+                        <% 
+                            } 
+} 
+%>
                         </div>            
                     </div>
                 </div> 

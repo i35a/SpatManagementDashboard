@@ -56,13 +56,7 @@ public class UserLoginServlet extends HttpServlet {
         String pwdSaisie = "";
         String DirectionSaisie = "";
         HttpSession session = request.getSession();
-//        if(session.getAttribute("adminLogged")!=null){
-//           response.sendRedirect("adminlogin");
-//           return;
-//        }
-//        if (session == null) {
-//            request.getRequestDispatcher("adminauth.jsp?msg=nosess").forward(request, response);
-//        }
+ 
         Utilisateur foundUser = new Utilisateur();
 
         Connection connection = DBConnection.getConnection();//sc.establish(loginSaisie, pwdSaisie,DirectionSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
@@ -92,8 +86,7 @@ public class UserLoginServlet extends HttpServlet {
             System.out.println("empty login saisie et pwd saisie");
         }
 
-//        System.out.println("Login found: " + loginSaisie + ",\npwd saisie: " + pwdSaisie);
-//        System.out.println("connection == " + connection);
+ 
         if (userConnected) {
             System.out.println("***User found: " + foundUser.getFullname());
         } else {

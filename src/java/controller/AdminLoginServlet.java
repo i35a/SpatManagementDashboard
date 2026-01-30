@@ -41,10 +41,19 @@ public class AdminLoginServlet extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+
+            HttpSession session = request.getSession();
+            if(session.getAttribute("login")!=null && session.getAttribute("adminLogged")==null){
+//                session.invalidate();
+//                session = request.getSession();
+//                String msgerror = "Echec de connexion! Vérifiez vos informations de connection!";
+//                System.out.println("Cant connect to db");
+                request.getRequestDispatcher("/homepage").forward(request, response);
+
+            }
             String loginSaisie = "";
             String pwdSaisie = "";
             String DirectionSaisie = "";
-            HttpSession session = request.getSession();
             Boolean loggedIn = false;
 //        if (session == null) {
 //            request.getRequestDispatcher("adminauth.jsp?msg=nosess").forward(request, response);
