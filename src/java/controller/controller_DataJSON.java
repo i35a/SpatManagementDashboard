@@ -52,7 +52,7 @@ public class controller_DataJSON extends HttpServlet {
         //login feature 
         String loginSaisie = "";
         String pwdSaisie = "";
-        String DirectionSaisie = "";
+       
         HttpSession session = request.getSession();
 
         Utilisateur foundUser = new Utilisateur();
@@ -68,7 +68,7 @@ public class controller_DataJSON extends HttpServlet {
         } else if (request.getParameter("login") != null) {
             loginSaisie = request.getParameter("login").toString();
             pwdSaisie = request.getParameter("password").toString();
-            DirectionSaisie = request.getParameter("direction").toString();
+            
         }
         if (loginSaisie != null && pwdSaisie != null && !loginSaisie.trim().isEmpty() && !pwdSaisie.trim().isEmpty()) {
 

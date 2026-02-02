@@ -100,20 +100,7 @@
 
                                 <p><span class="fa fa-user"></span><input type="text" class="form-control" name="login" Placeholder="nom d'utilisateur" required></p> <!-- JS because of IE support; better: placeholder="Username" -->
                                 <p><span class="fa fa-lock"></span><input type="password" class="form-control" name="password" Placeholder="Mot de passe" required></p> <!-- JS because of IE support; better: placeholder="Password" -->
-                                <p>
-                                    <select class="form-control" aria-label="Direction" name="direction" required>
-                                        <option selected> Etablissement</option>
-                                        <option value="IT">IT</option>
-                                        <option value="dsia">DSIA</option>
-                                        <option value="drh">DRH</option>
-                                        <option value="daf">DAF</option>
-                                        <option value="dage">DAGE</option>
-                                        <option value="dt">DT</option>
-                                        <option value="dcap">DCAP</option>
-                                        <option value="dajpp">DAJPP</option>
-                                        <option value="dg">DG</option>
-                                    </select>
-                                </p>
+                                
                                 <div>
                                     <span style="width:50%; text-align:right;  display: inline-block;">
                                         <input type="submit" value="Se Connecter" name="seconnecter" id="seconnecter" class="form-control">

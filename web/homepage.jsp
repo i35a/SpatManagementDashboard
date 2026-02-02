@@ -42,7 +42,7 @@
                     <jsp:include page="header.jsp"/>
 
                     <div class="container-fluid">
-                        <h3 style="text-align: center;margin-bottom: 2%;">Tableau de bord - <%
+                        <h3 style="text-align: center;margin-bottom: 2%;font-weight: bold;">Tableau de bord - <%
                             String monthName = LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.FRENCH);
                             int an = LocalDate.now().getYear();
                             out.println(monthName + " " + an);
@@ -66,9 +66,9 @@
                                     final String USER_TYPE = session.getAttribute("userType").toString().toLowerCase();
                                     if (USER_TYPE.equals("dg") || USER_TYPE.equals("admin")) {
                             %>
-                            <div class="card bg-light mb-3 col-lg col-md" style="width: flex 0 0 28%; margin-right: 1%;">
-                                <h5 class="card-header">FINANCES</h5>
-                                <div class="card-body" style="padding: 10px;">
+                            <div class="card bg-light mb-3 col-lg col-md col-sm" style="border:1px solid #c69623;width: flex 0 0 28%; margin-right: 1%;padding: 0 !important;">
+                                <h5 class="card-header" style="background-color:#c69623;color:#ffffff;">FINANCES</h5>
+                                <div class="card-body" style="padding: 10px;background-color:#fafacf;color:#c69623;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
                                         <tr>
                                             <th></th>
@@ -92,9 +92,9 @@
 
                                 </div>
                             </div>
-                            <div class="card bg-light mb-3 col-lg  col-md " style="width: flex 0 0 28%;margin-right: 1%;padding: 0 !important;">
-                                <h5 class="card-header">OPERATIONS</h5>
-                                <div class="card-body" style="padding: 10px;">
+                            <div class="card bg-light mb-3 col-lg  col-md col-sm" style="border:1px solid #428f36;width: flex 0 0 28%;margin-right: 1%;padding: 0 !important;">
+                                <h5 class="card-header" style="background-color:#428f36;color:#ffffff;">OPERATIONS</h5>
+                                <div class="card-body" style="padding: 10px;background-color:#dfebdf;color:#428f36;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
                                         <tr>
                                             <th></th>
@@ -115,12 +115,11 @@
                                             }%>
                                     </table>
 
-
                                 </div>
                             </div>  
-                            <div class="card bg-light mb-3  col-lg col-md " style="width: flex 0 0 28%;margin-right: 1%;padding: 0 !important;">
-                                <h5 class="card-header">RESSOURCES HUMAINES</h5>
-                                <div class="card-body" style="padding: 10px;">
+                            <div class="card bg-light mb-3  col-lg col-md col-sm" style="border:1px solid #254385;width: flex 0 0 28%;margin-right: 1%;padding: 0 !important;">
+                                <h5 class="card-header" style="background-color:#254385;color:#ffffff;">RESSOURCES HUMAINES</h5>
+                                <div class="card-body" style="padding: 10px;background-color:#d2dffb;color:#254385;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
                                         <tr>
                                             <th></th>
@@ -149,7 +148,7 @@
                             } else if (USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh")) {
                                 //rh data
                             %>
-                            <div class="card bg-light mb-3  col-lg col-md " style="width: flex 0 0 28%;margin-right: 1%;">
+                            <div class="card bg-light mb-3  col-lg col-md col-sm" style="width: flex 0 0 28%;margin-right: 1%;">
                                 <h5 class="card-header">RESSOURCES HUMAINES</h5>
                                 <div class="card-body" style="padding: 0px;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
@@ -179,7 +178,7 @@
                             } else if (USER_TYPE.equals("fin")) {
 //fin data
                             %> 
-                            <div class="card bg-light mb-3 col-lg col-md" style="width: flex 0 0 28%; margin-right: 1%;">
+                            <div class="card bg-light mb-3 col-lg col-md col-sm" style="width: flex 0 0 28%; margin-right: 1%;">
                                 <h5 class="card-header">FINANCES</h5>
                                 <div class="card-body" style="padding: 0px;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
@@ -209,7 +208,7 @@
                             } else if (USER_TYPE.equals("op")) {
 //op data
                             %> 
-                            <div class="card bg-light mb-3 col-lg  col-md " style="width: flex 0 0 28%;margin-right: 1%;">
+                            <div class="card bg-light mb-3 col-lg  col-md col-sm" style="width: flex 0 0 28%;margin-right: 1%;">
                                 <h5 class="card-header">OPERATIONS</h5>
                                 <div class="card-body" style="padding: 0px;">
                                     <table border="1" style="width:100%;border:0px;line-height: 2.5;margin-top: 7.5%;font-size: 0.95em;">
