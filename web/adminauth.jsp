@@ -95,7 +95,7 @@
 
                     <div id="login">
 
-                        <form action="adminlogin" method="post" id="myform">
+                        <form action="Auth" method="post" id="myform">
                             <fieldset class="clearfix">
 
                                 <p><span class="fa fa-user"></span><input type="text" class="form-control" name="login" Placeholder="Login" required></p> <!-- JS because of IE support; better: placeholder="Username" -->

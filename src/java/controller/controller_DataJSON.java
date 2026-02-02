@@ -70,14 +70,21 @@ public class controller_DataJSON extends HttpServlet {
             pwdSaisie = request.getParameter("password").toString();
             
         }
-        if (loginSaisie != null && pwdSaisie != null && !loginSaisie.trim().isEmpty() && !pwdSaisie.trim().isEmpty()) {
+        try {
+            if (loginSaisie != null && pwdSaisie != null && !loginSaisie.trim().isEmpty() && !pwdSaisie.trim().isEmpty()) {
 
-            foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
-            //init user found 
-            if (Utils.checkPasswordBcrypt(pwdSaisie, foundUser.getPwd())) {
-                userConnected = true;
+                foundUser = ServiceUtilisateur.getUserByLogin(Integer.valueOf(loginSaisie), connection);
+                //init user found 
+                if (Utils.checkPasswordBcrypt(pwdSaisie, foundUser.getPwd())) {
+                    userConnected = true;
 
+                }
             }
+        } catch (NumberFormatException e) {
+            session.invalidate();
+            session = request.getSession();
+            String msgerror = "Echec de connexion! Le login n'est pas correcte"; 
+            request.getRequestDispatcher("auth.jsp?msg=" + msgerror).forward(request, response);
         }
 
         if (connection == null) {
@@ -117,12 +124,16 @@ public class controller_DataJSON extends HttpServlet {
             session.setAttribute("loggedIn", foundUser.getId());
             session.setAttribute("userType", tru.getDescription());
             session.setAttribute("userTypeId", tru.getId());
-            System.out.println("^^^^user type found: "+tru.getDescription()+"^^^^^^^^");
+            System.out.println("^^^^user type found: " + tru.getDescription() + "^^^^^^^^");
             session.setAttribute("login", foundUser.getLogin());
             //6. page chart où vont atterir les données
             request.getRequestDispatcher("/homepage.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("auth.jsp").forward(request, response);
+            session.invalidate();
+            session = request.getSession();
+            String msgerror = "Echec de connexion! Vérifiez vos informations de connection!";
+            System.out.println("Cant connect to db");
+            request.getRequestDispatcher("auth.jsp?msg=" + msgerror).forward(request, response);
         }
     }
 

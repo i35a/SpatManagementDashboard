@@ -46,13 +46,13 @@
                     <div class="container-fluid">
                         <h3 style="text-align: center;margin-bottom: 2%;">Tableau de bord - Ressources Humaines</h3>
                         <div style="display:flex;gap:45px;justify-content:space-between;">
-                            <div style="display:flex;flex-direction:column;" ><canvas id="myChart" width="400" height="400"></canvas>
+                            <div style="display:flex;flex-direction:column;" ><canvas id="byGenderChart" width="300" height="400"></canvas>
                                 <p>Données par genre</p>
                             </div>
-                            <div  style="display:flex;flex-direction:column;"><canvas id="categoryChart" width="400" height="400"></canvas>
+                            <div  style="display:flex;flex-direction:column;"><canvas id="categoryChart" width="300" height="400"></canvas>
                                 <p>Données par catégorie</p>
                             </div>
-                            <div  style="display:flex;flex-direction:column;"><canvas id="salaireChart" width="400" height="400"></canvas>
+                            <div  style="display:flex;flex-direction:column;"><canvas id="salaireChart" width="300" height="400"></canvas>
                                 <p>Données par salaire</p>
                             </div>
 
@@ -60,22 +60,22 @@
 
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
-                           // int annee = taona.getValeur();
+                            // int annee = taona.getValeur();
                             int annee = LocalDate.now().getYear();
-                                    
+
                             String json = request.getAttribute("rh_data").toString();
                             Gson gson = new Gson();
                             V_rubrique_saisie[] rubriques = gson.fromJson(json, V_rubrique_saisie[].class);
-                            
+
                             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRANCE);
                             DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
 
                         %>
                         <% //check user type  
-                            if(session.getAttribute("userType")!=null ){
-                            final String USER_TYPE =  session.getAttribute("userType").toString().toLowerCase(); 
-                                if(USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh") || USER_TYPE.equals("admin")){
-                             %>
+                            if (session.getAttribute("userType") != null) {
+                                final String USER_TYPE = session.getAttribute("userType").toString().toLowerCase();
+                                if (USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh") || USER_TYPE.equals("admin")) {
+                        %>
                         <form action="controller_updateVoletRH" method="post">
 
                             <div class="card bg-light mb-3" style="max-width: 45rem;">
@@ -89,8 +89,8 @@
                                             <th><% out.println(annee - 0);%></th>
                                         </tr>
                                         <%     for (V_rubrique_saisie item : rubriques) {
-                                                if (item.getCategorie_rubrique().equals("categorieRH") ) {
-                                                    
+                                                if (item.getCategorie_rubrique().equals("categorieRH")) {
+
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_categrh" value="<%out.print(item.getDesignation());%>"></td>
@@ -142,7 +142,7 @@
                                             <th><% out.println(annee - 0);%></th>
                                         </tr>
                                         <%     for (V_rubrique_saisie item : rubriques) {
-                                                if (item.getCategorie_rubrique().equals("salaireRH")|| item.getCategorie_rubrique().equals("salaireRH_prev")) {
+                                                if (item.getCategorie_rubrique().equals("salaireRH") || item.getCategorie_rubrique().equals("salaireRH_prev")) {
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_salrh" value="<%out.print(item.getDesignation());%>"></td>
@@ -159,9 +159,9 @@
                             </div>         
                             <button class="btn btn-primary" type="submit">Mettre à jour</button>
                         </form>
-                                    <% 
-                                        } 
-} %>
+                        <%
+                                }
+                            }%>
                     </div>
                 </div> 
             </div> 
@@ -211,7 +211,7 @@
         <script>
             try {
 
-                //fetching datas 
+                // fetching datas
                 const labels = [
                     "<%= annee - 2%>",
                     "<%= annee - 1%>",
@@ -247,13 +247,14 @@
                     }
                 }
             %>
-                //building the chart
-                const ctx = document.getElementById('myChart').getContext('2d');
+
+                // building the chart
+                const ctx = document.getElementById('byGenderChart').getContext('2d');
 
                 const myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ['2023', '2024', '2025'],
+                        labels: labels,
                         datasets: [
                             {
                                 label: 'Effectif Masculin',
@@ -273,12 +274,13 @@
                     },
                     options: {
                         responsive: true,
+                        indexAxis: 'y', // ✅ histogramme horizontal
                         scales: {
-                            y: {
+                            x: {
                                 beginAtZero: true,
                                 ticks: {
                                     callback: function (value) {
-                                        return value.toLocaleString(); // 45 000 formatting
+                                        return value.toLocaleString(); // 45 000
                                     }
                                 }
                             }
@@ -290,20 +292,21 @@
                 console.log("chart error exception: " + e);
             }
         </script>
+
         <script>
             try {
-                // X-axis labels (years)
+                // Labels (years) → deviennent l’axe Y
                 const labels = [
                     "<%= annee - 2%>",
                     "<%= annee - 1%>",
                     "<%= annee%>"
                 ];
 
-                // Datasets container
                 const datasets = [];
 
             <%
                 int colorIndex = 0;
+
                 String[] bgColors = {
                     "rgba(54, 162, 235, 0.6)",
                     "rgba(255, 99, 132, 0.6)",
@@ -342,7 +345,6 @@
                 }
             %>
 
-                // Build the chart
                 const ctx = document.getElementById('categoryChart').getContext('2d');
 
                 new Chart(ctx, {
@@ -353,14 +355,19 @@
                     },
                     options: {
                         responsive: true,
+                        indexAxis: 'y',
+
                         scales: {
-                            y: {
+                            x: {// axe des valeurs (horizontal)
                                 beginAtZero: true,
                                 ticks: {
                                     callback: function (value) {
                                         return value.toLocaleString();
                                     }
                                 }
+                            },
+                            y: {// axe des catégories (années)
+                                stacked: false
                             }
                         }
                     }
@@ -369,7 +376,8 @@
             } catch (e) {
                 console.log("chart error exception: " + e);
             }
-        </script> 
+        </script>
+
         <script>
             try {
                 // X-axis labels (years)
@@ -379,48 +387,47 @@
                     "<%= annee%>"
                 ];
 
-                // Datasets container
                 const datasets = [];
 
             <%
-                int colorIndexSalary = 0;
-                String[] bgColorsSalary = {
-                    "rgba(75, 192, 192, 0.6)",
-                    "rgba(255, 159, 64, 0.6)",
-                    "rgba(153, 102, 255, 0.6)",
-                    "rgba(255, 99, 132, 0.6)",
-                    "rgba(54, 162, 235, 0.6)"
-                };
+    int colorIndexSalary = 0;
 
-                String[] borderColorsSalary = {
-                    "rgba(75, 192, 192, 1)",
-                    "rgba(255, 159, 64, 1)",
-                    "rgba(153, 102, 255, 1)",
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(54, 162, 235, 1)"
-                };
+    String[] bgColorsSalary = {
+        "rgba(75, 192, 192, 0.6)",
+        "rgba(255, 159, 64, 0.6)",
+        "rgba(153, 102, 255, 0.6)",
+        "rgba(255, 99, 132, 0.6)",
+        "rgba(54, 162, 235, 0.6)"
+    };
 
-                for (V_rubrique_saisie item : rubriques) {
-                    if ("salaireRH".equals(item.getCategorie_rubrique())) {
+    String[] borderColorsSalary = {
+        "rgba(75, 192, 192, 1)",
+        "rgba(255, 159, 64, 1)",
+        "rgba(153, 102, 255, 1)",
+        "rgba(255, 99, 132, 1)",
+        "rgba(54, 162, 235, 1)"
+    };
+
+    for (V_rubrique_saisie item : rubriques) {
+        if ("salaireRH".equals(item.getCategorie_rubrique())) {
             %>
                 datasets.push({
                     label: "<%= item.getDesignation()%>",
                     data: [
-            <%= item.getAnnee1()%>,
-            <%= item.getAnnee2()%>,
-            <%= item.getAnnee3()%>
+            <%= item.getAnnee1() / 1000%>,
+            <%= item.getAnnee2() / 1000%>,
+            <%= item.getAnnee3() / 1000%>
                     ],
                     backgroundColor: "<%= bgColorsSalary[colorIndexSalary % bgColorsSalary.length]%>",
                     borderColor: "<%= borderColorsSalary[colorIndexSalary % borderColorsSalary.length]%>",
                     borderWidth: 1
                 });
             <%
-                        colorIndexSalary++;
-                    }
-                }
+            colorIndexSalary++;
+        }
+    }
             %>
 
-                // Build chart
                 const ctx = document.getElementById('salaireChart').getContext('2d');
 
                 new Chart(ctx, {
@@ -436,7 +443,7 @@
                                 beginAtZero: true,
                                 ticks: {
                                     callback: function (value) {
-                                        return value.toLocaleString() + " Ariary"; // currency formatting
+                                        return value.toLocaleString() + " K Ariary";
                                     }
                                 }
                             }
@@ -445,8 +452,8 @@
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return context.dataset.label + ": " +
-                                                context.parsed.y.toLocaleString() + " Ariary";
+                                        return context.dataset.label + " : " +
+                                                context.parsed.y.toLocaleString() + " K Ariary";
                                     }
                                 }
                             }
@@ -458,6 +465,7 @@
                 console.log("salaire chart error: " + e);
             }
         </script>
+
 
     </body>
 </html>

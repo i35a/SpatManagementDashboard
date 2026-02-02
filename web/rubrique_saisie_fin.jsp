@@ -49,7 +49,7 @@
                         
                         
                         <div style="display:flex;gap:45px;justify-content:space-between;">
-                            <div><canvas id="caChart" width="400" height="400"></canvas>
+<!--                            <div><canvas id="caChart" width="400" height="400"></canvas>
                                 <p>C.A</p>
                             </div>
                             <div><canvas id="margeChart" width="400" height="400"></canvas>
@@ -57,6 +57,9 @@
                             </div>
                             <div><canvas id="resultChart" width="400" height="400"></canvas>
                                 <p>Resultat.</p>
+                            </div>-->
+                             <div><canvas id="financeChart" width="400" height="400"></canvas>
+                                <p>CA, EBIDTA, Resultat Chart.</p>
                             </div>
                         </div>
                         <%
@@ -450,6 +453,145 @@
                 console.log("chart error exception: " + e);
             }
         </script>
+        
+        <script>
+try {
+
+    const labels = [
+        "<%= annee - 4 %>",
+        "<%= annee - 3 %>",
+        "<%= annee - 2 %>",
+        "<%= annee - 1 %>",
+        "<%= annee %>"
+    ];
+
+    let caData = [];
+    let ebidtaData = [];
+    let resultatData = [];
+
+    let caLabel = "Chiffre d'Affaire";
+    let ebidtaLabel = "EBITDA";
+    let resultatLabel = "Résultat";
+
+<%
+    for (V_rubrique_fin item : rubriques) {
+
+        if ("CAFIN".equals(item.getCategorie_rubrique())) {
+%>
+    caLabel = "<%= item.getDesignation() %>";
+    caData = [
+        <%= item.getAnnee1() / 1000 %>,
+        <%= item.getAnnee2() / 1000 %>,
+        <%= item.getAnnee3() / 1000 %>,
+        <%= item.getAnnee4() / 1000 %>,
+        <%= item.getAnnee5() / 1000 %>
+    ];
+<%
+        }
+
+        if ("EBIDTAFIN".equals(item.getCategorie_rubrique())) {
+%>
+    ebidtaLabel = "<%= item.getDesignation() %>";
+    ebidtaData = [
+        <%= item.getAnnee1() / 1000 %>,
+        <%= item.getAnnee2() / 1000 %>,
+        <%= item.getAnnee3() / 1000 %>,
+        <%= item.getAnnee4() / 1000 %>,
+        <%= item.getAnnee5() / 1000 %>
+    ];
+<%
+        }
+
+        if ("ExoFIN".equals(item.getCategorie_rubrique())) {
+%>
+    resultatLabel = "<%= item.getDesignation() %>";
+    resultatData = [
+        <%= item.getAnnee1() / 1000 %>,
+        <%= item.getAnnee2() / 1000 %>,
+        <%= item.getAnnee3() / 1000 %>,
+        <%= item.getAnnee4() / 1000 %>,
+        <%= item.getAnnee5() / 1000 %>
+    ];
+<%
+        }
+    }
+%>
+
+    const ctx = document.getElementById('financeChart').getContext('2d');
+
+    new Chart(ctx, {
+        data: {
+            labels: labels,
+            datasets: [
+
+                // CA
+                {
+                    type: 'bar',
+                    label: caLabel,
+                    data: caData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+
+                // Résultat
+                {
+                    type: 'bar',
+                    label: resultatLabel,
+                    data: resultatData,
+                    backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                },
+
+                // EBITDA
+                {
+                    type: 'line',
+                    label: ebidtaLabel,
+                    data: ebidtaData,
+                    tension: 0.3,
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    fill: false,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.5)'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return context.dataset.label + " : " +
+                                   context.raw.toLocaleString() + " K Ariary";
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    ticks: {
+                        callback: function (value) {
+                            return value.toLocaleString() + " K Ariary";
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+} catch (e) {
+    console.log("chart error exception: " + e);
+}
+</script>
+
 
     </body>
 </html>
