@@ -131,7 +131,7 @@
                                             <th><% out.println(annee - 0);%></th>
                                         </tr>
                                         <%     for (V_rubrique_op item : rubriques) {
-                                                if (item.getCategorie_rubrique().equals("Touchee") || item.getCategorie_rubrique().equals("Touchee_prev")) {
+                                                if (item.getCategorie_rubrique().toLowerCase().equals("touchee") || item.getCategorie_rubrique().toLowerCase().equals("touchee_prev")) {
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_touch" value="<%out.print(item.getDesignation());%>"></td>
@@ -235,8 +235,8 @@
                 let traficLabel = "Trafic maritime global";
 
             <%
-    for (V_rubrique_op item : rubriques) {
-        if ("TraficGBL".equals(item.getCategorie_rubrique())) {
+                for (V_rubrique_op item : rubriques) {
+                    if ("TraficGBL".equals(item.getCategorie_rubrique())) {
             %>
                 traficLabel = "<%= item.getDesignation()%>";
                 traficData = [
@@ -247,9 +247,9 @@
             <%= item.getAnnee5() / 1000%>
                 ];
             <%
-            break;
-        }
-    }
+                        break;
+                    }
+                }
             %>
 
                 const ctx = document.getElementById('traficChart').getContext('2d');
@@ -311,15 +311,19 @@
                     "<%= annee%>"
                 ];
 
-                let toucheesData = [];
-                let toucheesLabel = "Touchées de navires";
+                let toucheeData = [];
+                let toucheeLabel = "Touchées réalisées";
+
+                let toucheePrevData = [];
+                let toucheePrevLabel = "Touchées prévues";
 
             <%
-                for (V_rubrique_op item : rubriques) {
-                    if ("Touchée".equals(item.getCategorie_rubrique())) {
+            for (V_rubrique_op item : rubriques) {
+                //System.out.println("debug item categorie: "+item.getCategorie_rubrique()+": "+item.getDesignation());
+                if ("touchee".equalsIgnoreCase(item.getCategorie_rubrique()) && "prévision touchée lc".equalsIgnoreCase(item.getDesignation())) {
             %>
-                toucheesLabel = "<%= item.getDesignation()%>";
-                toucheesData = [
+                toucheeLabel = "<%= item.getDesignation()%>";
+                toucheeData = [
             <%= item.getAnnee1()%>,
             <%= item.getAnnee2()%>,
             <%= item.getAnnee3()%>,
@@ -327,44 +331,71 @@
             <%= item.getAnnee5()%>
                 ];
             <%
-                        break; // enlève si plusieurs lignes "Touchée"
-                    }
+            }
+
+            if ("touchee".equalsIgnoreCase(item.getCategorie_rubrique()) && "prévision touchée non lc".equalsIgnoreCase(item.getDesignation())) {
+            %>
+                toucheePrevLabel = "<%= item.getDesignation()%>";
+                toucheePrevData = [
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>,
+            <%= item.getAnnee4()%>,
+            <%= item.getAnnee5()%>
+                ];
+            <%
                 }
+            }
             %>
 
                 const ctx = document.getElementById('toucheesChart').getContext('2d');
 
-                const myChart = new Chart(ctx, {
+                new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: labels,
-                        datasets: [{
-                                label: toucheesLabel,
-                                data: toucheesData,
-                                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                        datasets: [
+                            {
+                                label: toucheeLabel,
+                                data: toucheeData,
+                                backgroundColor: 'rgba(0, 123, 255, 0.7)',
                                 borderColor: 'rgba(0, 123, 255, 1)',
                                 borderWidth: 1
-                            }]
+                            },
+                            {
+                                label: toucheePrevLabel,
+                                data: toucheePrevData,
+                                backgroundColor: 'rgba(220, 53, 69, 0.5)',
+                                borderColor: 'rgba(220, 53, 69, 1)',
+                                borderWidth: 1
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
                         plugins: {
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return context.raw.toLocaleString() + " escales";
+                                        return context.dataset.label + " : "
+                                                + context.raw.toLocaleString() + " escales";
                                     }
                                 }
                             }
                         },
                         scales: {
+                            x: {
+                                stacked: false
+                            },
                             y: {
                                 beginAtZero: true,
                                 ticks: {
                                     stepSize: 1,
-                                    callback: function (value) {
-                                        return value.toLocaleString();
-                                    }
+                                    callback: value => value.toLocaleString()
                                 }
                             }
                         }
@@ -374,8 +405,7 @@
             } catch (e) {
                 console.log("chart error exception: " + e);
             }
-        </script>
-
+        </script> 
         <script>
             try {
 
