@@ -14,7 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List; 
+import java.util.List;
 import model.Utilisateur;
 import utils.Utils;
 import service.ServiceRoleUtilisateur;
@@ -31,15 +31,15 @@ public class ServiceUtilisateur {
         String sql = "SELECT id,login,pwd,idrole,user_locked FROM utilisateur WHERE login=? ";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql); 
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setObject(1, userMatricule);
             ResultSet rs = ps.executeQuery();
-            System.out.println("-----searching for user"+ userMatricule);
+            System.out.println("-----searching for user" + userMatricule);
             while (rs.next()) {
                 System.out.println("--finding someone..");
                 if (rs.getString("id") != null) {
                     foundUser.setId(Integer.parseInt(rs.getString("id")));
-                    System.out.println("---found id: "+rs.getString("id"));
+                    System.out.println("---found id: " + rs.getString("id"));
                 } else {
                     System.out.println("null id");
                 }
@@ -50,7 +50,7 @@ public class ServiceUtilisateur {
                 }
                 if (rs.getString("pwd") != null) {
                     foundUser.setPwd(rs.getString("pwd"));
-                    System.out.println("hash found: "+foundUser.getPwd());
+                    System.out.println("hash found: " + foundUser.getPwd());
                 } else {
                     System.out.println("null pwd");
                 }
@@ -71,20 +71,27 @@ public class ServiceUtilisateur {
     public static ArrayList<Utilisateur> getAllItems(Utilisateur searchUser, Connection con) {
         ArrayList<Utilisateur> result = new ArrayList<Utilisateur>();
         String sql = "SELECT * FROM v_utilisateur WHERE 1=1 AND (user_locked IS NULL OR user_locked=FALSE) ";
-        if (searchUser.getFullname() != null) {
-            sql = sql + " AND lower(fullname) like '%" + searchUser.getFullname() + "%' ";
-            
-//            try{
-//            int userLogin = Integer.parseInt(searchUser.getFullname());
-//            if(userLogin>0)
-//            sql +=" AND lower(cast(login AS TEXT)) ilike '%" + userLogin + "%'";
-//            }catch(Exception e){
-//                
-//            }
+        if (searchUser.getFullname() != null && searchUser.getFullname() != "") {
+            sql = sql + " AND (lower(fullname) like '%" + searchUser.getFullname() + "%' ";
+
+            try {
+                if (searchUser.getLogin() != null) {
+                    int userLogin = Integer.parseInt(searchUser.getFullname());
+                    if (userLogin > 0) {
+                        sql += " OR lower(cast(login AS TEXT)) like '%" + userLogin + "%' ";
+                    } else {
+                        System.out.println("***Login search error***");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Number format exception login: " + e.getMessage() + ", " + searchUser.getFullname());
+            }
+            sql +=") ";
         }
-        if (searchUser.getIdRole() != null) { 
+
+        if (searchUser.getIdRole() != null) {
             sql = sql + " AND idrole=" + searchUser.getIdRole() + "";
-            System.out.println("ID ROLE FOUND:"+ searchUser.getIdRole());
+            System.out.println("ID ROLE FOUND:" + searchUser.getIdRole());
         } else {
             System.out.println("null id role");
         }
@@ -94,7 +101,7 @@ public class ServiceUtilisateur {
 //        } else {
 //            System.out.println("null login" + searchUser.getFullname());
 //        }
-
+        System.out.println("****Last query: " + sql + "\n");
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -125,6 +132,7 @@ public class ServiceUtilisateur {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Exception found: " + e.getMessage());
         }
         return result;
     }
