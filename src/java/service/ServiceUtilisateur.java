@@ -72,7 +72,7 @@ public class ServiceUtilisateur {
         ArrayList<Utilisateur> result = new ArrayList<Utilisateur>();
         String sql = "SELECT * FROM v_utilisateur WHERE 1=1 AND (user_locked IS NULL OR user_locked=FALSE) ";
         if (searchUser.getFullname() != null && searchUser.getFullname() != "") {
-            sql = sql + " AND (lower(fullname) like '%" + searchUser.getFullname() + "%' ";
+            sql = sql + " AND (lower(fullname) ilike '%" + searchUser.getFullname() + "%' ";
 
             try {
                 if (searchUser.getLogin() != null) {
