@@ -71,6 +71,13 @@ public class UtilisateurServlet extends HttpServlet {
             }
             if (request.getParameter("userNameSearch") != null) {
                 searchUser.setFullname(request.getParameter("userNameSearch"));
+                
+                try{
+                    searchUser.setLogin(Integer.valueOf(request.getParameter("userNameSearch")));
+                    System.out.println("Query found: "+request.getParameter("userNameSearch"));
+                }catch(NumberFormatException e){
+                    System.out.println("NSearch user number format exception, query: "+request.getParameter("userNameSearch"));
+                }
             }
             if (request.getParameter("userRoleSearch") != null && !request.getParameter("userRoleSearch").trim().isEmpty()) {
                 searchUser.setIdRole(Integer.parseInt("0" + request.getParameter("userRoleSearch")));
