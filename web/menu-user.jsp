@@ -32,7 +32,7 @@
                 <% } else if (USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh")) {
 //menu rh only
                 %>
-            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_rh">
+            <li class="nav-item menu"><a class="nav-link" id="chatBot" href="indicateur_rh">
                     <i class="fas fa-user"></i><span> Ressources Humaines</span>
                 </a></li>
                 <%

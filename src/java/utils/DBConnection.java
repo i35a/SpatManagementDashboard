@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class DBConnection {
 
     //private static final String JDBC_DRIVER = "jdbc:postgresql://192.168.1.101:5432/tdbrd";
-    private static final String JDBC_DRIVER = "jdbc:postgresql://localhost:5432/tdbrd";
+    private static final String JDBC_DRIVER = "jdbc:postgresql://localhost:5432/dashboard";
     private static final String USER = "postgres";
     private static final String USER_PWD = "postgres"; //prod
 

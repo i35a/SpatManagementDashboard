@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,24 +21,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Rubrique_saisie;
 import model.Utilisateur;
-import model.V_evolution_annuel_fin;
-import model.V_evolution_annuel_fin_prev;
-import model.V_indicateur_fin;
-import model.V_rubrique_fin;
-import model.V_rubrique_saisie;
-import service.Service_evolution_fin;
-import service.Service_indicateur_fin;
-import service.Service_rubrique;
+import model.V_indicateur_rh;
+import service.Service_indicateur_rh;
 import utils.DBConnection;
 
 /**
  *
  * @author PC
  */
-@WebServlet("/rubrique_fin")
-public class controller_rubrique_fin extends HttpServlet {
+@WebServlet("/indicateur_rh")
+public class controller_indicateur_rh extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,24 +49,27 @@ public class controller_rubrique_fin extends HttpServlet {
 
         Connection connection = DBConnection.getConnection();//sc.establish(loginSaisie, pwdSaisie,DirectionSaisie, foundUser); //sc.establish(loginSaisie, pwdSaisie, "", foundUser);
         boolean userConnected = false;
-
+        
+        if(session.getAttribute("loggedIn") != null){
+            System.out.println("==========loggedIn session exists");
+        }
+        
+        if(session.getAttribute("login") != null){
+            System.out.println("==========login session exists");
+        }
         if (session.getAttribute("loggedIn") != null && session.getAttribute("login") != "root") {
 
-            userConnected = true;
+            userConnected = true; 
         }
-
         if (userConnected) {
             // 1. Récupération de la liste depuis le service
-            //List<V_indicateur_fin> indic = Service_indicateur_fin.getIndicateurFIN(); // .getAllRubriques();
-            List<V_evolution_annuel_fin> indic = Service_evolution_fin.getEvolutionFin(); // .getAllRubriques();
-            List<V_evolution_annuel_fin_prev> indic_prev = Service_evolution_fin.getEvolutionFinPrev(); // .getAllRubriques();
+            List<V_indicateur_rh> indic = Service_indicateur_rh.getIndicateurRH(); // .getAllRubriques();
 
             // 2. Création de l'objet Gson (compatible 2.2.2)
             Gson gson = new GsonBuilder().create();
 
             // 3. Conversion Liste -> JSON
             String json = gson.toJson(indic);
-            String json_prev = gson.toJson(indic_prev);
 
             // 4. Configuration de la réponse HTTP
             response.setContentType("application/json");
@@ -80,14 +77,10 @@ public class controller_rubrique_fin extends HttpServlet {
 
             // 5. Envoi du JSON au client
             PrintWriter out = response.getWriter();
-
-            request.setAttribute("fin_data", json);
-            request.setAttribute("fin_prev_data", json);
-            request.getRequestDispatcher("/rubrique_saisie_fin.jsp").forward(request, response);
-            //out.print(json);
-            //out.flush();
+            request.setAttribute("rh_data", json);
+            request.getRequestDispatcher("/rubrique_saisie_rh.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("auth.jsp").forward(request, response);
+            //request.getRequestDispatcher("auth.jsp").forward(request, response);
         }
     }
 
@@ -106,7 +99,7 @@ public class controller_rubrique_fin extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(controller_rubrique_fin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(controller_indicateur_rh.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -124,7 +117,7 @@ public class controller_rubrique_fin extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
-            Logger.getLogger(controller_rubrique_fin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(controller_indicateur_rh.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

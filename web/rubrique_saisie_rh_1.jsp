@@ -4,16 +4,13 @@
     Author     : PC
 --%>
 
-<%@page import="service.Service_indicateur_rh"%>
-<%@page import="model.Mois"%>
-<%@page import="service.Service_mois"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.DecimalFormatSymbols"%>
 <%@page import="java.util.Locale"%>
 <%@page import="model.Annee"%>
 <%@page import="service.Service_annee"%>
-<%@page import="model.V_indicateur_rh"%>
+<%@page import="model.V_rubrique_saisie"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.List"%>
 <%@page import="model.Rubrique_saisie"%>
@@ -63,14 +60,12 @@
 
                         <%
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
-                            Mois res_mois = Service_mois.getCurrentMoisLib();
-                            String mois = res_mois.getLibelle();
-                            
-                            System.out.println("MOIS : "+mois);
-                            
+                            // int annee = taona.getValeur();
+                            int annee = LocalDate.now().getYear();
+
                             String json = request.getAttribute("rh_data").toString();
                             Gson gson = new Gson();
-                            V_indicateur_rh[] indic = gson.fromJson(json, V_indicateur_rh[].class);
+                            V_rubrique_saisie[] rubriques = gson.fromJson(json, V_rubrique_saisie[].class);
 
                             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRANCE);
                             DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
@@ -89,17 +84,19 @@
                                     <table border="1">
                                         <tr>
                                             <th>Description</th>
-                                            <th><% out.println(mois);%></th>
-<
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
                                         </tr>
-                                        <%     for (V_indicateur_rh item : indic) {
+                                        <%     for (V_rubrique_saisie item : rubriques) {
                                                 if (item.getCategorie_rubrique().equals("categorieRH")) {
-                                            
+
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_categrh" value="<%out.print(item.getDesignation());%>"></td>
-                                            <td><input type="text" name="valeur_categrh" value="<%out.print(Service_indicateur_rh.getByMois(item, mois));%>"></td>
-                                           
+                                            <td><input type="text" name="annee1_categrh" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_categrh" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_categrh" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
                                         </tr>
                                         <%          }
                                             } %>
@@ -114,16 +111,18 @@
                                     <table border="1">
                                         <tr>
                                             <th>Description</th>
-                                            <th><% out.println(mois);%></th>
-                                            
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
                                         </tr>
-                                        <%     for (V_indicateur_rh item : indic) {
+                                        <%     for (V_rubrique_saisie item : rubriques) {
                                                 if (item.getCategorie_rubrique().equals("genreRH")) {
                                         %>
                                         <tr>
                                             <td><input type="text" name="designation_genrerh" value="<%out.print(item.getDesignation());%>"></td>
-                                            <td><input type="text" name="jan_genrerh" value="<%out.print(df.format(Service_indicateur_rh.getByMois(item, mois)));%>"></td>
-                                            
+                                            <td><input type="text" name="annee1_genrerh" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_genrerh" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_genrerh" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
                                         </tr>
                                         <%         }
                                             }%>
@@ -131,7 +130,33 @@
 
                                 </div>
                             </div>
-     
+
+                            <div class="card bg-light mb-3" style="max-width: 45rem;">
+                                <h5 class="card-header">Salaire</h5>
+                                <div class="card-body">
+                                    <table border="1">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
+                                        </tr>
+                                        <%     for (V_rubrique_saisie item : rubriques) {
+                                                if (item.getCategorie_rubrique().equals("salaireRH") || item.getCategorie_rubrique().equals("salaireRH_prev")) {
+                                        %>
+                                        <tr>
+                                            <td><input type="text" name="designation_salrh" value="<%out.print(item.getDesignation());%>"></td>
+                                            <td><input type="text" name="annee1_salrh" value="<%out.print(df.format(item.getAnnee1()));%>"></td>
+                                            <td><input type="text" name="annee2_salrh" value="<%out.print(df.format(item.getAnnee2()));%>"></td>
+                                            <td><input type="text" name="annee3_salrh" value="<%out.print(df.format(item.getAnnee3()));%>"></td>
+                                        </tr>
+                                        <%         }
+                                            }%>
+                                    </table>
+
+
+                                </div>
+                            </div>         
                             <button class="btn btn-primary" type="submit">Mettre à jour</button>
                         </form>
                         <%
@@ -188,28 +213,34 @@
 
                 // fetching datas
                 const labels = [
-                    "<%= mois %>"
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
                 ];
 
                 let masculinData = [];
                 let femininData = [];
 
             <%
-                for (V_indicateur_rh item : indic) {
+                for (V_rubrique_saisie item : rubriques) {
                     if ("genreRH".equals(item.getCategorie_rubrique())) {
 
-                        if ("Masculin".equals(item.getDesignation())) {
+                        if ("Effectif Masculin".equals(item.getDesignation())) {
             %>
                 masculinData = [
-            <%= Service_indicateur_rh.getByMois(item, mois)%>
-            ];
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>
+                ];
             <%
                 }
 
-                if ("Feminin".equals(item.getDesignation())) {
+                if ("Effectif Feminin".equals(item.getDesignation())) {
             %>
                 femininData = [
-             <%= Service_indicateur_rh.getByMois(item, mois)%>
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>
                 ];
             <%
                         }
@@ -266,7 +297,9 @@
             try {
                 // Labels (years) → deviennent l’axe Y
                 const labels = [
-                    "<%= mois %>"
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
                 ];
 
                 const datasets = [];
@@ -292,14 +325,16 @@
                     "rgba(255, 159, 64, 1)"
                 };
 
-                for (V_indicateur_rh item : indic) {
+                for (V_rubrique_saisie item : rubriques) {
                     if ("categorieRH".equals(item.getCategorie_rubrique())) {
             %>
                 datasets.push({
                     label: "<%= item.getDesignation()%>",
                     data: [
-            <%= item.getJanvier()%>
-             ],
+            <%= item.getAnnee1()%>,
+            <%= item.getAnnee2()%>,
+            <%= item.getAnnee3()%>
+                    ],
                     backgroundColor: "<%= bgColors[colorIndex % bgColors.length]%>",
                     borderColor: "<%= borderColors[colorIndex % borderColors.length]%>",
                     borderWidth: 1
@@ -343,7 +378,92 @@
             }
         </script>
 
-       
+        <script>
+            try {
+                // X-axis labels (years)
+                const labels = [
+                    "<%= annee - 2%>",
+                    "<%= annee - 1%>",
+                    "<%= annee%>"
+                ];
+
+                const datasets = [];
+
+            <%
+    int colorIndexSalary = 0;
+
+    String[] bgColorsSalary = {
+        "rgba(75, 192, 192, 0.6)",
+        "rgba(255, 159, 64, 0.6)",
+        "rgba(153, 102, 255, 0.6)",
+        "rgba(255, 99, 132, 0.6)",
+        "rgba(54, 162, 235, 0.6)"
+    };
+
+    String[] borderColorsSalary = {
+        "rgba(75, 192, 192, 1)",
+        "rgba(255, 159, 64, 1)",
+        "rgba(153, 102, 255, 1)",
+        "rgba(255, 99, 132, 1)",
+        "rgba(54, 162, 235, 1)"
+    };
+
+    for (V_rubrique_saisie item : rubriques) {
+        if ("salaireRH".equals(item.getCategorie_rubrique())) {
+            %>
+                datasets.push({
+                    label: "<%= item.getDesignation()%>",
+                    data: [
+            <%= item.getAnnee1() / 1000%>,
+            <%= item.getAnnee2() / 1000%>,
+            <%= item.getAnnee3() / 1000%>
+                    ],
+                    backgroundColor: "<%= bgColorsSalary[colorIndexSalary % bgColorsSalary.length]%>",
+                    borderColor: "<%= borderColorsSalary[colorIndexSalary % borderColorsSalary.length]%>",
+                    borderWidth: 1
+                });
+            <%
+            colorIndexSalary++;
+        }
+    }
+            %>
+
+                const ctx = document.getElementById('salaireChart').getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return value.toLocaleString() + " K Ariary";
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.dataset.label + " : " +
+                                                context.parsed.y.toLocaleString() + " K Ariary";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            } catch (e) {
+                console.log("salaire chart error: " + e);
+            }
         </script>
 
 

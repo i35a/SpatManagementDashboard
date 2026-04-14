@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class DBConnectionOld {
     
    private static final String URL =
-            "jdbc:postgresql://localhost:5432/tdbrd";
+            "jdbc:postgresql://localhost:5432/dashboard";
 
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
