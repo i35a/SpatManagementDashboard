@@ -27,9 +27,11 @@ import model.V_evolution_annuel_fin_prev;
 import model.V_indicateur_fin;
 import model.V_rubrique_fin;
 import model.V_rubrique_saisie;
+import model.V_tendance_fin;
 import service.Service_evolution_fin;
 import service.Service_indicateur_fin;
 import service.Service_rubrique;
+import service.Service_tendance_fin;
 import utils.DBConnection;
 
 /**
@@ -66,14 +68,14 @@ public class controller_rubrique_fin extends HttpServlet {
             //List<V_indicateur_fin> indic = Service_indicateur_fin.getIndicateurFIN(); // .getAllRubriques();
             List<V_evolution_annuel_fin> indic = Service_evolution_fin.getEvolutionFin(); // .getAllRubriques();
             List<V_evolution_annuel_fin_prev> indic_prev = Service_evolution_fin.getEvolutionFinPrev(); // .getAllRubriques();
-
+            List<V_tendance_fin> tendance_fin = Service_tendance_fin.getTendanceFin();
             // 2. Création de l'objet Gson (compatible 2.2.2)
             Gson gson = new GsonBuilder().create();
 
             // 3. Conversion Liste -> JSON
             String json = gson.toJson(indic);
             String json_prev = gson.toJson(indic_prev);
-
+            String json_data_tendance_fin = gson.toJson(tendance_fin);
             // 4. Configuration de la réponse HTTP
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -83,6 +85,8 @@ public class controller_rubrique_fin extends HttpServlet {
 
             request.setAttribute("fin_data", json);
             request.setAttribute("fin_prev_data", json);
+            request.setAttribute("fin_data_tendances", json_data_tendance_fin);
+         
             request.getRequestDispatcher("/rubrique_saisie_fin.jsp").forward(request, response);
             //out.print(json);
             //out.flush();
