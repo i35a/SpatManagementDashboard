@@ -40,21 +40,17 @@ public class controller_updateVoletRH extends HttpServlet {
         String[] designation_categrh = request.getParameterValues("designation_categrh");
         String[] annee1_categrh = request.getParameterValues("annee1_categrh");
         String[] annee2_categrh = request.getParameterValues("annee2_categrh");
-        String[] annee3_categrh = request.getParameterValues("annee3_categrh");
         
         String[] designation_genrerh = request.getParameterValues("designation_genrerh");
         String[] annee1_genrerh = request.getParameterValues("annee1_genrerh");
         String[] annee2_genrerh = request.getParameterValues("annee2_genrerh");
-        String[] annee3_genrerh = request.getParameterValues("annee3_genrerh");
         
         String[] designation_salrh = request.getParameterValues("designation_salrh");
         String[] annee1_salrh = request.getParameterValues("annee1_salrh");
         String[] annee2_salrh = request.getParameterValues("annee2_salrh");
-        String[] annee3_salrh = request.getParameterValues("annee3_salrh");
         
-        Annee taona3 = Service_annee.findAnnee("annee5");
-        Annee taona2 = Service_annee.findAnnee("annee4"); 
-        Annee taona1 = Service_annee.findAnnee("annee3");
+        Annee taona2 = Service_annee.findAnnee("annee2"); 
+        Annee taona1 = Service_annee.findAnnee("annee1");
         int update_success = 1;
         /*****************MISE A JOUR DES EFFECTIFS PAR CATEGORIE*****************************/
         
@@ -62,7 +58,7 @@ public class controller_updateVoletRH extends HttpServlet {
             boolean update_ok = true;
         
             for (int i = 0; i < designation_categrh.length; i++) { 
-                System.out.println(designation_categrh[i] +"|"+annee1_categrh[i]+"|"+annee2_categrh[i]+"|"+annee3_categrh[i]);
+                System.out.println(designation_categrh[i] +"|"+annee1_categrh[i]+"|"+annee2_categrh[i]);
                 Rubrique_saisie rs = new Rubrique_saisie();
                 rs.setDesignation(designation_categrh[i]);
                 String  temp = annee1_categrh[i].replace(" ", "") ;
@@ -86,18 +82,7 @@ public class controller_updateVoletRH extends HttpServlet {
                 update_ok = Service_rubrique.update(rs);
                 if(!update_ok) update_success++;
             }
-            for (int k = 0; k < designation_categrh.length; k++) { 
-                Rubrique_saisie rs = new Rubrique_saisie();
-                rs.setDesignation(designation_categrh[k]);
-                String  temp = annee3_categrh[k].replace(" ", "") ;
-                temp = temp.replace(",", ".");
-                
-                rs.setValeur_saisie(Double.parseDouble(temp));
-                rs.setPeriode_annuel(taona3.getValeur());
-                
-                update_ok = Service_rubrique.update(rs);
-                if(!update_ok) update_success++;
-            }
+            
         }
         /*****************MISE A JOUR DES EFFECTIFS PAR GENRE*****************************/
         
@@ -127,18 +112,7 @@ public class controller_updateVoletRH extends HttpServlet {
                 update_ok = Service_rubrique.update(rs);
                 if(!update_ok) update_success++;
             }
-            for (int k = 0; k < designation_genrerh.length; k++) { 
-                Rubrique_saisie rs = new Rubrique_saisie();
-                rs.setDesignation(designation_genrerh[k]);
-                String  temp = annee3_genrerh[k].replace(" ", "") ;
-                temp = temp.replace(",", ".");
-                
-                rs.setValeur_saisie(Double.parseDouble(temp));
-                rs.setPeriode_annuel(taona3.getValeur());
-                
-                update_ok = Service_rubrique.update(rs);
-                if(!update_ok) update_success++;
-            }
+            
         }
         
         /*****************MISE A JOUR DES EFFECTIFS PAR GENRE*****************************/
@@ -169,18 +143,7 @@ public class controller_updateVoletRH extends HttpServlet {
                 update_ok = Service_rubrique.update(rs);
                 if(!update_ok) update_success++;
             }
-            for (int k = 0; k < designation_salrh.length; k++) { 
-                Rubrique_saisie rs = new Rubrique_saisie();
-                rs.setDesignation(designation_salrh[k]);
-                String  temp = annee3_salrh[k].replace(" ", "") ;
-                temp = temp.replace(",", ".");
-                
-                rs.setValeur_saisie(Double.parseDouble(temp));
-                rs.setPeriode_annuel(taona3.getValeur());
-                
-                update_ok = Service_rubrique.update(rs);
-                if(!update_ok) update_success++;
-            }
+            
         }
         
         String message_update = "Modification terminé avec succès !";

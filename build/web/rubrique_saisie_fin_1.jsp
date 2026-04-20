@@ -4,8 +4,6 @@
     Author     : PC
 --%>
 
-<%@page import="model.V_evolution_annuel_fin_prev"%>
-<%@page import="model.V_evolution_annuel_fin"%>
 <%@page import="model.V_indicateur_fin"%>
 <%@page import="service.Service_mois"%>
 <%@page import="model.Mois"%>
@@ -55,7 +53,15 @@
                         
                         
                         <div style="display:flex;gap:45px;justify-content:space-between;">
-
+<!--                            <div><canvas id="caChart" width="400" height="400"></canvas>
+                                <p>C.A</p>
+                            </div>
+                            <div><canvas id="margeChart" width="400" height="400"></canvas>
+                                <p>Marge Op.</p>
+                            </div>
+                            <div><canvas id="resultChart" width="400" height="400"></canvas>
+                                <p>Resultat.</p>
+                            </div>-->
                              <div><canvas id="financeChart" width="400" height="400"></canvas>
                                 <p>CA, EBIDTA, Resultat Chart.</p>
                             </div>
@@ -69,10 +75,8 @@
                             String mois = res_mois.getLibelle();
                             
                             String json = request.getAttribute("fin_data").toString();
-                            String json_prev = request.getAttribute("fin_prev_data").toString();
-                            Gson gson = new Gson(); Gson gson1 = new Gson();
-                            V_evolution_annuel_fin[] rubriques = gson.fromJson(json, V_evolution_annuel_fin[].class);
-                            V_evolution_annuel_fin_prev[] rubriques_prev = gson1.fromJson(json_prev, V_evolution_annuel_fin_prev[].class);
+                            Gson gson = new Gson();
+                            V_indicateur_fin[] rubriques = gson.fromJson(json, V_indicateur_fin[].class);
                             
                             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRANCE);
                             DecimalFormat df = new DecimalFormat("#,##0.00", symbols);
@@ -86,182 +90,84 @@
                              %>
                         <form action="controller_updateVoletFIN" method="post">
 
-                            <div class="card bg-light mb-3">
+                            <div class="card bg-light mb-3" style="max-width: 65rem;">
                                 <h5 class="card-header">Chiffre d' affaires</h5>
                                 <div class="card-body">
-                                    <div class="row g-3">
-                                        <div class="col-12 col-md-7">
-                                        <table border="1" class="table-responsive table-bordered">
-                                            <tr>
-                                                <th> </th>
-                                                <th> </th>
-                                                <th colspan="3" style="text-align: center;">Réalisation</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Description</th>
-                                                <th>Mois</th>
-                                                <th><% out.println(annee2);%></th>
-                                                <th><% out.println(annee1);%></th>
-                                                <th><% out.println(annee);%></th>
-                                            </tr>
-                                            <%     for (V_evolution_annuel_fin item : rubriques) {
-                                                    if (item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")) {
-                                            %>
-                                            <tr>
-                                                <td><input type="text" readonly name="designation_cafin" value="<%out.print(item.getDesignation());%>"></td>
-                                                <td><input type="text" readonly name="mois_cafin" value="<%out.print(Service_mois.getMoisLibbyId(item.getPeriode_mensuel()).getLibelle());%>"></td>
-                                                <td><input type="text" name="annee1_cafin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                                <td><input type="text" name="annee2_cafin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                                <td><input type="text" name="annee3_cafin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
-
-                                            </tr>
-                                            <%          }
-                                                } %>
-                                        </table>
-                                        </div>
-                                    <div class="col-12 col-md-5">    
                                     <table border="1">
-                                        <tr class="border">
-                                            <th colspan="3" style="text-align: center;">Budget</th>
-                                        </tr>
                                         <tr>
-                                            <th><% out.println(annee2);%></th>
-                                            <th><% out.println(annee1);%></th>
-                                            <th><% out.println(annee);%></th>
+                                            <th>Description</th>
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
                                         </tr>
-                                        <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
+                                        <%     for (V_indicateur_fin item : rubriques) {
                                                 if (item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")) {
                                         %>
                                         <tr>
-                                            <td><input type="text" name="annee1_cafin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                            <td><input type="text" name="annee2_cafin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                            <td><input type="text" name="annee3_cafin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
+                                            <td><input type="text" name="designation_cafin" value="<%out.print(item.getDesignation());%>"></td>
+                                            <td><input type="text" name="annee1_cafin" value="<%if(item.getPeriode_annuel()==annee2) out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                            <td><input type="text" name="annee2_cafin" value="<%if(item.getPeriode_annuel()==annee1)out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                            <td><input type="text" name="annee3_cafin" value="<%if(item.getPeriode_annuel()==annee)out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
                                             
                                         </tr>
                                         <%          }
                                             } %>
                                     </table>
-                                    </div>
-                                    </div>
+
                                 </div>
                             </div>
 
-                            <div class="card bg-light mb-3">
+                            <div class="card bg-light mb-3" style="max-width: 65rem;">
                                 <h5 class="card-header">Marge opérationnelle - EBIDTA</h5>
                                 <div class="card-body">
-                                     <div class="row g-3">
-                                        <div class="col-12 col-md-7">
-                                        <table border="1">
-                                            <tr class="border">
-                                                <th> </th>
-                                                <th> </th>
-                                                <th colspan="3" style="text-align: center;">Réalisation</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Description</th>
-                                                <th>Mois</th>
-                                                <th><% out.println(annee2);%></th>
-                                                <th><% out.println(annee1);%></th>
-                                                <th><% out.println(annee);%></th>
-                                            </tr>
-                                            <%     for (V_evolution_annuel_fin item : rubriques) {
-                                                    if (item.getCategorie_rubrique().equals("EBIDTAFIN") || item.getCategorie_rubrique().equals("EBIDTAFIN_prev")) {
-                                            %>
-                                            <tr>
-                                                <td><input type="text" readonly name="designation_ebidta" value="<%out.print(item.getDesignation());%>"></td>
-                                                <td><input type="text" readonly name="mois_ebidta" value="<%out.print(Service_mois.getMoisLibbyId(item.getPeriode_mensuel()).getLibelle());%>"></td>
-                                                <td><input type="text" name="annee2_ebidta" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                                <td><input type="text" name="annee1_ebidta" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                                <td><input type="text" name="annee_ebidta" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
+                                    <table border="1">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
+                                        </tr>
+                                        <%     for (V_indicateur_fin item : rubriques) {
+                                                if (item.getCategorie_rubrique().equals("EBIDTAFIN") || item.getCategorie_rubrique().equals("EBIDTAFIN_prev")) {
+                                        %>
+                                        <tr>
+                                            <td><input type="text" name="designation_ebidta" value="<%out.print(item.getDesignation());%>"></td>
+                                            <td><input type="text" name="annee2_ebidta" value="<%if(item.getPeriode_annuel()==annee2) out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                            <td><input type="text" name="annee1_ebidta" value="<%if(item.getPeriode_annuel()==annee1)out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                            <td><input type="text" name="annee_ebidta" value="<%if(item.getPeriode_annuel()==annee)out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                            
+                                        </tr>
+                                        <%         }
+                                            }%>
+                                    </table>
 
-                                            </tr>
-                                            <%         }
-                                                }%>
-                                        </table>
-                                        </div>
-                                        <div class="col-12 col-md-5">    
-                                        <table border="1">
-                                            <tr class="border">
-                                                <th colspan="3" style="text-align: center;">Budget</th>
-                                            </tr>
-                                            <tr>
-                                                <th><% out.println(annee2);%></th>
-                                                <th><% out.println(annee1);%></th>
-                                                <th><% out.println(annee);%></th>
-                                            </tr>
-                                            <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
-                                                    if (item.getCategorie_rubrique().equals("EBIDTAFIN") || item.getCategorie_rubrique().equals("EBIDTAFIN_prev")) {
-                                            %>
-                                            <tr>
-                                                <td><input type="text" name="annee1_ebidta" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                                <td><input type="text" name="annee2_ebidta" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                                <td><input type="text" name="annee3_ebidta" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
-
-                                            </tr>
-                                            <%          }
-                                                } %>
-                                        </table>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
 
-                            <div class="card bg-light mb-3">
+                            <div class="card bg-light mb-3" style="max-width: 65rem;">
                                 <h5 class="card-header">Resultat de l'exercice</h5>
                                 <div class="card-body">
-                                     <div class="row g-3">
-                                        <div class="col-12 col-md-7">
-                                        <table border="1">
-                                            <tr class="border">
-                                                <th> </th>
-                                                <th> </th>
-                                                <th colspan="3" style="text-align: center;">Réalisation</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Description</th>
-                                                <th>Mois</th>
-                                                <th><% out.println(annee2);%></th>
-                                                <th><% out.println(annee1);%></th>
-                                                <th><% out.println(annee);%></th>
-                                            </tr>
-                                            <%     for (V_evolution_annuel_fin item : rubriques) {
-                                                    if (item.getCategorie_rubrique().equals("ExoFIN") || item.getCategorie_rubrique().equals("ExoFIN_prev")) {
-                                            %>
-                                            <tr>
-                                                <td><input type="text" readonly name="designation_exofin" value="<%out.print(item.getDesignation());%>"></td>
-                                                <td><input type="text" readonly name="mois_exofin" value="<%out.print(Service_mois.getMoisLibbyId(item.getPeriode_mensuel()).getLibelle());%>"></td>
-                                                <td><input type="text" name="exo2_exofin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                                <td><input type="text" name="exo1_exofin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                                <td><input type="text" name="exo_exofin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
-                                            </tr>
-                                            <%         }
-                                                }%>
-                                        </table>
-                                        </div>
-                                        <div class="col-12 col-md-5">    
-                                        <table border="1">
-                                            <tr class="border">
-                                                <th colspan="3" style="text-align: center;">Budget</th>
-                                            </tr>
-                                            <tr>
-                                                <th><% out.println(annee2);%></th>
-                                                <th><% out.println(annee1);%></th>
-                                                <th><% out.println(annee);%></th>
-                                            </tr>
-                                            <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
-                                                    if (item.getCategorie_rubrique().equals("ExoFIN") || item.getCategorie_rubrique().equals("ExoFIN_prev")) {
-                                            %>
-                                            <tr>
-                                                <td><input type="text" name="annee1_exofin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                                <td><input type="text" name="annee2_exofin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                                <td><input type="text" name="annee3_exofin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
+                                    <table border="1">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th><% out.println(annee - 2);%></th>
+                                            <th><% out.println(annee - 1);%></th>
+                                            <th><% out.println(annee - 0);%></th>
+                                        </tr>
+                                        <%     for (V_indicateur_fin item : rubriques) {
+                                                if (item.getCategorie_rubrique().equals("ExoFIN") || item.getCategorie_rubrique().equals("ExoFIN_prev")) {
+                                        %>
+                                        <tr>
+                                            <td><input type="text" name="designation_exofin" value="<%out.print(item.getDesignation());%>"></td>
+                                            <td><input type="text" name="exo2_cafin" value="<%if(item.getPeriode_annuel()==annee2) out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                            <td><input type="text" name="exo1_cafin" value="<%if(item.getPeriode_annuel()==annee1)out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                            <td><input type="text" name="exo_cafin" value="<%if(item.getPeriode_annuel()==annee)out.print(df.format(Service_indicateur_fin.getByMois(item, mois)));%>"></td>
+                                        </tr>
+                                        <%         }
+                                            }%>
+                                    </table>
 
-                                            </tr>
-                                            <%          }
-                                                } %>
-                                        </table>
-                                        </div>
-                                    </div>    
+
                                 </div>
                             </div>         
                             <button class="btn btn-primary" type="submit">Mettre à jour</button>
@@ -329,14 +235,14 @@
                 let caLabel = "Chiffre d'Affaire";
 
             <%
-                for (V_evolution_annuel_fin item : rubriques) {
+                for (V_indicateur_fin item : rubriques) {
                     if ("CAFIN".equals(item.getCategorie_rubrique())) {
             %>
                 caLabel = "<%= item.getDesignation()%>";
                 caData = [
-            <%=item.getAnnee_n2()  %>,
-            <%=item.getAnnee_n1()%>,
-            <%=item.getAnnee()%>
+            <%= (item.getPeriode_annuel()==annee2)? Service_indicateur_fin.getByMois(item, mois):"" %>,
+            <%= (item.getPeriode_annuel()==annee1)? Service_indicateur_fin.getByMois(item, mois):""%>,
+            <%= (item.getPeriode_annuel()==annee)? Service_indicateur_fin.getByMois(item, mois):"" %>
                 ];
             <%
                         break; // remove if you want multiple CAFIN datasets
@@ -400,14 +306,14 @@
                 let ebidtaLabel = "Marge opérationnelle (EBITDA)";
 
             <%
-                for (V_evolution_annuel_fin item : rubriques) {
+                for (V_indicateur_fin item : rubriques) {
                     if ("EBIDTAFIN".equals(item.getCategorie_rubrique())) {
             %>
                 ebidtaLabel = "<%= item.getDesignation()%>";
                 ebidtaData = [
-            <%= item.getAnnee_n2()  %>,
-            <%= item.getAnnee_n1() %>,
-            <%= item.getAnnee()  %>
+            <%= (item.getPeriode_annuel()==annee2)? Service_indicateur_fin.getByMois(item, mois):"" %>,
+            <%= (item.getPeriode_annuel()==annee1)? Service_indicateur_fin.getByMois(item, mois):""%>,
+            <%= (item.getPeriode_annuel()==annee)? Service_indicateur_fin.getByMois(item, mois):"" %>
                
                 ];
             <%
@@ -475,15 +381,15 @@
                 let resultatLabel = "Résultat de l'exercice";
 
             <%
-        for (V_evolution_annuel_fin item : rubriques) {
+        for (V_indicateur_fin item : rubriques) {
             if ("ExoFIN".equals(item.getCategorie_rubrique())) {
             %>
                 resultatLabel = "<%= item.getDesignation()%>";
                 resultatData = [
-            <%= item.getAnnee_n2()  %>,
-            <%= item.getAnnee_n1() %>,
-            <%= item.getAnnee()  %>
-                
+            <%= (item.getPeriode_annuel()==annee2)? Service_indicateur_fin.getByMois(item, mois):"" %>,
+            <%= (item.getPeriode_annuel()==annee1)? Service_indicateur_fin.getByMois(item, mois):""%>,
+            <%= (item.getPeriode_annuel()==annee)? Service_indicateur_fin.getByMois(item, mois):"" %>
+               
                 ];
             <%
                 break; // enlève si plusieurs résultats à afficher
@@ -538,6 +444,8 @@
 try {
 
     const labels = [
+        "<%= annee - 4 %>",
+        "<%= annee - 3 %>",
         "<%= annee - 2 %>",
         "<%= annee - 1 %>",
         "<%= annee %>"
@@ -552,16 +460,16 @@ try {
     let resultatLabel = "Résultat";
 
 <%
-    for (V_evolution_annuel_fin item : rubriques) {
+    for (V_indicateur_fin item : rubriques) {
 
         if ("CAFIN".equals(item.getCategorie_rubrique())) {
 %>
     caLabel = "<%= item.getDesignation() %>";
     caData = [
-            <%= item.getAnnee_n2()  %>,
-            <%= item.getAnnee_n1() %>,
-            <%= item.getAnnee()  %>
-                    
+        <%= (item.getPeriode_annuel()==annee2)? Service_indicateur_fin.getByMois(item, mois):"" %>,
+            <%= (item.getPeriode_annuel()==annee1)? Service_indicateur_fin.getByMois(item, mois):""%>,
+            <%= (item.getPeriode_annuel()==annee)? Service_indicateur_fin.getByMois(item, mois):"" %>
+               
     ];
 <%
         }
@@ -570,10 +478,10 @@ try {
 %>
     ebidtaLabel = "<%= item.getDesignation() %>";
     ebidtaData = [
-         <%= item.getAnnee_n2()  %>,
-            <%= item.getAnnee_n1() %>,
-            <%= item.getAnnee()  %>
-                    
+        <%= (item.getPeriode_annuel()==annee2)? Service_indicateur_fin.getByMois(item, mois):"" %>,
+            <%= (item.getPeriode_annuel()==annee1)? Service_indicateur_fin.getByMois(item, mois):""%>,
+            <%= (item.getPeriode_annuel()==annee)? Service_indicateur_fin.getByMois(item, mois):"" %>
+               
     ];
 <%
         }
@@ -582,10 +490,10 @@ try {
 %>
     resultatLabel = "<%= item.getDesignation() %>";
     resultatData = [
-        <%= item.getAnnee_n2()  %>,
-            <%= item.getAnnee_n1() %>,
-            <%= item.getAnnee()  %>
-                     
+       <%= (item.getPeriode_annuel()==annee2)? Service_indicateur_fin.getByMois(item, mois):"" %>,
+            <%= (item.getPeriode_annuel()==annee1)? Service_indicateur_fin.getByMois(item, mois):""%>,
+            <%= (item.getPeriode_annuel()==annee)? Service_indicateur_fin.getByMois(item, mois):"" %>
+               
     ];
 <%
         }

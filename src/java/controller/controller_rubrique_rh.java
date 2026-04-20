@@ -22,8 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Rubrique_saisie;
 import model.Utilisateur;
+import model.V_indicateur_rh;
 import model.V_rubrique_saisie;
 import service.ServiceUtilisateur;
+import service.Service_indicateur_rh;
 import service.Service_rubrique;
 import utils.DBConnection;
 
@@ -65,13 +67,13 @@ public class controller_rubrique_rh extends HttpServlet {
 
         if (userConnected) {
             // 1. Récupération de la liste depuis le service
-            List<V_rubrique_saisie> rubriques = Service_rubrique.getRubriqueRH(); // .getAllRubriques();
+            List<V_indicateur_rh> indic_rh = Service_indicateur_rh.getIndicateurRH_actuel(); // .getAllRubriques();
 
             // 2. Création de l'objet Gson (compatible 2.2.2)
             Gson gson = new GsonBuilder().create();
 
             // 3. Conversion Liste -> JSON
-            String json = gson.toJson(rubriques);
+            String json = gson.toJson(indic_rh);
 
             // 4. Configuration de la réponse HTTP
             response.setContentType("application/json");

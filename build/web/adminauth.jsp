@@ -8,11 +8,11 @@
 <%@page import="java.sql.Date"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="dao.GenericDao"%>
-<%--<%@page import="service.ServiceArticle"%>--%>
-<%--<%@page import="service.ServiceTypeArticle"%>--%>
-<%--<%@page import="model.Article"%>--%>
-<%--<%@page import="model.Stock"%>--%>
-<%--<%@page import="model.Typearticle"%>--%>
+<%--<%@page import="service.ServiceArticle"%>
+<%@page import="service.ServiceTypeArticle"%>
+<%@page import="model.Article"%>
+<%@page import="model.Stock"%>
+<%@page import="model.Typearticle"%>--%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <title>SpatDashboard</title>
+        <title>Login Admin |TDBRD</title>
         <link href="assets/img/logo-spat-p.ico" rel="icon" type="image/x-icon" />
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
@@ -73,7 +73,7 @@
 
     <body id="page-top" style="font-size: 0.8em;">
         <div id="wrapper">
-            <span>TABLEAU DE BORD</span>
+            <span>TDB RD Admin</span>
         </div>  
         <div id="msg" style="text-align: center;margin-top: 2%;font-size: 0.8em;position:relative;z-index: 10;margin-top: 5%;width: 60%;">
             <%
@@ -88,17 +88,17 @@
         <div class="container">
             <center>
                 <div class="logo">
-                    <img src="assets/img/logo-spat-p.png" width="160px" height="130px"> 
+                    <img src="assets/img/logo-spat-p.png" width="80px" height="80px"> 
                     <div class="clearfix"></div>
                 </div> <br></br>
                 <div class="middle">
 
                     <div id="login">
 
-                        <form action="homepage" method="post" id="myform">
+                        <form action="Auth" method="post" id="myform">
                             <fieldset class="clearfix">
 
-                                <p><span class="fa fa-user"></span><input type="text" class="form-control" name="login" Placeholder="nom d'utilisateur" required></p> <!-- JS because of IE support; better: placeholder="Username" -->
+                                <p><span class="fa fa-user"></span><input type="text" class="form-control" name="login" Placeholder="Login" required></p> <!-- JS because of IE support; better: placeholder="Username" -->
                                 <p><span class="fa fa-lock"></span><input type="password" class="form-control" name="password" Placeholder="Mot de passe" required></p> <!-- JS because of IE support; better: placeholder="Password" -->
                                 
                                 <div>
@@ -114,27 +114,23 @@
                         <div class="clearfix"></div>
 
                     </div> <!-- end login -->
-
-
                 </div>
             </center>
         </div>
         <div>                                      
             <footer class="bg-white sticky-footer" id="pied">
                 <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright® SPAT 2023</span></div>
+                    <div class="text-center my-auto copyright"><span>Copyright® SPAT 2026</span></div>
                 </div>
             </footer>
             <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
 
-        </div>         
-
-
+        </div>          
         <script>
 
             function formSubmit() {
                 document.getElementById("myform").submit();
             }
         </script>
-    </body> 
+    </body>
 </html>
