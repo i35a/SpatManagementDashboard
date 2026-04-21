@@ -62,7 +62,25 @@
                             </div>-->
                         
 
-                             <div><canvas id="multiRubriqueChart" width="400" height="400"></canvas>
+                             <div>
+                                 <label for="moisSelect"><b>Mois :</b>
+                                    <select id="moisSelect" class="form-select" style="width:200px; display:inline-block;">
+                                        <option value="1">Janvier</option>
+                                        <option value="2">Février</option>
+                                        <option value="3">Mars</option>
+                                        <option value="4">Avril</option>
+                                        <option value="5">Mai</option>
+                                        <option value="6">Juin</option>
+                                        <option value="7">Juillet</option>
+                                        <option value="8">Août</option>
+                                        <option value="9">Septembre</option>
+                                        <option value="10">Octobre</option>
+                                        <option value="11">Novembre</option>
+                                        <option value="12">Décembre</option>
+                                    </select>
+                                     </label>
+                                 
+                                 <canvas id="multiRubriqueChart" width="400" height="400"></canvas>
                                 <p>Evolution annuelle du resulat de l'exercice et ses composantes.</p>
                             </div>
                             <div><canvas id="caEbitdaResultChart" width="400" height="400"></canvas>
@@ -77,6 +95,10 @@
                         
                         
                         <%
+                            
+                            java.time.LocalDate today = java.time.LocalDate.now();
+                            int moisCourant = today.getMonthValue();
+
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
                             int annee = taona.getValeur();
                             int annee1 = annee - 1;
@@ -101,6 +123,35 @@
                             final String USER_TYPE =  session.getAttribute("userType").toString().toLowerCase(); 
                                 if(USER_TYPE.equals("fin") || USER_TYPE.equals("admin")){
                              %>
+                             
+                             <script>
+let tendancesData = [];
+
+<%
+for (V_tendance_fin item : tendances) {
+%>
+tendancesData.push({
+    designation: "<%= item.getDesignation() %>",
+    annee: <%= item.getPeriode_ann() %>,
+    mois: [
+        <%= item.getJanvier() %>,
+        <%= item.getFevrier() %>,
+        <%= item.getMars() %>,
+        <%= item.getAvril() %>,
+        <%= item.getMai() %>,
+        <%= item.getJuin() %>,
+        <%= item.getJuillet() %>,
+        <%= item.getAout() %>,
+        <%= item.getSeptembre() %>,
+        <%= item.getOctobre() %>,
+        <%= item.getNovembre() %>,
+        <%= item.getDecembre() %>
+    ]
+});
+<%
+}
+%>
+</script>
                         <form action="controller_updateVoletFIN" method="post">
 
                             <div class="card bg-light mb-3">
@@ -861,8 +912,14 @@ try {
     console.log("chart error exception: " + e);
 }
 </script>
+ 
 <script>
 try {
+    //auto-select du mois
+    document.getElementById("moisSelect").value = <%= java.time.LocalDate.now().getMonthValue() %>;
+    let chart;
+
+function buildChart(selectedMonth) {
 
     const labels = [
         "<%= annee - 2 %>",
@@ -875,46 +932,37 @@ try {
     let dataExtra = [0, 0, 0];
     let dataResultat = [0, 0, 0];
 
-    <% 
-        for (V_evolution_annuel_fin item : rubriques) {
+    tendancesData.forEach(item => {
 
-            if ("ExoFIN".equals(item.getCategorie_rubrique())) {
+        let valeur = item.mois[selectedMonth - 1];
 
-                String d = item.getDesignation();
+        let index = -1;
 
-                // ⚠️ On cumule car tu as 12 mois
-                if ("Resultat operationnel".equals(d) || "Resultat opérationnel".equals(d)) {
-    %>
-        dataOp[0] += <%= item.getAnnee_n2() %>;
-        dataOp[1] += <%= item.getAnnee_n1() %>;
-        dataOp[2] += <%= item.getAnnee() %>;
-    <%
-                } else if ("Resultat financier".equals(d)) {
-    %>
-        dataFin[0] += <%= item.getAnnee_n2() %>;
-        dataFin[1] += <%= item.getAnnee_n1() %>;
-        dataFin[2] += <%= item.getAnnee() %>;
-    <%
-                } else if ("Resultat extraordinaire".equals(d)) {
-    %>
-        dataExtra[0] += <%= item.getAnnee_n2() %>;
-        dataExtra[1] += <%= item.getAnnee_n1() %>;
-        dataExtra[2] += <%= item.getAnnee() %>;
-    <%
-                } else if ("Resultat de l'exercice".equals(d)) {
-    %>
-        dataResultat[0] += <%= item.getAnnee_n2() %>;
-        dataResultat[1] += <%= item.getAnnee_n1() %>;
-        dataResultat[2] += <%= item.getAnnee() %>;
-    <%
-                }
-            }
+        if (item.annee == <%= annee - 2 %>) index = 0;
+        else if (item.annee == <%= annee - 1 %>) index = 1;
+        else if (item.annee == <%= annee %>) index = 2;
+
+        if (index === -1) return;
+
+        if (item.designation === "Resultat operationnel" || item.designation === "Résultat opérationnel") {
+            dataOp[index] += valeur;
+        } else if (item.designation === "Resultat financier") {
+            dataFin[index] += valeur;
+        } else if (item.designation === "Resultat extraordinaire") {
+            dataExtra[index] += valeur;
+        } else if (item.designation === "Resultat de l'exercice") {
+            dataResultat[index] += valeur;
         }
-    %>
+
+    });
+
+    if (chart) {
+        chart.destroy();
+    }
 
     const ctx = document.getElementById('multiRubriqueChart').getContext('2d');
 
-    const chart = new Chart(ctx, {
+    chart = new Chart(ctx, {
         data: {
             labels: labels,
             datasets: [
@@ -949,48 +997,44 @@ try {
         },
         options: {
             responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false
-            },
             plugins: {
                 tooltip: {
                     callbacks: {
-                        label: function (context) {
-                            return context.dataset.label + ": " +
-                                   context.raw.toLocaleString() + " Ariary";
-                        }
+                        label: (ctx) => ctx.dataset.label + ": " + ctx.raw.toLocaleString() + " Ariary"
                     }
                 }
             },
             scales: {
                 y: {
-                    beginAtZero: true,
                     ticks: {
-                        callback: function (value) {
-                            return value.toLocaleString();
-                        }
+                        callback: v => v.toLocaleString()
                     }
                 },
                 y1: {
                     position: 'right',
-                    grid: {
-                        drawOnChartArea: false
-                    },
+                    grid: { drawOnChartArea: false },
                     ticks: {
-                        callback: function (value) {
-                            return value.toLocaleString();
-                        }
+                        callback: v => v.toLocaleString()
                     }
                 }
             }
         }
     });
+}
+
+// initial
+buildChart(document.getElementById("moisSelect").value);
+
+// changement utilisateur
+document.getElementById("moisSelect").addEventListener("change", function () {
+    buildChart(parseInt(this.value));
+});
 
 } catch (e) {
     console.log("chart error exception: " + e);
 }
 </script>
+
 <script>
 try {
 
