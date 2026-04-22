@@ -83,7 +83,23 @@
                                  <canvas id="multiRubriqueChart" width="400" height="400"></canvas>
                                 <p>Evolution annuelle du resulat de l'exercice et ses composantes.</p>
                             </div>
-                            <div><canvas id="caEbitdaResultChart" width="400" height="400"></canvas>
+                            <div>
+                                <label for="moisSelectCAChart">Mois : <select id="moisSelectCAChart" class="form-select" style="width:200px; display:inline-block;">
+                                    <option value="1">Janvier</option>
+                                    <option value="2">Février</option>
+                                    <option value="3">Mars</option>
+                                    <option value="4">Avril</option>
+                                    <option value="5">Mai</option>
+                                    <option value="6">Juin</option>
+                                    <option value="7">Juillet</option>
+                                    <option value="8">Août</option>
+                                    <option value="9">Septembre</option>
+                                    <option value="10">Octobre</option>
+                                    <option value="11">Novembre</option>
+                                    <option value="12">Décembre</option>
+                                    </select></label>
+                                
+                                <canvas id="caEbitdaResultChart" width="400" height="400"></canvas>
                                 <p>Evolution annuelle du CA, de l'EBIDTA et du Resultat de l'exercice</p>
                             </div>
                             <div><canvas id="tendanceChart" width="400" height="400"></canvas>
@@ -149,6 +165,54 @@ tendancesData.push({
     ]
 });
 <%
+}
+%>
+</script>
+
+<script>
+let dataByMonth = {
+    CA: {},
+    EBITDA: {},
+    RESULTAT: {}
+};
+
+<%
+for (V_evolution_annuel_fin item : rubriques) {
+
+    String cat = item.getCategorie_rubrique();
+    int moisItem = item.getPeriode_mensuel();
+%>
+
+if (!dataByMonth.CA[<%= moisItem %>]) {
+    dataByMonth.CA[<%= moisItem %>] = [0,0,0];
+    dataByMonth.EBITDA[<%= moisItem %>] = [0,0,0];
+    dataByMonth.RESULTAT[<%= moisItem %>] = [0,0,0];
+}
+
+<%
+    if ("CAFIN".equals(cat)) {
+%>
+dataByMonth.CA[<%= moisItem %>][0] += <%= item.getAnnee_n2() %>;
+dataByMonth.CA[<%= moisItem %>][1] += <%= item.getAnnee_n1() %>;
+dataByMonth.CA[<%= moisItem %>][2] += <%= item.getAnnee() %>;
+<%
+    }
+
+    if ("EBIDTAFIN".equals(cat)) {
+%>
+dataByMonth.EBITDA[<%= moisItem %>][0] += <%= item.getAnnee_n2() %>;
+dataByMonth.EBITDA[<%= moisItem %>][1] += <%= item.getAnnee_n1() %>;
+dataByMonth.EBITDA[<%= moisItem %>][2] += <%= item.getAnnee() %>;
+<%
+    }
+
+    if ("ExoFIN".equals(cat) && "Resultat de l'exercice".equals(item.getDesignation())) {
+%>
+dataByMonth.RESULTAT[<%= moisItem %>][0] += <%= item.getAnnee_n2() %>;
+dataByMonth.RESULTAT[<%= moisItem %>][1] += <%= item.getAnnee_n1() %>;
+dataByMonth.RESULTAT[<%= moisItem %>][2] += <%= item.getAnnee() %>;
+<%
+    }
 }
 %>
 </script>
@@ -1036,116 +1100,90 @@ document.getElementById("moisSelect").addEventListener("change", function () {
 </script>
 
 <script>
-try {
+document.addEventListener("DOMContentLoaded", function () {
 
-    const labels = [
-        "<%= annee - 2 %>",
-        "<%= annee - 1 %>",
-        "<%= annee %>"
-    ];
+    try {
 
-    let dataCA = [0, 0, 0];
-    let dataEBITDA = [0, 0, 0];
-    let dataResultat = [0, 0, 0];
-
-    <% 
-        for (V_evolution_annuel_fin item : rubriques) {
-
-            String cat = item.getCategorie_rubrique();
-
-            // ================= CA =================
-            if ("CAFIN".equals(cat)) {
-    %>
-        dataCA[0] += <%= item.getAnnee_n2() %>;
-        dataCA[1] += <%= item.getAnnee_n1() %>;
-        dataCA[2] += <%= item.getAnnee() %>;
-    <%
-            }
-
-            // ================= EBITDA =================
-            if ("EBIDTAFIN".equals(cat)) {
-    %>
-        dataEBITDA[0] += <%= item.getAnnee_n2() %>;
-        dataEBITDA[1] += <%= item.getAnnee_n1() %>;
-        dataEBITDA[2] += <%= item.getAnnee() %>;
-    <%
-            }
-
-            // ================= RESULTAT =================
-            if ("ExoFIN".equals(cat) 
-                && "Resultat de l'exercice".equals(item.getDesignation())) {
-    %>
-        dataResultat[0] += <%= item.getAnnee_n2() %>;
-        dataResultat[1] += <%= item.getAnnee_n1() %>;
-        dataResultat[2] += <%= item.getAnnee() %>;
-    <%
-            }
+        const canvas = document.getElementById('caEbitdaResultChart');
+        if (!canvas) {
+            console.log("Canvas introuvable");
+            return;
         }
-    %>
 
-    const ctx = document.getElementById('caEbitdaResultChart').getContext('2d');
+        const ctx = canvas.getContext('2d');
 
-    const chart = new Chart(ctx, {
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    type: 'bar',
-                    label: "Chiffre d'affaires",
-                    data: dataCA,
-                    backgroundColor: 'orange'
-                },
-                {
-                    type: 'line',
-                    label: "EBITDA",
-                    data: dataEBITDA,
-                    borderColor: 'green',
-                    backgroundColor: 'green',
-                    tension: 0.4
-                },
-                {
-                    type: 'line',
-                    label: "Résultat de l'exercice",
-                    data: dataResultat,
-                    borderColor: 'blue',
-                    backgroundColor: 'blue',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            return context.dataset.label + ": " +
-                                   context.raw.toLocaleString() + " Ariary";
-                        }
+        const chart = new Chart(ctx, {
+            data: {
+                labels: [
+                    "<%= annee - 2 %>",
+                    "<%= annee - 1 %>",
+                    "<%= annee %>"
+                ],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: "CA",
+                        data: [0,0,0],
+                        backgroundColor: 'orange'
+                    },
+                    {
+                        type: 'line',
+                        label: "EBITDA",
+                        data: [0,0,0],
+                        borderColor: 'green',
+                        tension: 0.4
+                    },
+                    {
+                        type: 'line',
+                        label: "Résultat",
+                        data: [0,0,0],
+                        borderColor: 'blue',
+                        tension: 0.4
                     }
-                }
+                ]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function (value) {
-                            return value.toLocaleString();
-                        }
-                    }
-                }
+            options: {
+                responsive: true
             }
-        }
-    });
+        });
 
-} catch (e) {
-    console.log("chart error exception: " + e);
-}
+        function updateChart(mois) {
+            const ca = dataByMonth?.CA?.[mois] || [0,0,0];
+            const ebitda = dataByMonth?.EBITDA?.[mois] || [0,0,0];
+            const res = dataByMonth?.RESULTAT?.[mois] || [0,0,0];
+
+            chart.data.datasets[0].data = ca;
+            chart.data.datasets[1].data = ebitda;
+            chart.data.datasets[2].data = res;
+
+            chart.update();
+        }
+
+        const select = document.getElementById("moisSelectCAChart");
+
+        // ✅ mois courant
+        const currentMonth = new Date().getMonth() + 1;
+
+        if (select) {
+            // 🔥 sélectionner visuellement le mois courant
+            select.value = currentMonth;
+
+            // 🔁 listener
+            select.addEventListener("change", function() {
+                updateChart(parseInt(this.value));
+            });
+        }
+
+        // ✅ initialiser le chart avec le même mois
+        updateChart(currentMonth);
+
+    } catch(e) {
+        console.log('Error ebitda chart: ' + e);
+    }
+
+});
 </script>
+
 <script>
     try{
 const labels = [
