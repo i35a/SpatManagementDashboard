@@ -192,9 +192,9 @@ if (!dataByMonth.CA[<%= moisItem %>]) {
 <%
     if ("CAFIN".equals(cat)) {
 %>
-dataByMonth.CA[<%= moisItem %>][0] += <%= item.getAnnee_n2() %>;
+dataByMonth.CA[<%= moisItem %>][0] += <%= item.getAnnee() %>;
 dataByMonth.CA[<%= moisItem %>][1] += <%= item.getAnnee_n1() %>;
-dataByMonth.CA[<%= moisItem %>][2] += <%= item.getAnnee() %>;
+dataByMonth.CA[<%= moisItem %>][2] += <%= item.getAnnee_n2() %>;
 <%
     }
 
@@ -1300,7 +1300,7 @@ const colors = {
 // 🔥 Trier les années (hors budget)
 let years = Object.keys(datasetsMap)
     .filter(k => k !== "BUDGET")
-    .sort();
+    .sort((a, b) => Number(a) - Number(b));
 
 // Sécurité si peu de données
 let currentYear = years[years.length - 1];
