@@ -81,7 +81,7 @@
                                      </label>
                                  
                                  <canvas id="multiRubriqueChart" width="400" height="400"></canvas>
-                                <p>Evolution annuelle du resulat de l'exercice et ses composantes.</p>
+                                <p class="text-center">Evolution annuelle du resulat de l'exercice et ses composantes.</p>
                             </div>
                             <div>
                                 <label for="moisSelectCAChart">Mois : <select id="moisSelectCAChart" class="form-select" style="width:200px; display:inline-block;">
@@ -100,10 +100,10 @@
                                     </select></label>
                                 
                                 <canvas id="caEbitdaResultChart" width="400" height="400"></canvas>
-                                <p>Evolution annuelle du CA, de l'EBIDTA et du Resultat de l'exercice</p>
+                                <p class="text-center">Evolution annuelle du CA, de l'EBIDTA et du Resultat de l'exercice</p>
                             </div>
                             <div><canvas id="tendanceChart" width="400" height="400"></canvas>
-                                <p>Tendance de l'exercice</p>
+                                <p class="text-center">Tendance du résultat de l'exercice</p>
                             </div>
                             
                         </div>
@@ -261,16 +261,39 @@ dataByMonth.RESULTAT[<%= moisItem %>][2] += <%= item.getAnnee() %>;
                                             <th><% out.println(annee1);%></th>
                                             <th><% out.println(annee);%></th>
                                         </tr>
-                                        <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
-                                                if (item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")) {
-                                        %>
+                                        
+                                         <script>
+                                               
+                                            let datasetsMap = {};
+                    
+                                                if (!datasetsMap["BUDGET"]) {
+                                                    console.log('Datasets map budget not initialized');
+                                                    datasetsMap["BUDGET"] = new Array(12).fill(0);
+                                                }else{
+                                                    console.log('DATA SETS MAP budget EXISTS');
+                                                }
+                                        </script>
+                                       
+                                        <%    
+                                                 int budgetCounter=0;
+                                                 for (V_evolution_annuel_fin_prev item : rubriques_prev) {
+                                                 if (item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")) {
+                                                
+                                        %> 
+                                        <script> 
+                                                //loop budget
+                                                datasetsMap["BUDGET"][<%= budgetCounter %>] += <%= item.getAnnee_n2() %>;
+                                                 
+                                        </script>
                                         <tr>
                                             <td><input type="text" name="annee1_cafin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
                                             <td><input type="text" name="annee2_cafin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
                                             <td><input type="text" name="annee3_cafin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
                                             
                                         </tr>
-                                        <%          }
+                                        <%    
+                                            budgetCounter++;
+                                            }
                                             } %>
                                     </table>
                                     </div>
@@ -323,6 +346,7 @@ dataByMonth.RESULTAT[<%= moisItem %>][2] += <%= item.getAnnee() %>;
                                             </tr>
                                             <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
                                                     if (item.getCategorie_rubrique().equals("EBIDTAFIN") || item.getCategorie_rubrique().equals("EBIDTAFIN_prev")) {
+                                                    
                                             %>
                                             <tr>
                                                 <td><input type="text" name="annee1_ebidta" value="<%out.print(df.format(item.getAnnee()));%>"></td>
@@ -373,23 +397,35 @@ dataByMonth.RESULTAT[<%= moisItem %>][2] += <%= item.getAnnee() %>;
                                         <div class="col-12 col-md-5">    
                                         <table border="1">
                                             <tr class="border">
-                                                <th colspan="3" style="text-align: center;">Budget</th>
+                                                <th colspan="3" style="text-align: center;">Budget(Resultats)</th>
                                             </tr>
                                             <tr>
                                                 <th><% out.println(annee2);%></th>
                                                 <th><% out.println(annee1);%></th>
                                                 <th><% out.println(annee);%></th>
                                             </tr>
-                                            <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
+                                            <script>
+//                                                if (!datasetsMap["BUDGET"]) {
+//                                                    datasetsMap["BUDGET"] = new Array(12).fill(0);
+//                                                }
+                                            </script>
+                                            <%    
+                                                 //int budgetCounter = 0;
+                                                 for (V_evolution_annuel_fin_prev item : rubriques_prev) {
                                                     if (item.getCategorie_rubrique().equals("ExoFIN") || item.getCategorie_rubrique().equals("ExoFIN_prev")) {
+                                                    
                                             %>
-                                            <tr>
-                                                <td><input type="text" name="annee1_exofin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                                <td><input type="text" name="annee2_exofin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                                <td><input type="text" name="annee3_exofin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
+                                            
+                                                 
+                                                <tr>
+                                                    <td><input type="text" name="annee1_exofin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
+                                                    <td><input type="text" name="annee2_exofin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
+                                                    <td><input type="text" name="annee3_exofin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
 
-                                            </tr>
-                                            <%          }
+                                                </tr>
+                                            <%    
+                                                
+                                                }
                                                 } %>
                                         </table>
                                         </div>
@@ -425,7 +461,7 @@ dataByMonth.RESULTAT[<%= moisItem %>][2] += <%= item.getAnnee() %>;
                         <th>Déc</th>
                     </tr>
                     <script>
-                    let datasetsMap = {};
+                   // let datasetsMap = {};
                     </script>
 
                     <% for (V_tendance_fin item : tendances) { 
@@ -1185,105 +1221,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
-    try{
-const labels = [
-    "Jan", "Fév", "Mar", "Avr", "Mai", "Juin",
-    "Juil", "Août", "Sep", "Oct", "Nov", "Déc"
-];
-
-// Couleurs
-const colors = [
-    "#4e79a7", "#f28e2b", "#e15759",
-    "#76b7b2", "#59a14f", "#edc949",
-    "#af7aa1", "#ff9da7"
-];
-
-// 🔥 Récupération des années (hors budget)
-let years = Object.keys(datasetsMap)
-    .filter(k => k !== "BUDGET")
-    .sort(); // tri croissant
-
-// 🔥 Identifier année courante et N-1 automatiquement
-let currentYear = years[years.length - 1];
-let previousYear = years[years.length - 2];
-
-// 🔥 Construction datasets dynamique
-const datasets = Object.keys(datasetsMap).map((key, index) => {
-
-    const isBudget = key === "BUDGET";
-    const isCurrent = key === currentYear;
-    const isPrevious = key === previousYear;
-
-    let type = "line";
-
-    // 🎯 logique demandée
-    if (isBudget || isCurrent || isPrevious) {
-        type = "line";
-    }
-
-    return {
-        type: type,
-        label: isBudget
-            ? "Budget"
-            : "Réalisations " + key,
-
-        data: datasetsMap[key],
-
-        backgroundColor: colors[index % colors.length],
-        borderColor: colors[index % colors.length],
-
-        tension: 0.4,
-        fill: false,
-
-        // 🔥 Mise en valeur visuelle
-        borderWidth: (isCurrent || isPrevious || isBudget) ? 3 : 1,
-        pointRadius: (isCurrent || isPrevious || isBudget) ? 4 : 2
-    };
-});
-
-// 🔥 Chart
-const ctx = document.getElementById('tendanceChartY').getContext('2d');
-
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: datasets
-    },
-    options: {
-        responsive: true,
-        interaction: {
-            mode: 'index',
-            intersect: false
-        },
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function (context) {
-                        return context.dataset.label + " : " +
-                               context.raw.toLocaleString() + " Ar";
-                    }
-                }
-            },
-            legend: {
-                position: 'top'
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: v => v.toLocaleString()
-                }
-            }
-        }
-    }
-});
-    }catch(e){
-        console.log('Error tendances chart: '+e);
-    }
-</script>
-<script>
 try {
 
 const labels = [
@@ -1316,7 +1253,7 @@ if (datasetsMap[currentYear]) {
         data: datasetsMap[currentYear],
         borderColor: colors.current,
         backgroundColor: colors.current,
-        tension: 0.4,
+        tension: 0,
         fill: false,
         borderWidth: 3
     });
@@ -1329,7 +1266,7 @@ if (datasetsMap[previousYear]) {
         data: datasetsMap[previousYear],
         borderColor: colors.previous,
         backgroundColor: colors.previous,
-        tension: 0.4,
+        tension: 0,
         fill: false,
         borderWidth: 3
     });
@@ -1342,9 +1279,9 @@ if (datasetsMap["BUDGET"]) {
         data: datasetsMap["BUDGET"],
         borderColor: colors.budget,
         backgroundColor: colors.budget,
-        tension: 0.4,
+        tension: 0,
         fill: false,
-        borderDash: [5, 5], // 🔥 différencier visuellement
+        borderDash: [], //ligne pleine
         borderWidth: 3
     });
 }
