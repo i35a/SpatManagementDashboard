@@ -62,14 +62,48 @@
                             </div>-->
                         
 
-                             <div><canvas id="multiRubriqueChart" width="400" height="400"></canvas>
-                                <p>Evolution annuelle du resulat de l'exercice et ses composantes.</p>
+                             <div>
+                                 <label for="moisSelect"><b>Mois :</b>
+                                    <select id="moisSelect" class="form-select" style="width:200px; display:inline-block;">
+                                        <option value="1">Janvier</option>
+                                        <option value="2">Février</option>
+                                        <option value="3">Mars</option>
+                                        <option value="4">Avril</option>
+                                        <option value="5">Mai</option>
+                                        <option value="6">Juin</option>
+                                        <option value="7">Juillet</option>
+                                        <option value="8">Août</option>
+                                        <option value="9">Septembre</option>
+                                        <option value="10">Octobre</option>
+                                        <option value="11">Novembre</option>
+                                        <option value="12">Décembre</option>
+                                    </select>
+                                     </label>
+                                 
+                                 <canvas id="multiRubriqueChart" width="400" height="400"></canvas>
+                                <p class="text-center">Evolution annuelle du resulat de l'exercice et ses composantes.</p>
                             </div>
-                            <div><canvas id="caEbitdaResultChart" width="400" height="400"></canvas>
-                                <p>Evolution annuelle du CA, de l'EBIDTA et du Resultat de l'exercice</p>
+                            <div>
+                                <label for="moisSelectCAChart">Mois : <select id="moisSelectCAChart" class="form-select" style="width:200px; display:inline-block;">
+                                    <option value="1">Janvier</option>
+                                    <option value="2">Février</option>
+                                    <option value="3">Mars</option>
+                                    <option value="4">Avril</option>
+                                    <option value="5">Mai</option>
+                                    <option value="6">Juin</option>
+                                    <option value="7">Juillet</option>
+                                    <option value="8">Août</option>
+                                    <option value="9">Septembre</option>
+                                    <option value="10">Octobre</option>
+                                    <option value="11">Novembre</option>
+                                    <option value="12">Décembre</option>
+                                    </select></label>
+                                
+                                <canvas id="caEbitdaResultChart" width="400" height="400"></canvas>
+                                <p class="text-center">Evolution annuelle du CA, de l'EBIDTA et du Resultat de l'exercice</p>
                             </div>
                             <div><canvas id="tendanceChart" width="400" height="400"></canvas>
-                                <p>Tendance de l'exercice</p>
+                                <p class="text-center">Tendance du résultat de l'exercice</p>
                             </div>
                             
                         </div>
@@ -77,6 +111,10 @@
                         
                         
                         <%
+                            
+                            java.time.LocalDate today = java.time.LocalDate.now();
+                            int moisCourant = today.getMonthValue();
+
                             Annee taona = Service_annee.findAnnee("annee5");//java.time.Year.now().getValue();
                             int annee = taona.getValeur();
                             int annee1 = annee - 1;
@@ -101,6 +139,83 @@
                             final String USER_TYPE =  session.getAttribute("userType").toString().toLowerCase(); 
                                 if(USER_TYPE.equals("fin") || USER_TYPE.equals("admin")){
                              %>
+                             
+                             <script>
+let tendancesData = [];
+
+<%
+for (V_tendance_fin item : tendances) {
+%>
+tendancesData.push({
+    designation: "<%= item.getDesignation() %>",
+    annee: <%= item.getPeriode_ann() %>,
+    mois: [
+        <%= item.getJanvier() %>,
+        <%= item.getFevrier() %>,
+        <%= item.getMars() %>,
+        <%= item.getAvril() %>,
+        <%= item.getMai() %>,
+        <%= item.getJuin() %>,
+        <%= item.getJuillet() %>,
+        <%= item.getAout() %>,
+        <%= item.getSeptembre() %>,
+        <%= item.getOctobre() %>,
+        <%= item.getNovembre() %>,
+        <%= item.getDecembre() %>
+    ]
+});
+<%
+}
+%>
+</script>
+
+<script>
+let dataByMonth = {
+    CA: {},
+    EBITDA: {},
+    RESULTAT: {}
+};
+
+<%
+for (V_evolution_annuel_fin item : rubriques) {
+
+    String cat = item.getCategorie_rubrique();
+    int moisItem = item.getPeriode_mensuel();
+%>
+
+if (!dataByMonth.CA[<%= moisItem %>]) {
+    dataByMonth.CA[<%= moisItem %>] = [0,0,0];
+    dataByMonth.EBITDA[<%= moisItem %>] = [0,0,0];
+    dataByMonth.RESULTAT[<%= moisItem %>] = [0,0,0];
+}
+
+<%
+    if ("CAFIN".equals(cat)) {
+%>
+dataByMonth.CA[<%= moisItem %>][0] += <%= item.getAnnee() %>;
+dataByMonth.CA[<%= moisItem %>][1] += <%= item.getAnnee_n1() %>;
+dataByMonth.CA[<%= moisItem %>][2] += <%= item.getAnnee_n2() %>;
+<%
+    }
+
+    if ("EBIDTAFIN".equals(cat)) {
+%>
+dataByMonth.EBITDA[<%= moisItem %>][0] += <%= item.getAnnee_n2() %>;
+dataByMonth.EBITDA[<%= moisItem %>][1] += <%= item.getAnnee_n1() %>;
+dataByMonth.EBITDA[<%= moisItem %>][2] += <%= item.getAnnee() %>;
+<%
+    }
+
+    if ("ExoFIN".equals(cat) && "Resultat de l'exercice".equals(item.getDesignation())) {
+%>
+dataByMonth.RESULTAT[<%= moisItem %>][0] += <%= item.getAnnee_n2() %>;
+dataByMonth.RESULTAT[<%= moisItem %>][1] += <%= item.getAnnee_n1() %>;
+dataByMonth.RESULTAT[<%= moisItem %>][2] += <%= item.getAnnee() %>;
+<%
+    }
+}
+%>
+</script>
                         <form action="controller_updateVoletFIN" method="post">
 
                             <div class="card bg-light mb-3">
@@ -146,16 +261,39 @@
                                             <th><% out.println(annee1);%></th>
                                             <th><% out.println(annee);%></th>
                                         </tr>
-                                        <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
-                                                if (item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")) {
-                                        %>
+                                        
+                                         <script>
+                                               
+                                            let datasetsMap = {};
+                    
+                                                if (!datasetsMap["BUDGET"]) {
+                                                    console.log('Datasets map budget not initialized');
+                                                    datasetsMap["BUDGET"] = new Array(12).fill(0);
+                                                }else{
+                                                    console.log('DATA SETS MAP budget EXISTS');
+                                                }
+                                        </script>
+                                       
+                                        <%    
+                                                 int budgetCounter=0;
+                                                 for (V_evolution_annuel_fin_prev item : rubriques_prev) {
+                                                 if (item.getCategorie_rubrique().equals("CAFIN") || item.getCategorie_rubrique().equals("CAFIN_prev")) {
+                                                
+                                        %> 
+                                        <script> 
+                                                //loop budget
+                                                datasetsMap["BUDGET"][<%= budgetCounter %>] += <%= item.getAnnee_n2() %>;
+                                                 
+                                        </script>
                                         <tr>
                                             <td><input type="text" name="annee1_cafin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
                                             <td><input type="text" name="annee2_cafin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
                                             <td><input type="text" name="annee3_cafin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
                                             
                                         </tr>
-                                        <%          }
+                                        <%    
+                                            budgetCounter++;
+                                            }
                                             } %>
                                     </table>
                                     </div>
@@ -208,6 +346,7 @@
                                             </tr>
                                             <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
                                                     if (item.getCategorie_rubrique().equals("EBIDTAFIN") || item.getCategorie_rubrique().equals("EBIDTAFIN_prev")) {
+                                                    
                                             %>
                                             <tr>
                                                 <td><input type="text" name="annee1_ebidta" value="<%out.print(df.format(item.getAnnee()));%>"></td>
@@ -258,23 +397,35 @@
                                         <div class="col-12 col-md-5">    
                                         <table border="1">
                                             <tr class="border">
-                                                <th colspan="3" style="text-align: center;">Budget</th>
+                                                <th colspan="3" style="text-align: center;">Budget(Resultats)</th>
                                             </tr>
                                             <tr>
                                                 <th><% out.println(annee2);%></th>
                                                 <th><% out.println(annee1);%></th>
                                                 <th><% out.println(annee);%></th>
                                             </tr>
-                                            <%     for (V_evolution_annuel_fin_prev item : rubriques_prev) {
+                                            <script>
+//                                                if (!datasetsMap["BUDGET"]) {
+//                                                    datasetsMap["BUDGET"] = new Array(12).fill(0);
+//                                                }
+                                            </script>
+                                            <%    
+                                                 //int budgetCounter = 0;
+                                                 for (V_evolution_annuel_fin_prev item : rubriques_prev) {
                                                     if (item.getCategorie_rubrique().equals("ExoFIN") || item.getCategorie_rubrique().equals("ExoFIN_prev")) {
+                                                    
                                             %>
-                                            <tr>
-                                                <td><input type="text" name="annee1_exofin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
-                                                <td><input type="text" name="annee2_exofin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
-                                                <td><input type="text" name="annee3_exofin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
+                                            
+                                                 
+                                                <tr>
+                                                    <td><input type="text" name="annee1_exofin" value="<%out.print(df.format(item.getAnnee()));%>"></td>
+                                                    <td><input type="text" name="annee2_exofin" value="<%out.print(df.format(item.getAnnee_n1()));%>"></td>
+                                                    <td><input type="text" name="annee3_exofin" value="<%out.print(df.format(item.getAnnee_n2()));%>"></td>
 
-                                            </tr>
-                                            <%          }
+                                                </tr>
+                                            <%    
+                                                
+                                                }
                                                 } %>
                                         </table>
                                         </div>
@@ -310,7 +461,7 @@
                         <th>Déc</th>
                     </tr>
                     <script>
-                    let datasetsMap = {};
+                   // let datasetsMap = {};
                     </script>
 
                     <% for (V_tendance_fin item : tendances) { 
@@ -861,8 +1012,14 @@ try {
     console.log("chart error exception: " + e);
 }
 </script>
+ 
 <script>
 try {
+    //auto-select du mois
+    document.getElementById("moisSelect").value = <%= java.time.LocalDate.now().getMonthValue() %>;
+    let chart;
+
+function buildChart(selectedMonth) {
 
     const labels = [
         "<%= annee - 2 %>",
@@ -875,46 +1032,37 @@ try {
     let dataExtra = [0, 0, 0];
     let dataResultat = [0, 0, 0];
 
-    <% 
-        for (V_evolution_annuel_fin item : rubriques) {
+    tendancesData.forEach(item => {
 
-            if ("ExoFIN".equals(item.getCategorie_rubrique())) {
+        let valeur = item.mois[selectedMonth - 1];
 
-                String d = item.getDesignation();
+        let index = -1;
 
-                // ⚠️ On cumule car tu as 12 mois
-                if ("Resultat operationnel".equals(d) || "Resultat opérationnel".equals(d)) {
-    %>
-        dataOp[0] += <%= item.getAnnee_n2() %>;
-        dataOp[1] += <%= item.getAnnee_n1() %>;
-        dataOp[2] += <%= item.getAnnee() %>;
-    <%
-                } else if ("Resultat financier".equals(d)) {
-    %>
-        dataFin[0] += <%= item.getAnnee_n2() %>;
-        dataFin[1] += <%= item.getAnnee_n1() %>;
-        dataFin[2] += <%= item.getAnnee() %>;
-    <%
-                } else if ("Resultat extraordinaire".equals(d)) {
-    %>
-        dataExtra[0] += <%= item.getAnnee_n2() %>;
-        dataExtra[1] += <%= item.getAnnee_n1() %>;
-        dataExtra[2] += <%= item.getAnnee() %>;
-    <%
-                } else if ("Resultat de l'exercice".equals(d)) {
-    %>
-        dataResultat[0] += <%= item.getAnnee_n2() %>;
-        dataResultat[1] += <%= item.getAnnee_n1() %>;
-        dataResultat[2] += <%= item.getAnnee() %>;
-    <%
-                }
-            }
+        if (item.annee == <%= annee - 2 %>) index = 0;
+        else if (item.annee == <%= annee - 1 %>) index = 1;
+        else if (item.annee == <%= annee %>) index = 2;
+
+        if (index === -1) return;
+
+        if (item.designation === "Resultat operationnel" || item.designation === "Résultat opérationnel") {
+            dataOp[index] += valeur;
+        } else if (item.designation === "Resultat financier") {
+            dataFin[index] += valeur;
+        } else if (item.designation === "Resultat extraordinaire") {
+            dataExtra[index] += valeur;
+        } else if (item.designation === "Resultat de l'exercice") {
+            dataResultat[index] += valeur;
         }
-    %>
+
+    });
+
+    if (chart) {
+        chart.destroy();
+    }
 
     const ctx = document.getElementById('multiRubriqueChart').getContext('2d');
 
-    const chart = new Chart(ctx, {
+    chart = new Chart(ctx, {
         data: {
             labels: labels,
             datasets: [
@@ -949,258 +1097,129 @@ try {
         },
         options: {
             responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false
-            },
             plugins: {
                 tooltip: {
                     callbacks: {
-                        label: function (context) {
-                            return context.dataset.label + ": " +
-                                   context.raw.toLocaleString() + " Ariary";
-                        }
+                        label: (ctx) => ctx.dataset.label + ": " + ctx.raw.toLocaleString() + " Ariary"
                     }
                 }
             },
             scales: {
                 y: {
-                    beginAtZero: true,
                     ticks: {
-                        callback: function (value) {
-                            return value.toLocaleString();
-                        }
+                        callback: v => v.toLocaleString()
                     }
                 },
                 y1: {
                     position: 'right',
-                    grid: {
-                        drawOnChartArea: false
+                    grid: { drawOnChartArea: false },
+                    ticks: {
+                        callback: v => v.toLocaleString()
+                    }
+                }
+            }
+        }
+    });
+}
+
+// initial
+buildChart(document.getElementById("moisSelect").value);
+
+// changement utilisateur
+document.getElementById("moisSelect").addEventListener("change", function () {
+    buildChart(parseInt(this.value));
+});
+
+} catch (e) {
+    console.log("chart error exception: " + e);
+}
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    try {
+
+        const canvas = document.getElementById('caEbitdaResultChart');
+        if (!canvas) {
+            console.log("Canvas introuvable");
+            return;
+        }
+
+        const ctx = canvas.getContext('2d');
+
+        const chart = new Chart(ctx, {
+            data: {
+                labels: [
+                    "<%= annee - 2 %>",
+                    "<%= annee - 1 %>",
+                    "<%= annee %>"
+                ],
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: "CA",
+                        data: [0,0,0],
+                        backgroundColor: 'orange'
                     },
-                    ticks: {
-                        callback: function (value) {
-                            return value.toLocaleString();
-                        }
+                    {
+                        type: 'line',
+                        label: "EBITDA",
+                        data: [0,0,0],
+                        borderColor: 'green',
+                        tension: 0.4
+                    },
+                    {
+                        type: 'line',
+                        label: "Résultat",
+                        data: [0,0,0],
+                        borderColor: 'blue',
+                        tension: 0.4
                     }
-                }
-            }
-        }
-    });
-
-} catch (e) {
-    console.log("chart error exception: " + e);
-}
-</script>
-<script>
-try {
-
-    const labels = [
-        "<%= annee - 2 %>",
-        "<%= annee - 1 %>",
-        "<%= annee %>"
-    ];
-
-    let dataCA = [0, 0, 0];
-    let dataEBITDA = [0, 0, 0];
-    let dataResultat = [0, 0, 0];
-
-    <% 
-        for (V_evolution_annuel_fin item : rubriques) {
-
-            String cat = item.getCategorie_rubrique();
-
-            // ================= CA =================
-            if ("CAFIN".equals(cat)) {
-    %>
-        dataCA[0] += <%= item.getAnnee_n2() %>;
-        dataCA[1] += <%= item.getAnnee_n1() %>;
-        dataCA[2] += <%= item.getAnnee() %>;
-    <%
-            }
-
-            // ================= EBITDA =================
-            if ("EBIDTAFIN".equals(cat)) {
-    %>
-        dataEBITDA[0] += <%= item.getAnnee_n2() %>;
-        dataEBITDA[1] += <%= item.getAnnee_n1() %>;
-        dataEBITDA[2] += <%= item.getAnnee() %>;
-    <%
-            }
-
-            // ================= RESULTAT =================
-            if ("ExoFIN".equals(cat) 
-                && "Resultat de l'exercice".equals(item.getDesignation())) {
-    %>
-        dataResultat[0] += <%= item.getAnnee_n2() %>;
-        dataResultat[1] += <%= item.getAnnee_n1() %>;
-        dataResultat[2] += <%= item.getAnnee() %>;
-    <%
-            }
-        }
-    %>
-
-    const ctx = document.getElementById('caEbitdaResultChart').getContext('2d');
-
-    const chart = new Chart(ctx, {
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    type: 'bar',
-                    label: "Chiffre d'affaires",
-                    data: dataCA,
-                    backgroundColor: 'orange'
-                },
-                {
-                    type: 'line',
-                    label: "EBITDA",
-                    data: dataEBITDA,
-                    borderColor: 'green',
-                    backgroundColor: 'green',
-                    tension: 0.4
-                },
-                {
-                    type: 'line',
-                    label: "Résultat de l'exercice",
-                    data: dataResultat,
-                    borderColor: 'blue',
-                    backgroundColor: 'blue',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false
+                ]
             },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            return context.dataset.label + ": " +
-                                   context.raw.toLocaleString() + " Ariary";
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function (value) {
-                            return value.toLocaleString();
-                        }
-                    }
-                }
+            options: {
+                responsive: true
             }
+        });
+
+        function updateChart(mois) {
+            const ca = dataByMonth?.CA?.[mois] || [0,0,0];
+            const ebitda = dataByMonth?.EBITDA?.[mois] || [0,0,0];
+            const res = dataByMonth?.RESULTAT?.[mois] || [0,0,0];
+
+            chart.data.datasets[0].data = ca;
+            chart.data.datasets[1].data = ebitda;
+            chart.data.datasets[2].data = res;
+
+            chart.update();
         }
-    });
 
-} catch (e) {
-    console.log("chart error exception: " + e);
-}
-</script>
-<script>
-    try{
-const labels = [
-    "Jan", "Fév", "Mar", "Avr", "Mai", "Juin",
-    "Juil", "Août", "Sep", "Oct", "Nov", "Déc"
-];
+        const select = document.getElementById("moisSelectCAChart");
 
-// Couleurs
-const colors = [
-    "#4e79a7", "#f28e2b", "#e15759",
-    "#76b7b2", "#59a14f", "#edc949",
-    "#af7aa1", "#ff9da7"
-];
+        // ✅ mois courant
+        const currentMonth = new Date().getMonth() + 1;
 
-// 🔥 Récupération des années (hors budget)
-let years = Object.keys(datasetsMap)
-    .filter(k => k !== "BUDGET")
-    .sort(); // tri croissant
+        if (select) {
+            // 🔥 sélectionner visuellement le mois courant
+            select.value = currentMonth;
 
-// 🔥 Identifier année courante et N-1 automatiquement
-let currentYear = years[years.length - 1];
-let previousYear = years[years.length - 2];
+            // 🔁 listener
+            select.addEventListener("change", function() {
+                updateChart(parseInt(this.value));
+            });
+        }
 
-// 🔥 Construction datasets dynamique
-const datasets = Object.keys(datasetsMap).map((key, index) => {
+        // ✅ initialiser le chart avec le même mois
+        updateChart(currentMonth);
 
-    const isBudget = key === "BUDGET";
-    const isCurrent = key === currentYear;
-    const isPrevious = key === previousYear;
-
-    let type = "line";
-
-    // 🎯 logique demandée
-    if (isBudget || isCurrent || isPrevious) {
-        type = "line";
+    } catch(e) {
+        console.log('Error ebitda chart: ' + e);
     }
 
-    return {
-        type: type,
-        label: isBudget
-            ? "Budget"
-            : "Réalisations " + key,
-
-        data: datasetsMap[key],
-
-        backgroundColor: colors[index % colors.length],
-        borderColor: colors[index % colors.length],
-
-        tension: 0.4,
-        fill: false,
-
-        // 🔥 Mise en valeur visuelle
-        borderWidth: (isCurrent || isPrevious || isBudget) ? 3 : 1,
-        pointRadius: (isCurrent || isPrevious || isBudget) ? 4 : 2
-    };
 });
-
-// 🔥 Chart
-const ctx = document.getElementById('tendanceChartY').getContext('2d');
-
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: datasets
-    },
-    options: {
-        responsive: true,
-        interaction: {
-            mode: 'index',
-            intersect: false
-        },
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function (context) {
-                        return context.dataset.label + " : " +
-                               context.raw.toLocaleString() + " Ar";
-                    }
-                }
-            },
-            legend: {
-                position: 'top'
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: v => v.toLocaleString()
-                }
-            }
-        }
-    }
-});
-    }catch(e){
-        console.log('Error tendances chart: '+e);
-    }
 </script>
+
 <script>
 try {
 
@@ -1218,7 +1237,7 @@ const colors = {
 // 🔥 Trier les années (hors budget)
 let years = Object.keys(datasetsMap)
     .filter(k => k !== "BUDGET")
-    .sort();
+    .sort((a, b) => Number(a) - Number(b));
 
 // Sécurité si peu de données
 let currentYear = years[years.length - 1];
@@ -1234,7 +1253,7 @@ if (datasetsMap[currentYear]) {
         data: datasetsMap[currentYear],
         borderColor: colors.current,
         backgroundColor: colors.current,
-        tension: 0.4,
+        tension: 0,
         fill: false,
         borderWidth: 3
     });
@@ -1247,7 +1266,7 @@ if (datasetsMap[previousYear]) {
         data: datasetsMap[previousYear],
         borderColor: colors.previous,
         backgroundColor: colors.previous,
-        tension: 0.4,
+        tension: 0,
         fill: false,
         borderWidth: 3
     });
@@ -1260,9 +1279,9 @@ if (datasetsMap["BUDGET"]) {
         data: datasetsMap["BUDGET"],
         borderColor: colors.budget,
         backgroundColor: colors.budget,
-        tension: 0.4,
+        tension: 0,
         fill: false,
-        borderDash: [5, 5], // 🔥 différencier visuellement
+        borderDash: [], //ligne pleine
         borderWidth: 3
     });
 }
