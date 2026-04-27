@@ -27,8 +27,13 @@
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_op">
                     <i class="fas fa-user"></i><span> Opérations</span>
                 </a></li> <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_fin">
-                    <i class="fas fa-user"></i><span> Finances</span>
+                    <i class="fas fa-user"></i><span> Finances - Resultats</span>
                 </a></li>
+                <li class="nav-item menu">
+                    <a class="nav-link" id="chatBot" href="rubrique_fin_chrge">
+                        <i class="fas fa-user"></i><span> Finances - Produits & chges</span>
+                    </a>
+                 </li>
                 <% } else if (USER_TYPE.equals("rh") || USER_TYPE.equals("voletrh")) {
 //menu rh only
                 %>
@@ -47,8 +52,14 @@
                     //menu fin only
                 %> 
             <li class="nav-item menu"><a class="nav-link" id="chatBot" href="rubrique_fin">
-                    <i class="fas fa-user"></i><span> Finances</span>
-                </a></li>
+                    <i class="fas fa-user"></i><span> Finances - Resultats</span>
+                </a>
+            </li>
+                 <li class="nav-item menu">
+                    <a class="nav-link" id="chatBot" href="rubrique_fin_chrge">
+                        <i class="fas fa-user"></i><span> Finances - Produits & chges</span>
+                    </a>
+                 </li>
                 <%
                         }
                     }
