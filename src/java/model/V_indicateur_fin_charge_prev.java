@@ -22,7 +22,10 @@ public class V_indicateur_fin_charge_prev {
     private Double annee_n2;
     private Double annee_n1;
     private Double annee;
-
+    private Double janvier, fevrier, mars, avril, mai;
+    private Double juin, juillet, aout, septembre, octobre;
+    private Double novembre, decembre;
+    
     public int getId() {
         return id;
     }
@@ -117,6 +120,109 @@ public class V_indicateur_fin_charge_prev {
 
     public void setAnnee(Double annee) {
         this.annee = annee;
+    }
+    
+    public void setJanvier(Double janvier) {
+        this.janvier = janvier;
+    }
+
+    public Double getJanvier() {
+        return this.janvier;
+    }
+
+    public void setFevrier(Double fevrier) {
+        this.fevrier = fevrier;
+    }
+
+    public Double getFevrier() {
+        return this.fevrier;
+    }
+
+    public void setMars(Double mars) {
+        this.mars = mars;
+    }
+
+    public Double getMars() {
+        return this.mars;
+    }
+
+    public void setAvril(Double avril) {
+        this.avril = avril;
+    }
+
+    public Double getAvril() {
+        return this.avril;
+    }
+
+    public void setMai(Double mai) {
+        this.mai = mai;
+    }
+
+    public Double getMai() {
+        return this.mai;
+    }
+
+// --- Juin ---
+    public void setJuin(Double juin) {
+        this.juin = juin;
+    }
+
+    public Double getJuin() {
+        return this.juin;
+    }
+
+// --- Juillet ---
+    public void setJuillet(Double juillet) {
+        this.juillet = juillet;
+    }
+
+    public Double getJuillet() {
+        return this.juillet;
+    }
+
+// --- Août ---
+    public void setAout(Double aout) {
+        this.aout = aout;
+    }
+
+    public Double getAout() {
+        return this.aout;
+    }
+
+// --- Septembre ---
+    public void setSeptembre(Double septembre) {
+        this.septembre = septembre;
+    }
+
+    public Double getSeptembre() {
+        return this.septembre;
+    }
+
+// --- Octobre ---
+    public void setOctobre(Double octobre) {
+        this.octobre = octobre;
+    }
+
+    public Double getOctobre() {
+        return this.octobre;
+    }
+
+// --- Novembre ---
+    public void setNovembre(Double novembre) {
+        this.novembre = novembre;
+    }
+
+    public Double getNovembre() {
+        return this.novembre;
+    }
+
+// --- Décembre ---
+    public void setDecembre(Double decembre) {
+        this.decembre = decembre;
+    }
+
+    public Double getDecembre() {
+        return this.decembre;
     }
     
 }
